@@ -89,9 +89,14 @@ chosen phases run, in order → Explore deals cards to choose from → Develop a
 with per-card legality and a payment step → Consume resolves powers for VP chips and
 trade → Produce places goods → hand limit → next round → end condition → scored results.
 
-The board shows every card's real stats, highlights what is legal in the current phase
-in green and dims what is not (with the reason on the card inspector), tracks which
-phases are running, and works on a phone.
+Cards are drawn the way the printed game draws them: a black diamond for developments,
+a circle for worlds, a red circle for military worlds, a solid coloured circle for
+production worlds and a coloured halo for windfall worlds. Powers sit in fixed I–V rows
+so the same phase is always in the same place. Tapping any card opens a full-size reader;
+tapping anywhere closes it. All game numbers live behind one status button.
+
+When the supply runs out the table stops at a Reshuffle step: every player confirms, the
+graveyard is shuffled back in, and play resumes.
 
 ## Not yet implemented
 

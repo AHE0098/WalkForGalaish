@@ -1,56 +1,81 @@
 import React from 'react';
-import { costFace, powerLine, type CardFace } from './cardDb.js';
+import { costFace, powersByPhase, type CardFace } from './cardDb.js';
 
 export type CardMood = 'plain' | 'playable' | 'blocked' | 'selected';
+export type CardSize = 'mini' | 'normal' | 'large';
 
 /**
- * One renderer for every card. It is handed a face plus a mood; it never decides
- * legality itself. Artwork is optional — the card is complete without it.
+ * The printed card, drawn from data. The cost pip mirrors the physical game:
+ * diamond for developments, circle for worlds, red for military, a solid colour
+ * for production worlds and a halo for windfall worlds.
+ *
+ * Every text element sits on its own scrim so it stays legible once card art is
+ * dropped in behind it.
  */
 export function GenericCard({
-  face, mood = 'plain', badge, goods = 0, onClick, compact, imageUrl,
+  face, mood = 'plain', size = 'normal', badge, goods = 0, onClick, imageUrl,
 }: {
-  face: CardFace | undefined; mood?: CardMood; badge?: string; goods?: number;
-  onClick?: () => void; compact?: boolean; imageUrl?: string | null;
+  face: CardFace | undefined; mood?: CardMood; size?: CardSize;
+  badge?: string; goods?: number; onClick?: () => void; imageUrl?: string | null;
 }) {
-  if (!face) return <div className="card card--ghost" />;
-  const { value, kind } = costFace(face);
-  const res = face.world?.resourceType;
-  const mode = face.world?.productionMode;
+  if (!face) return <div className={`card card--${size} card--ghost`} />;
+
+  const pip = costFace(face);
+  const { rows, endGame } = powersByPhase(face);
+  const hasPowers = rows.some(r => r.lines.length) || endGame.length;
+  const mini = size === 'mini';
 
   return (
-    <button type="button" className={`card card--${mood}${compact ? ' card--compact' : ''}`}
-            onClick={onClick} disabled={!onClick} aria-label={face.name}>
-      <span className="card__head">
-        <span className={`pip pip--${kind}`}>{value}</span>
-        <span className="pip pip--vp">{face.victoryPoints ?? '?'}<i>vp</i></span>
-      </span>
-
-      {imageUrl && <img className="card__art" src={imageUrl} alt=""
+    <button type="button" onClick={onClick} disabled={!onClick} aria-label={face.name}
+            className={`card card--${size} card--${mood}${imageUrl ? ' card--art' : ''}`}>
+      {imageUrl && <img className="card__image" src={imageUrl} alt=""
                         onError={e => { e.currentTarget.style.display = 'none'; }} />}
 
-      <span className="card__name">{face.name}</span>
-
-      <span className="card__tags">
-        {face.cardType === 'development'
-          ? <i className="tag tag--dev">dev</i>
-          : <i className="tag tag--world">world</i>}
-        {res && <i className={`tag tag--${res}`}>{res}</i>}
-        {mode === 'windfall' && <i className="tag">windfall</i>}
-        {mode === 'production' && <i className="tag">produces</i>}
-        {face.world?.isRebel && <i className="tag tag--rebel">rebel</i>}
-        {face.isSixCostDevelopment && <i className="tag tag--six">6-cost</i>}
-        {goods > 0 && <i className="tag tag--good">{goods} good</i>}
+      <span className="card__top">
+        <span className={`pip pip--${pip.shape}${pip.military ? ' pip--mil' : ''}`}
+              data-fill={pip.fill ?? undefined} data-halo={pip.halo ?? undefined}>
+          <i>{pip.value}</i>
+        </span>
+        <span className="vp">{face.victoryPoints ?? '?'}<i>VP</i></span>
       </span>
 
-      {!compact && (
-        <span className="card__powers">
-          {face.powers.slice(0, 4).map((p, i) => <em key={i}>{powerLine(p)}</em>)}
-          {face.powers.length > 4 && <em>+{face.powers.length - 4} more…</em>}
+      <span className="card__title">{face.name}</span>
+
+      {!mini && (
+        <span className="card__tags">
+          <i className={`tag tag--${face.cardType === 'development' ? 'dev' : 'world'}`}>
+            {face.cardType === 'development' ? 'development' : 'world'}
+          </i>
+          {face.world?.resourceType &&
+            <i className={`tag tag--${face.world.resourceType}`}>{face.world.resourceType}</i>}
+          {face.world?.productionMode === 'windfall' && <i className="tag">windfall</i>}
+          {face.world?.isRebel && <i className="tag tag--rebel">rebel</i>}
+          {face.isSixCostDevelopment && <i className="tag tag--six">6-cost</i>}
         </span>
       )}
 
+      {/* The phase rail keeps I–V in the same place on every card, like the print. */}
+      {!mini && (
+        <span className="rail">
+          {rows.map(r => (
+            <span key={r.phase} className={`rail__row${r.lines.length ? '' : ' rail__row--empty'}`}>
+              <i className="rail__num">{r.numeral}</i>
+              <i className="rail__text">{r.lines.join(' · ') || '—'}</i>
+            </span>
+          ))}
+          {endGame.length > 0 && (
+            <span className="rail__row rail__row--end">
+              <i className="rail__num">★</i>
+              <i className="rail__text">{endGame.join(' · ')}</i>
+            </span>
+          )}
+        </span>
+      )}
+
+      {mini && hasPowers && <span className="card__more" aria-hidden>…</span>}
+      {goods > 0 && <span className="good" title={`${goods} good`}>{goods > 1 ? goods : ''}</span>}
       {badge && <span className="card__badge">{badge}</span>}
+      {size === 'normal' && <span className="card__more card__more--corner" aria-hidden>…</span>}
     </button>
   );
 }

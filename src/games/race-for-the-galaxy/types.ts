@@ -56,5 +56,7 @@ export const ACTION_CARDS = [
 export const PHASE_ORDER = ['explore', 'develop', 'settle', 'consume', 'produce'] as const;
 export const TRADE_PRICES = { novelty: 2, rare: 3, genes: 4, alien: 5 } as const;
 export const HAND_LIMIT = 10;
+/** Below this many cards in the supply, the table stops to reshuffle the discard. */
+export const RESHUFFLE_AT = 6;
 export const VP_PER_PLAYER = 12;
 export const TABLEAU_END_SIZE = 12;

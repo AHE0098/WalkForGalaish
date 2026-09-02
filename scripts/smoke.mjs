@@ -154,6 +154,10 @@ async function main() {
   await sleep(80);
   ok(A.latest.view.hand.length === handBefore + 2, 'kept cards landed in hand');
   ok(A.latest.view.selection.length === 0, 'the rest were discarded');
+  ok(typeof A.latest.view.discardCount === 'number' && A.latest.view.discardCount > 0,
+     `graveyard tracked: ${A.latest.view.discardCount} cards`);
+  ok(A.latest.view.players.every(p => p.scoreParts && 'card VP' in p.scoreParts),
+     'each player carries a score breakdown');
 
   A.close(); B.close(); C2.close();
 }

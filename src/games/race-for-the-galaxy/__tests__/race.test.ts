@@ -350,3 +350,36 @@ describe('hand limit', () => {
     expect(cardsIn(after, ZONE.hand, 'p1')).toHaveLength(10);
   });
 });
+
+describe('reshuffle step', () => {
+  it('is scheduled when the supply runs low, and rebuilds it from the graveyard', () => {
+    let s = setup();
+    // Drain the supply into the discard pile, then finish the round.
+    const order = (s.gameData.supplyOrder as string[]).slice();
+    for (const id of order.slice(0, order.length - 2))
+      s = moveCard(s, id, ZONE.discard, { owner: null, faceDown: true });
+    s = { ...s, gameData: { ...s.gameData, supplyOrder: order.slice(order.length - 2) } };
+
+    const afterRound = race.onPhaseComplete(inPhase(s, 'produce'), 'produce', createRng(1));
+    expect(afterRound.gameData.reshuffleNeeded).toBe(true);
+
+    const phases = race.selectPhasesForRound({
+      ...afterRound, revealedChoices: { p1: 'develop', p2: 'develop' } });
+    expect(phases[phases.length - 1]).toBe('reshuffle');
+    expect(race.legalActions({ ...afterRound, phasesThisRound: ['reshuffle'], phaseIndex: 0 }, 'p1'))
+      .toEqual(['READY']);
+
+    const graveyard = cardsIn(afterRound, ZONE.discard).length;
+    expect(graveyard).toBeGreaterThan(0);
+    const done = race.onPhaseComplete(
+      { ...afterRound, phasesThisRound: ['reshuffle'], phaseIndex: 0 }, 'reshuffle', createRng(1));
+    expect(done.gameData.reshuffleNeeded).toBe(false);
+    expect(cardsIn(done, ZONE.discard)).toHaveLength(0);
+    expect((done.gameData.supplyOrder as string[]).length).toBeGreaterThanOrEqual(graveyard);
+  });
+
+  it('does not schedule a reshuffle while the supply is healthy', () => {
+    const after = race.onPhaseComplete(inPhase(setup(), 'produce'), 'produce', createRng(1));
+    expect(after.gameData.reshuffleNeeded).toBeFalsy();
+  });
+});

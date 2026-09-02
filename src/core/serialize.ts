@@ -91,5 +91,6 @@ function publicInfo(state: GameState, viewer: PlayerId): Record<string, unknown>
     vpChips: (g.vpChips as Record<string, number>) ?? {},
     openingDiscard: g.openingDiscard ?? false,
     keepCount: (g.keepCounts as Record<string, number> | undefined)?.[viewer] ?? null,
+    reshuffleNeeded: g.reshuffleNeeded ?? false,
   };
 }

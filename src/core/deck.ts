@@ -66,4 +66,8 @@ export function dealToHand(state: GameState, playerId: string, n: number, rng: R
 }
 
 export function supplyCount(state: GameState): number { return supplyOrder(state).length; }
+/** True when the supply is too thin to survive another round without running dry. */
+export function supplyIsLow(state: GameState, need: number): boolean {
+  return supplyCount(state) < need && discardCount(state) > 0;
+}
 export function discardCount(state: GameState): number { return cardsIn(state, ZONE.discard).length; }

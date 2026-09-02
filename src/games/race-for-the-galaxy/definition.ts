@@ -2,11 +2,14 @@ import type {
   ActionResult, GameDefinition, GameState, Playable, PlayerId, Rng,
 } from '../../core/types.js';
 import { ZONE, cardsIn, moveCard } from '../../core/zones.js';
-import { buildInstances, dealToHand, draw, shuffleSupply } from '../../core/deck.js';
+import {
+  buildInstances, dealToHand, draw, reshuffleDiscard, shuffleSupply, supplyIsLow,
+} from '../../core/deck.js';
 import { submitHiddenChoice } from '../../core/phases.js';
 import { RACE_DEFINITIONS, BASIC_START_WORLDS, card } from './cards.js';
 import {
-  ACTION_CARDS, HAND_LIMIT, PHASE_ORDER, TABLEAU_END_SIZE, TRADE_PRICES, VP_PER_PLAYER,
+  ACTION_CARDS, HAND_LIMIT, PHASE_ORDER, RESHUFFLE_AT, TABLEAU_END_SIZE, TRADE_PRICES,
+  VP_PER_PLAYER,
 } from './types.js';
 import type { RaceCard } from './types.js';
 import {
@@ -51,6 +54,7 @@ export const raceForTheGalaxy: GameDefinition = {
     { id: 'settle',  label: 'III Settle', mode: 'simultaneous' },
     { id: 'consume', label: 'IV Consume', mode: 'simultaneous' },
     { id: 'produce', label: 'V Produce',  mode: 'simultaneous' },
+    { id: 'reshuffle', label: 'Reshuffle', mode: 'simultaneous' },
   ],
 
   setupGame(state, rng) {
@@ -87,7 +91,10 @@ export const raceForTheGalaxy: GameDefinition = {
       const ac = ACTION_CARDS.find(a => a.id === choice);
       if (ac) chosen.add(ac.phase);
     }
-    return PHASE_ORDER.filter(p => chosen.has(p));
+    const phases: string[] = PHASE_ORDER.filter(p => chosen.has(p));
+    // The table pauses together to rebuild the supply from the discard pile.
+    if (state.gameData.reshuffleNeeded) phases.push('reshuffle');
+    return phases;
   },
 
   /** Deal explore cards, and auto-resolve the phases that need no decisions. */
@@ -139,6 +146,7 @@ export const raceForTheGalaxy: GameDefinition = {
     if (state.gameData.openingDiscard) return ['DISCARD_CARDS'];
     const phase = currentPhase(state);
     if (phase === null) return ['SELECT_ACTION_CARD'];
+    if (phase === 'reshuffle') return ['READY'];
     if (phase === 'explore') return ['KEEP_CARDS'];
     if (phase === 'develop' || phase === 'settle') return ['PLAY_CARD', 'PASS'];
     return ['READY'];
@@ -265,7 +273,13 @@ export const raceForTheGalaxy: GameDefinition = {
 
   onPhaseComplete(state, phase, rng) {
     let next = state;
-    if (phase === PHASE_ORDER[PHASE_ORDER.length - 1] || isLastPhase(next, phase)) {
+
+    if (phase === 'reshuffle') {
+      next = reshuffleDiscard(next, rng);
+      return { ...next, gameData: { ...next.gameData, reshuffleNeeded: false } };
+    }
+
+    if (isLastGamePhase(next, phase)) {
       for (const p of next.players) {
         let over = handSize(next, p.id) - HAND_LIMIT;
         for (const c of cardsIn(next, ZONE.hand, p.id)) {
@@ -273,6 +287,11 @@ export const raceForTheGalaxy: GameDefinition = {
           next = moveCard(next, c.instanceId, ZONE.discard, { owner: null, faceDown: true });
         }
       }
+      // Decide now, so the reshuffle step can be scheduled into the next round.
+      const need = RESHUFFLE_AT + next.players.length * 2;
+      if (supplyIsLow(next, need))
+        next = { ...next, gameData: { ...next.gameData, reshuffleNeeded: true },
+                 log: [...next.log, 'The supply is running low — reshuffle next round.'] };
     }
     return next;
   },
@@ -304,8 +323,10 @@ export const raceForTheGalaxy: GameDefinition = {
   },
 };
 
-function isLastPhase(state: GameState, phase: string): boolean {
-  return state.phasesThisRound[state.phasesThisRound.length - 1] === phase;
+/** The last scoring phase of the round, ignoring the reshuffle step appended after it. */
+function isLastGamePhase(state: GameState, phase: string): boolean {
+  const real = state.phasesThisRound.filter(p => p !== 'reshuffle');
+  return real[real.length - 1] === phase;
 }
 
 function name(state: GameState, pid: PlayerId): string {

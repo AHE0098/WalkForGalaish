@@ -1,8 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGame } from '../useGame.js';
-import { useCardDb, powerLine, type CardFace } from '../cardDb.js';
+import { useCardDb, type CardFace } from '../cardDb.js';
 import { GenericCard, type CardMood } from '../GenericCard.js';
+import { CardInspector } from '../CardInspector.js';
+import { StatusSheet } from '../StatusSheet.js';
+import { Reshuffle } from '../Reshuffle.js';
 
 const ACTIONS = [
   { id: 'explore-5', label: 'Explore +5', hint: 'draw 7, keep 1', phase: 'explore' },
@@ -29,7 +32,7 @@ export function Room() {
   const [inspect, setInspect] = useState<string | null>(null);
   const [paying, setPaying] = useState<{ instanceId: string; cost: number } | null>(null);
   const [payment, setPayment] = useState<string[]>([]);
-  const [showLog, setShowLog] = useState(false);
+  const [showStatus, setShowStatus] = useState(false);
 
   const room = payload?.room;
   const view = payload?.view;
@@ -140,26 +143,29 @@ export function Room() {
         ? `Keep ${keepCount} of the drawn cards (${picked.length}/${keepCount})`
         : phase === 'develop' ? 'Play one development, or pass'
         : phase === 'settle' ? 'Settle one world, or pass'
-        : phase === 'consume' ? 'Consume resolved automatically — check the log'
-        : 'Goods produced — check the log';
+        : phase === 'consume' ? 'Consume resolved automatically — open status to see what happened'
+        : phase === 'reshuffle' ? 'Everyone must agree before the graveyard is shuffled back in'
+        : 'Goods produced — open status to see what happened';
 
   return (
     <div className="board">
       <header className="topbar">
-        <span className="topbar__title">Race for the Galaxy</span>
-        <span className="chipline">
-          <b>{room.code}</b><i>room</i></span>
-        <span className="chipline"><b>{view.round}</b><i>round</i></span>
-        <span className="chipline"><b>{view.supplyCount}</b><i>deck</i></span>
-        <span className="chipline"><b>{view.info?.vpPool ?? '–'}</b><i>vp pool</i></span>
-        <span className="chipline"><b>{me?.score ?? 0}</b><i>your vp</i></span>
-        <span className="chipline"><b>{view.players.filter((p: any) => p.ready).length}/{view.players.length}</b><i>ready</i></span>
-        <button className="ghost" onClick={() => setShowLog(v => !v)}>{showLog ? 'Hide' : 'Log'}</button>
+        <button className="statusbtn" onClick={() => setShowStatus(true)}>
+          <span className="statusbtn__main">
+            <b>{me?.score ?? 0}</b> VP
+            <em>R{view.round}</em>
+          </span>
+          <span className="statusbtn__sub">
+            deck {view.supplyCount} · grave {view.discardCount} · pool {view.info?.vpPool ?? '–'} ·
+            ready {view.players.filter((p: any) => p.ready).length}/{view.players.length}
+          </span>
+        </button>
         <button className="ghost" onClick={leave}>Leave</button>
       </header>
 
       <nav className="phasebar" aria-label="Phases this round">
-        {PHASES.map(p => {
+        {[...PHASES, ...(view.phasesThisRound.includes('reshuffle')
+          ? [{ id: 'reshuffle', label: '⟳ Shuffle' }] : [])].map(p => {
           const included = view.phasesThisRound.includes(p.id);
           const active = phase === p.id;
           const done = included && !active &&
@@ -176,10 +182,9 @@ export function Room() {
       <p className="instruction">{instruction}</p>
       {error && <p className="err" onClick={() => setError(null)}>{error}</p>}
 
-      {showLog && (
-        <section className="logbox">
-          {view.log.slice().reverse().map((l: string, i: number) => <div key={i}>{l}</div>)}
-        </section>
+      {phase === 'reshuffle' && (
+        <Reshuffle ready={iAmReady} discardCount={view.discardCount}
+                   onReady={() => emit('ready', { code, phaseId: view.phaseId, ready: true })} />
       )}
 
       <section className="opponents">
@@ -195,8 +200,8 @@ export function Room() {
             </div>
             <div className="minirow">
               {p.tableau.map((t: any) => (
-                <GenericCard key={t.instanceId} face={face(t.defId)} compact goods={t.goods.length}
-                             onClick={() => setInspect(t.defId)} />
+                <GenericCard key={t.instanceId} face={face(t.defId)} size="mini"
+                             goods={t.goods.length} onClick={() => setInspect(t.defId)} />
               ))}
             </div>
           </article>
@@ -299,29 +304,24 @@ export function Room() {
         {iAmReady && phase !== null && <span className="muted">Waiting for the other players…</span>}
       </footer>
 
-      {inspect && db?.[inspect] && (
-        <div className="modal" onClick={() => setInspect(null)}>
-          <div className="modal__card" onClick={e => e.stopPropagation()}>
-            <h3>{db[inspect]!.name}</h3>
-            <GenericCard face={db[inspect]} />
-            <ul className="powerlist">
-              {db[inspect]!.powers.map((p, i) => <li key={i}>{powerLine(p)}</li>)}
-              {!db[inspect]!.powers.length && <li className="muted">No powers.</li>}
-            </ul>
-            {(() => {
-              const inHand = view.hand.find((c: any) => c.defId === inspect);
-              const p = inHand ? view.playable[inHand.instanceId] : undefined;
-              if (!inHand) return null;
-              return p?.ok
-                ? <button className="primary" onClick={() => startPlay(inHand.instanceId)}>
-                    Play {p.cost ? `(pay ${p.cost})` : '(free)'}
-                  </button>
-                : <p className="muted">{p?.reason ?? 'Cannot be played in this phase.'}</p>;
-            })()}
-            <button onClick={() => setInspect(null)}>Close</button>
-          </div>
-        </div>
-      )}
+      {inspect && db?.[inspect] && (() => {
+        const f = db[inspect] as CardFace;
+        const inHand = view.hand.find((c: any) => c.defId === inspect);
+        const p = inHand ? view.playable[inHand.instanceId] : undefined;
+        return (
+          <CardInspector
+            face={f}
+            onClose={() => setInspect(null)}
+            note={inHand && !p?.ok ? (p?.reason ?? 'Cannot be played in this phase.') : undefined}
+            action={inHand && p?.ok
+              ? { label: p.cost ? `Play — pay ${p.cost} card(s)` : 'Play for free',
+                  onClick: () => startPlay(inHand.instanceId) }
+              : undefined} />
+        );
+      })()}
+
+      {showStatus && <StatusSheet view={view} room={room} onClose={() => setShowStatus(false)} />}
+
     </div>
   );
 }

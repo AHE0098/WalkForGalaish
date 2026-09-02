@@ -74,9 +74,46 @@ export function powerLine(p: CardFace['powers'][number]): string {
   return `${PHASE_NUM[p.phase] ?? ''} ${map[p.effectType] ?? p.effectType}`.trim();
 }
 
-/** The number printed in the card's circle, and what it means. */
-export function costFace(c: CardFace): { value: number | string; kind: 'dev' | 'mil' | 'pay' } {
-  if (c.cardType === 'development') return { value: c.cost ?? '–', kind: 'dev' };
-  if (c.world?.settlementMode === 'military') return { value: c.world.defense ?? '–', kind: 'mil' };
-  return { value: c.world?.settleCost ?? '–', kind: 'pay' };
+/**
+ * The printed number and how the game draws it:
+ * developments use a diamond, worlds a circle, military worlds a red circle.
+ * Production worlds fill the circle with the good's colour; windfall worlds
+ * put that colour in a halo around it.
+ */
+export interface CostFace {
+  value: number | string;
+  shape: 'diamond' | 'circle';
+  military: boolean;
+  fill: string | null;   // solid colour = production world
+  halo: string | null;   // ring colour = windfall world
+}
+
+export function costFace(c: CardFace): CostFace {
+  if (c.cardType === 'development')
+    return { value: c.cost ?? '–', shape: 'diamond', military: false, fill: null, halo: null };
+  const w = c.world!;
+  const res = w.resourceType;
+  return {
+    value: (w.settlementMode === 'military' ? w.defense : w.settleCost) ?? '–',
+    shape: 'circle',
+    military: w.settlementMode === 'military',
+    fill: w.productionMode === 'production' ? res : null,
+    halo: w.productionMode === 'windfall' ? res : null,
+  };
+}
+
+export const PHASE_ROWS = ['explore', 'develop', 'settle', 'consume', 'produce'] as const;
+export const PHASE_NUMERAL: Record<string, string> = {
+  explore: 'I', develop: 'II', settle: 'III', consume: 'IV', produce: 'V', endGame: '★',
+};
+
+/** Group powers into the fixed I–V rows the printed cards use, plus end-game. */
+export function powersByPhase(c: CardFace) {
+  const rows = PHASE_ROWS.map(phase => ({
+    phase,
+    numeral: PHASE_NUMERAL[phase]!,
+    lines: c.powers.filter(p => p.phase === phase).map(powerLine),
+  }));
+  const endGame = c.powers.filter(p => p.phase === 'endGame').map(powerLine);
+  return { rows, endGame };
 }
