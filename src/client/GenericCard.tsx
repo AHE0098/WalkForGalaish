@@ -1,41 +1,56 @@
 import React from 'react';
+import { costFace, powerLine, type CardFace } from './cardDb.js';
 
-export interface CardViewModel {
-  id: string; name: string;
-  stats: Array<{ label: string; value: string | number }>;
-  badges: string[];
-  powers: Array<{ phase: string; text: string }>;
-  imageUrl?: string | null;
-  kind?: string;
-}
+export type CardMood = 'plain' | 'playable' | 'blocked' | 'selected';
 
 /**
- * One renderer for every card in every game. It is told which fields to show;
- * it never interprets what they mean. Missing artwork is a normal case.
+ * One renderer for every card. It is handed a face plus a mood; it never decides
+ * legality itself. Artwork is optional — the card is complete without it.
  */
-export function GenericCard(
-  { card, onClick, selected }: { card: CardViewModel; onClick?: () => void; selected?: boolean },
-) {
+export function GenericCard({
+  face, mood = 'plain', badge, goods = 0, onClick, compact, imageUrl,
+}: {
+  face: CardFace | undefined; mood?: CardMood; badge?: string; goods?: number;
+  onClick?: () => void; compact?: boolean; imageUrl?: string | null;
+}) {
+  if (!face) return <div className="card card--ghost" />;
+  const { value, kind } = costFace(face);
+  const res = face.world?.resourceType;
+  const mode = face.world?.productionMode;
+
   return (
-    <div className={`card${selected ? ' selected' : ''}`} onClick={onClick}
-         role={onClick ? 'button' : undefined} tabIndex={onClick ? 0 : undefined}>
-      <div className="card-top">
-        {card.stats.map(s => (
-          <span key={s.label} className="stat" title={s.label}>{s.value}</span>
-        ))}
-      </div>
-      <div className="card-art">
-        {card.imageUrl
-          ? <img src={card.imageUrl} alt="" onError={e => { e.currentTarget.style.display = 'none'; }} />
-          : <span className="art-placeholder">{card.kind ?? ''}</span>}
-      </div>
-      <div className="card-name">{card.name}</div>
-      <div className="badges">{card.badges.map(b => <span key={b} className="badge">{b}</span>)}</div>
-      <div className="powers">
-        {card.powers.map((p, i) => (
-          <div key={i} className="power"><b>{p.phase}</b> {p.text}</div>
-        ))}
-      </div>
-    </div>
+    <button type="button" className={`card card--${mood}${compact ? ' card--compact' : ''}`}
+            onClick={onClick} disabled={!onClick} aria-label={face.name}>
+      <span className="card__head">
+        <span className={`pip pip--${kind}`}>{value}</span>
+        <span className="pip pip--vp">{face.victoryPoints ?? '?'}<i>vp</i></span>
+      </span>
+
+      {imageUrl && <img className="card__art" src={imageUrl} alt=""
+                        onError={e => { e.currentTarget.style.display = 'none'; }} />}
+
+      <span className="card__name">{face.name}</span>
+
+      <span className="card__tags">
+        {face.cardType === 'development'
+          ? <i className="tag tag--dev">dev</i>
+          : <i className="tag tag--world">world</i>}
+        {res && <i className={`tag tag--${res}`}>{res}</i>}
+        {mode === 'windfall' && <i className="tag">windfall</i>}
+        {mode === 'production' && <i className="tag">produces</i>}
+        {face.world?.isRebel && <i className="tag tag--rebel">rebel</i>}
+        {face.isSixCostDevelopment && <i className="tag tag--six">6-cost</i>}
+        {goods > 0 && <i className="tag tag--good">{goods} good</i>}
+      </span>
+
+      {!compact && (
+        <span className="card__powers">
+          {face.powers.slice(0, 4).map((p, i) => <em key={i}>{powerLine(p)}</em>)}
+          {face.powers.length > 4 && <em>+{face.powers.length - 4} more…</em>}
+        </span>
+      )}
+
+      {badge && <span className="card__badge">{badge}</span>}
+    </button>
   );
 }

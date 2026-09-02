@@ -82,9 +82,22 @@ unexplained residual against the rulebook's full-box table.
 Cards render from data. Artwork is optional and swappable — see `docs/ASSETS.md`.
 `npm run assets:check` reports coverage and misnamed files.
 
+## What the game does now
+
+Full round loop: opening 6-choose-4 discard → secret action-card selection → only the
+chosen phases run, in order → Explore deals cards to choose from → Develop and Settle
+with per-card legality and a payment step → Consume resolves powers for VP chips and
+trade → Produce places goods → hand limit → next round → end condition → scored results.
+
+The board shows every card's real stats, highlights what is legal in the current phase
+in green and dims what is not (with the reason on the card inspector), tracks which
+phases are running, and works on a phone.
+
 ## Not yet implemented
 
-- Card powers beyond costs, VP, flat military, and end-game scoring
-- The Consume and Explore phases have no player-facing actions yet (Ready only)
+- Consume is auto-resolved greedily rather than letting the player order their powers
+- Explore/settle/produce powers are applied for the common cases; rarer ones are inert
+  (the card still plays with its printed cost and VP)
 - The experienced two-player variant (nine action cards, choose two)
 - The six optional start worlds
+- No card artwork yet — see `docs/ASSETS.md` to add some

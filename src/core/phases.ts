@@ -34,11 +34,16 @@ export function clearReady(state: GameState): GameState {
   return { ...state, players: state.players.map(p => ({ ...p, ready: false })) };
 }
 
-export function enterPhase(state: GameState, index: number): GameState {
-  return bump(clearReady({
+export function enterPhase(
+  state: GameState, index: number, def?: GameDefinition, rng?: Rng,
+): GameState {
+  let next = clearReady({
     ...state, phaseIndex: index, phaseId: newPhaseId(state.phasesThisRound[index] ?? 'phase'),
     hiddenChoices: {}, revealedChoices: null,
-  }));
+  });
+  const phase = next.phasesThisRound[index];
+  if (def?.onPhaseEnter && phase && rng) next = def.onPhaseEnter(next, phase, rng);
+  return bump(next);
 }
 
 /**
@@ -53,7 +58,7 @@ export function advancePhase(
   let next = phase ? def.onPhaseComplete(state, phase, rng) : state;
 
   if (next.phaseIndex + 1 < next.phasesThisRound.length)
-    return enterPhase(next, next.phaseIndex + 1);
+    return enterPhase(next, next.phaseIndex + 1, def, rng);
 
   if (def.determineGameEnd(next))
     return bump({ ...next, status: 'finished', log: [...next.log, 'game over'] });

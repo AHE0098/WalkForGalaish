@@ -15,6 +15,10 @@ export interface RacePower {
   value?: number;
   vpGained?: number;
   cardsDrawn?: number;
+  drawBonus?: number;
+  keepBonus?: number;
+  vpFormula?: string;
+  appliesTradePowers?: boolean;
   goodsConsumed?: number;
   times?: number;
   optional?: boolean;

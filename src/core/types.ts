@@ -86,10 +86,23 @@ export interface GameDefinition {
   selectPhasesForRound(state: GameState): string[];
   legalActions(state: GameState, playerId: PlayerId): string[];
   resolveAction(state: GameState, playerId: PlayerId, action: GameAction, rng: Rng): ActionResult;
+  /** Called when a phase opens: deal explore cards, auto-resolve, etc. */
+  onPhaseEnter?(state: GameState, phase: string, rng: Rng): GameState;
   onPhaseComplete(state: GameState, phase: string, rng: Rng): GameState;
+  /** Per-card legality for the current phase, keyed by hand instance id. */
+  playability?(state: GameState, playerId: PlayerId): Record<string, Playable>;
   calculateScore(state: GameState, playerId: PlayerId): number;
+  /** Optional named components of the score, shown on the results screen. */
+  scoreParts?(state: GameState, playerId: PlayerId): Record<string, number>;
   determineGameEnd(state: GameState): boolean;
   display: DisplayConfig;
+}
+
+export interface Playable {
+  ok: boolean;
+  reason?: string;
+  /** Cards that must be discarded to pay for this one. */
+  cost?: number;
 }
 
 export interface GameAction {

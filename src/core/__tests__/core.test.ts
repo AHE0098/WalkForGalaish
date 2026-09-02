@@ -28,6 +28,8 @@ const stubDef = {
   onPhaseComplete: (s: GameState) => s,
   determineGameEnd: () => false,
   calculateScore: () => 7,
+  legalActions: () => [],
+  playability: () => ({}),
 } as unknown as GameDefinition;
 
 describe('deck', () => {

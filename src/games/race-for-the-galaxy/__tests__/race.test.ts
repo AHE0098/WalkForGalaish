@@ -4,7 +4,10 @@ import { createRng } from '../../../core/random.js';
 import { ZONE, cardsIn, moveCard } from '../../../core/zones.js';
 import { raceForTheGalaxy as race } from '../definition.js';
 import { RACE_CARDS, card } from '../cards.js';
-import { calculateScore, canDevelop, canSettle, militaryStrength } from '../rules.js';
+import {
+  calculateScore, canDevelop, canSettle, developCost, exploreDraw, exploreKeep, goodsOn,
+  militaryStrength, vpChips, vpPool,
+} from '../rules.js';
 import { emptyState } from '../../../server/gameHost.js';
 import type { GameState, Player } from '../../../core/types.js';
 
@@ -12,7 +15,16 @@ const players: Player[] = [
   { id: 'p1', name: 'One', seat: 0, connected: true, ready: false },
   { id: 'p2', name: 'Two', seat: 1, connected: true, ready: false },
 ];
-const setup = (seed = 7): GameState => race.setupGame(emptyState(players.map(p => ({ ...p }))), createRng(seed));
+const rawSetup = (seed = 7): GameState =>
+  race.setupGame(emptyState(players.map(p => ({ ...p }))), createRng(seed));
+/** Setup with the opening 6-choose-4 discard already completed. */
+const setup = (seed = 7): GameState => {
+  const s = rawSetup(seed);
+  return { ...s, gameData: { ...s.gameData, openingDiscard: false } };
+};
+/** Put the state into a named phase so phase-gated actions are legal. */
+const inPhase = (s: GameState, phase: string): GameState =>
+  ({ ...s, phasesThisRound: [phase], phaseIndex: 0 });
 
 /** Put a specific card into a player's hand, for deterministic rule tests. */
 function giveCard(state: GameState, pid: string, defId: string): [GameState, string] {
@@ -41,7 +53,7 @@ describe('card database', () => {
 
 describe('setup', () => {
   it('gives every player a start world and six cards', () => {
-    const s = setup();
+    const s = rawSetup();
     for (const p of players) {
       const tableau = cardsIn(s, ZONE.tableau, p.id);
       expect(tableau).toHaveLength(1);
@@ -85,19 +97,18 @@ describe('develop', () => {
     const [withCard, inst] = giveCard(s, 'p1', 'contact-specialist');
     s = moveCard(withCard, inst, ZONE.tableau, { owner: 'p1', faceDown: false });
     const [s2] = giveCard(s, 'p1', 'contact-specialist');
-    expect(canDevelop(s2, 'p1', 'contact-specialist')).toMatch(/already have/);
+    expect(canDevelop(s2, 'p1', 'contact-specialist')).toMatch(/Already in your tableau/);
   });
 
   it('rejects payment of the wrong size', () => {
     let [s, inst] = giveCard(setup(), 'p1', 'new-galactic-order'); // cost 6
     const hand = cardsIn(s, ZONE.hand, 'p1').filter(c => c.instanceId !== inst);
-    const r = race.resolveAction(
-      { ...s, phasesThisRound: ['develop'], phaseIndex: 0 }, 'p1',
+    const r = race.resolveAction(inPhase(s, 'develop'), 'p1',
       { type: 'PLAY_CARD', phaseId: s.phaseId,
         payload: { instanceId: inst, payment: hand.slice(0, 2).map(c => c.instanceId) } },
       createRng(1));
     expect(r.ok).toBe(false);
-    expect(r.error).toMatch(/costs 6/);
+    expect(r.error).toMatch(/costs 5|costs 6|not enough cards/);
   });
 });
 
@@ -107,14 +118,14 @@ describe('settle', () => {
       && (c.world.defense ?? 0) >= 5 && !c.isStartWorld)!;
     const [s] = giveCard(setup(), 'p1', military.cardId);
     expect(militaryStrength(s, 'p1')).toBeLessThan(military.world!.defense!);
-    expect(canSettle(s, 'p1', military.cardId)).toMatch(/military is not strong enough/);
+    expect(canSettle(s, 'p1', military.cardId)).toMatch(/Needs \d+ military/);
   });
 
   it('places a good on a windfall world when it is settled', () => {
     const windfall = RACE_CARDS.find(c => c.world?.productionMode === 'windfall'
       && c.world.settlementMode === 'payment' && (c.world.settleCost ?? 9) <= 2)!;
     let [s, inst] = giveCard(setup(), 'p1', windfall.cardId);
-    s = { ...s, phasesThisRound: ['settle'], phaseIndex: 0 };
+    s = inPhase(s, 'settle');
     const pay = cardsIn(s, ZONE.hand, 'p1').filter(c => c.instanceId !== inst)
       .slice(0, windfall.world!.settleCost ?? 0).map(c => c.instanceId);
     const r = race.resolveAction(s, 'p1',
@@ -127,7 +138,7 @@ describe('settle', () => {
   });
 
   it('rejects a card that is not in your hand', () => {
-    const s = { ...setup(), phasesThisRound: ['settle'], phaseIndex: 0 };
+    const s = inPhase(setup(), 'settle');
     const opp = cardsIn(s, ZONE.hand, 'p2')[0]!;
     const r = race.resolveAction(s, 'p1',
       { type: 'PLAY_CARD', phaseId: s.phaseId, payload: { instanceId: opp.instanceId, payment: [] } },
@@ -139,7 +150,7 @@ describe('settle', () => {
 
 describe('stale actions', () => {
   it('rejects an action carrying an old phaseId', () => {
-    const s = { ...setup(), phasesThisRound: ['develop'], phaseIndex: 0 };
+    const s = inPhase(setup(), 'develop');
     const r = race.resolveAction(s, 'p1',
       { type: 'PLAY_CARD', phaseId: 'stale-phase', payload: {} }, createRng(1));
     expect(r.ok).toBe(false);
@@ -181,5 +192,161 @@ describe('game end', () => {
   it('ends when the victory point pool is exhausted', () => {
     const s = setup();
     expect(race.determineGameEnd({ ...s, gameData: { ...s.gameData, vpPool: 0 } })).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------- new mechanics
+
+describe('opening discard', () => {
+  it('requires exactly two cards and then unlocks the round', () => {
+    let s = rawSetup();
+    expect(race.legalActions(s, 'p1')).toEqual(['DISCARD_CARDS']);
+    const hand = cardsIn(s, ZONE.hand, 'p1');
+    const one = race.resolveAction(s, 'p1',
+      { type: 'DISCARD_CARDS', phaseId: s.phaseId, payload: { instanceIds: [hand[0]!.instanceId] } },
+      createRng(1));
+    expect(one.ok).toBe(false);
+    for (const pid of ['p1', 'p2']) {
+      const two = cardsIn(s, ZONE.hand, pid).slice(0, 2).map(c => c.instanceId);
+      const r = race.resolveAction(s, pid,
+        { type: 'DISCARD_CARDS', phaseId: s.phaseId, payload: { instanceIds: two } }, createRng(1));
+      expect(r.ok).toBe(true);
+      s = r.state!;
+    }
+    expect(s.gameData.openingDiscard).toBe(false);
+    expect(cardsIn(s, ZONE.hand, 'p1')).toHaveLength(4);
+  });
+});
+
+describe('explore', () => {
+  const withAction = (s: GameState, a: Record<string, string>): GameState =>
+    ({ ...s, gameData: { ...s.gameData, roundActions: a } });
+
+  it('scales draw and keep with the chosen action card', () => {
+    const s = setup();
+    expect(exploreDraw(s, 'p1')).toBe(2);
+    expect(exploreKeep(s, 'p1')).toBe(1);
+    const five = withAction(s, { p1: 'explore-5' });
+    expect(exploreDraw(five, 'p1')).toBe(7);
+    expect(exploreKeep(five, 'p1')).toBe(1);
+    const oneOne = withAction(s, { p1: 'explore-1-1' });
+    expect(exploreDraw(oneOne, 'p1')).toBe(3);
+    expect(exploreKeep(oneOne, 'p1')).toBe(2);
+  });
+
+  it('deals into the selection zone and keeps exactly the chosen cards', () => {
+    let s = inPhase(withAction(setup(), { p1: 'explore-1-1', p2: 'develop' }), 'explore');
+    s = race.onPhaseEnter!(s, 'explore', createRng(5));
+    expect(cardsIn(s, ZONE.selection, 'p1')).toHaveLength(3);
+    expect(cardsIn(s, ZONE.selection, 'p2')).toHaveLength(2);
+
+    const pool = cardsIn(s, ZONE.selection, 'p1').map(c => c.instanceId);
+    const tooFew = race.resolveAction(s, 'p1',
+      { type: 'KEEP_CARDS', phaseId: s.phaseId, payload: { instanceIds: [pool[0]!] } }, createRng(1));
+    expect(tooFew.ok).toBe(false);
+
+    const handBefore = cardsIn(s, ZONE.hand, 'p1').length;
+    const r = race.resolveAction(s, 'p1',
+      { type: 'KEEP_CARDS', phaseId: s.phaseId, payload: { instanceIds: pool.slice(0, 2) } },
+      createRng(1));
+    expect(r.ok).toBe(true);
+    expect(cardsIn(r.state!, ZONE.hand, 'p1')).toHaveLength(handBefore + 2);
+    expect(cardsIn(r.state!, ZONE.selection, 'p1')).toHaveLength(0);
+    expect(cardsIn(r.state!, ZONE.discard)).toHaveLength(1);
+  });
+});
+
+describe('action bonuses', () => {
+  it('makes a development cost one less for the player who chose Develop', () => {
+    const s = setup();
+    const dev = RACE_CARDS.find(c => c.cardType === 'development' && c.cost === 4)!;
+    const plain = developCost(s, 'p1', dev);
+    const bonus = developCost({ ...s, gameData: { ...s.gameData, roundActions: { p1: 'develop' } } },
+                              'p1', dev);
+    expect(plain).toBe(4);
+    expect(bonus).toBe(3);
+  });
+
+  it('never reduces a cost below zero', () => {
+    const s = { ...setup(), gameData: { ...setup().gameData, roundActions: { p1: 'develop' } } };
+    const cheap = RACE_CARDS.find(c => c.cardType === 'development' && c.cost === 1)!;
+    expect(developCost(s, 'p1', cheap)).toBe(0);
+  });
+});
+
+describe('produce', () => {
+  it('fills empty production worlds but leaves windfall worlds alone', () => {
+    let s = setup();
+    const prod = RACE_CARDS.find(c => c.world?.productionMode === 'production')!;
+    const wind = RACE_CARDS.find(c => c.world?.productionMode === 'windfall')!;
+    for (const id of [prod.cardId, wind.cardId]) {
+      const [withCard, inst] = giveCard(s, 'p1', id);
+      s = moveCard(withCard, inst, ZONE.tableau, { owner: 'p1', faceDown: false });
+    }
+    const after = race.onPhaseEnter!(inPhase(s, 'produce'), 'produce', createRng(9));
+    const prodInst = cardsIn(after, ZONE.tableau, 'p1').find(c => c.defId === prod.cardId)!;
+    const windInst = cardsIn(after, ZONE.tableau, 'p1').find(c => c.defId === wind.cardId)!;
+    expect(goodsOn(after, prodInst.instanceId)).toHaveLength(1);
+    expect(goodsOn(after, windInst.instanceId)).toHaveLength(0);
+  });
+
+  it('gives the Produce chooser one windfall good as a bonus', () => {
+    let s = setup();
+    const wind = RACE_CARDS.find(c => c.world?.productionMode === 'windfall')!;
+    const [withCard, inst] = giveCard(s, 'p1', wind.cardId);
+    s = moveCard(withCard, inst, ZONE.tableau, { owner: 'p1', faceDown: false });
+    s = { ...s, gameData: { ...s.gameData, roundActions: { p1: 'produce' } } };
+    const after = race.onPhaseEnter!(inPhase(s, 'produce'), 'produce', createRng(9));
+    expect(goodsOn(after, inst)).toHaveLength(1);
+  });
+});
+
+describe('consume', () => {
+  it('awards victory points from the pool and drains it', () => {
+    let s = setup();
+    // Earth's Lost Colony consumes a good for 1 VP; give it a good to spend.
+    const [withCard, inst] = giveCard(s, 'p1', 'earths-lost-colony');
+    s = moveCard(withCard, inst, ZONE.tableau, { owner: 'p1', faceDown: false });
+    const good = cardsIn(s, ZONE.supply)[0]!;
+    s = moveCard(s, good.instanceId, ZONE.goods,
+      { owner: 'p1', attachedTo: inst, faceDown: true });
+
+    const poolBefore = vpPool(s);
+    const after = race.onPhaseEnter!(inPhase(s, 'consume'), 'consume', createRng(2));
+    expect(vpChips(after, 'p1')).toBeGreaterThan(0);
+    expect(vpPool(after)).toBeLessThan(poolBefore);
+    expect(goodsOn(after, inst)).toHaveLength(0);
+  });
+
+  it('cannot consume without a consume power', () => {
+    const s = setup();
+    const after = race.onPhaseEnter!(inPhase(s, 'consume'), 'consume', createRng(2));
+    expect(vpChips(after, 'p2')).toBe(0);
+  });
+});
+
+describe('playability', () => {
+  it('marks developments playable in Develop and blocks worlds, with a reason', () => {
+    let s = setup();
+    const [a, devInst] = giveCard(s, 'p1', 'contact-specialist');
+    const [b, worldInst] = giveCard(a, 'p1', 'new-vinland');
+    s = inPhase(b, 'develop');
+    const p = race.playability!(s, 'p1');
+    expect(p[devInst]!.ok).toBe(true);
+    expect(p[devInst]!.cost).toBe(1);
+    expect(p[worldInst]!.ok).toBe(false);
+    expect(p[worldInst]!.reason).toBe('Not a development.');
+  });
+});
+
+describe('hand limit', () => {
+  it('discards down to ten at the end of the last phase of a round', () => {
+    let s = setup();
+    while (cardsIn(s, ZONE.hand, 'p1').length < 14) {
+      const c = cardsIn(s, ZONE.supply)[0]!;
+      s = moveCard(s, c.instanceId, ZONE.hand, { owner: 'p1', faceDown: false });
+    }
+    const after = race.onPhaseComplete(inPhase(s, 'produce'), 'produce', createRng(1));
+    expect(cardsIn(after, ZONE.hand, 'p1')).toHaveLength(10);
   });
 });

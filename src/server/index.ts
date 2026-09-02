@@ -15,6 +15,13 @@ const rooms = createMemoryRoomStore();
 const hosts = new Map<string, GameHost>();
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
+app.get('/api/games/:id/cards', (req, res) => {
+  const g = GAMES[req.params.id as GameId];
+  if (!g) return res.status(404).json({ error: 'unknown game' });
+  // Card definitions are public information; only their location is secret.
+  res.set('Cache-Control', 'public, max-age=3600');
+  res.json({ display: g.display, cards: g.cardDatabase.map(c => c.payload) });
+});
 app.get('/api/games', (_req, res) =>
   res.json(Object.values(GAMES).map(g =>
     ({ id: g.id, name: g.name, minPlayers: g.minPlayers, maxPlayers: g.maxPlayers }))));

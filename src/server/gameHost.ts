@@ -9,6 +9,8 @@ import { raceForTheGalaxy } from '../games/race-for-the-galaxy/definition.js';
 export const GAMES = { 'race-for-the-galaxy': raceForTheGalaxy };
 export type GameId = keyof typeof GAMES;
 
+const AUTO_READY = new Set(['PLAY_CARD', 'PASS', 'KEEP_CARDS']);
+
 export function emptyState(players: Player[]): GameState {
   return {
     version: 0, status: 'lobby', round: 0, phasesThisRound: [], phaseIndex: -1,
@@ -37,6 +39,9 @@ export class GameHost {
     const r = this.def.resolveAction(this.state, playerId, action, this.rng);
     if (!r.ok || !r.state) return { ok: false, error: r.error };
     this.state = r.state;
+    // Acting is consent: a player who has played, passed or kept is ready.
+    if (AUTO_READY.has(action.type) && this.state.phaseIndex >= 0)
+      return this.ready(playerId, this.state.phaseId, true), { ok: true };
     this.maybeReveal();
     return { ok: true };
   }
@@ -63,7 +68,7 @@ export class GameHost {
       ...this.state, phasesThisRound: phases,
       gameData: { ...this.state.gameData, roundActions: { ...this.state.revealedChoices } },
     };
-    this.state = phases.length ? enterPhase(this.state, 0)
+    this.state = phases.length ? enterPhase(this.state, 0, this.def, this.rng)
                                : advancePhase(this.state, this.def, this.rng, this.state.phaseId);
   }
 

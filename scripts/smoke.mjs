@@ -55,11 +55,24 @@ async function main() {
 
   ok(A.latest.view.hand.length === 6 && B.latest.view.hand.length === 6,
      'each client received a private six-card hand');
+  ok(A.latest.view.info.openingDiscard === true, 'the game opens with the 6-choose-4 discard');
   const aIds = new Set(A.latest.view.hand.map(c => c.instanceId));
   const bIds = B.latest.view.hand.map(c => c.instanceId);
   ok(!bIds.some(id => aIds.has(id)), 'hands are disjoint');
   ok(!JSON.stringify(A.latest.view).includes(bIds[0]),
      "A's payload contains no card from B's hand");
+
+  // Opening discard: two cards each, then the first round can begin.
+  for (const C of [A, B]) {
+    const two = C.latest.view.hand.slice(0, 2).map(c => c.instanceId);
+    await C.rpc('action', { code, action:
+      { type: 'DISCARD_CARDS', phaseId: C.latest.view.phaseId, payload: { instanceIds: two } } });
+  }
+  await sleep(80);
+  ok(A.latest.view.hand.length === 4 && !A.latest.view.info.openingDiscard,
+     'both players discarded down to four cards');
+  ok(Object.keys(A.latest.view.playable).length === 4,
+     'the client receives per-card legality for its hand');
 
   const phaseId = A.latest.view.phaseId;
   await A.rpc('action', { code, action:
@@ -85,6 +98,12 @@ async function main() {
     { type: 'PLAY_CARD', phaseId: 'stale', payload: {} } });
   ok(!stale.ok, `stale phaseId rejected: "${stale.error}"`);
 
+  // Explore was not chosen this round, so Develop is first.
+  ok(A.latest.view.currentPhase === 'develop', `first phase is ${A.latest.view.currentPhase}`);
+  const legalA = Object.values(A.latest.view.playable);
+  ok(legalA.every(p => typeof p.ok === 'boolean'), 'every hand card carries a legality verdict');
+  ok(legalA.filter(p => !p.ok).every(p => !!p.reason), 'blocked cards explain why');
+
   const versionBefore = A.latest.view.version;
   const livePhase = A.latest.view.phaseId;
   await Promise.all([...Array(5)].map(() =>
@@ -94,6 +113,8 @@ async function main() {
   await sleep(100);
   ok(A.latest.view.currentPhase === 'settle',
      `ten rapid Ready calls advanced exactly one phase (now ${A.latest.view.currentPhase})`);
+  ok(typeof A.latest.view.info.vpPool === 'number' && A.latest.view.info.vpPool === 24,
+     `victory point pool is ${A.latest.view.info.vpPool} for two players`);
   ok(A.latest.view.version > versionBefore, 'state version increased monotonically');
 
   const settlePhase = A.latest.view.phaseId;
@@ -106,11 +127,35 @@ async function main() {
   await A.rpc('leaveRoom', { code });
   const second = await A.rpc('createRoom', { gameId: 'race-for-the-galaxy' });
   ok(second.ok && second.code !== code, `a second room was created (${second.code})`);
-  const C = await connect('carol');
-  ok((await C.rpc('joinRoom', { code: second.code })).ok, 'a third client joined the second room');
+  const C2 = await connect('carol');
+  ok((await C2.rpc('joinRoom', { code: second.code })).ok, 'a third client joined the second room');
   ok((await A.rpc('startGame', { code: second.code, seed: 1 })).ok, 'the second game also starts');
+  await sleep(80);
+  for (const C of [A, C2]) {
+    const two = C.latest.view.hand.slice(0, 2).map(c => c.instanceId);
+    await C.rpc('action', { code: second.code, action:
+      { type: 'DISCARD_CARDS', phaseId: C.latest.view.phaseId, payload: { instanceIds: two } } });
+  }
+  await sleep(60);
+  for (const C of [A, C2])
+    await C.rpc('action', { code: second.code, action: { type: 'SELECT_ACTION_CARD',
+      phaseId: C.latest.view.phaseId, payload: { actionCard: 'explore-1-1' } } });
+  await sleep(100);
+  ok(A.latest.view.currentPhase === 'explore', 'explore phase opened');
+  ok(A.latest.view.selection.length === 3, `drew ${A.latest.view.selection.length} cards to choose from`);
+  ok(A.latest.view.info.keepCount === 2, `must keep ${A.latest.view.info.keepCount}`);
+  const badKeep = await A.rpc('action', { code: second.code, action: { type: 'KEEP_CARDS',
+    phaseId: A.latest.view.phaseId, payload: { instanceIds: [A.latest.view.selection[0].instanceId] } } });
+  ok(!badKeep.ok, `keeping the wrong number is rejected: "${badKeep.error}"`);
+  const handBefore = A.latest.view.hand.length;
+  await A.rpc('action', { code: second.code, action: { type: 'KEEP_CARDS',
+    phaseId: A.latest.view.phaseId,
+    payload: { instanceIds: A.latest.view.selection.slice(0, 2).map(c => c.instanceId) } } });
+  await sleep(80);
+  ok(A.latest.view.hand.length === handBefore + 2, 'kept cards landed in hand');
+  ok(A.latest.view.selection.length === 0, 'the rest were discarded');
 
-  A.close(); B.close(); C.close();
+  A.close(); B.close(); C2.close();
 }
 
 main()
