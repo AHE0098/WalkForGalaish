@@ -1,0 +1,9 @@
+{
+  "packId": "generated",
+  "name": "Generated (no artwork)",
+  "renderMode": "generated",
+  "cardAspectRatio": "0.715",
+  "license": "No third-party assets. Cards are drawn from card data.",
+  "attribution": null,
+  "overrides": { "cards": {}, "symbols": {} }
+}

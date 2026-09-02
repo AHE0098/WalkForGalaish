@@ -1,0 +1,6157 @@
+{
+ "game": {
+  "gameId": "race-for-the-galaxy",
+  "name": "Race for the Galaxy",
+  "setId": "base",
+  "setName": "Base Game",
+  "edition": "2nd edition (rulebook v2.01, 2018)",
+  "sourceNotes": "Mechanical values transcribed from the open-source RFTG AI card database (bnordli/rftg, src/cards.txt), expansion level 0, promos excluded. Structural totals cross-checked against the official 2nd edition rulebook. No card text or artwork reproduced.",
+  "schemaVersion": "1.0"
+ },
+ "schemaVersion": "1.0",
+ "enums": {
+  "cardTypes": [
+   "world",
+   "development"
+  ],
+  "resourceTypes": [
+   "novelty",
+   "rare",
+   "genes",
+   "alien"
+  ],
+  "settlementModes": [
+   "military",
+   "payment"
+  ],
+  "productionModes": [
+   "production",
+   "windfall",
+   "none"
+  ],
+  "phases": [
+   "explore",
+   "develop",
+   "settle",
+   "consume",
+   "produce",
+   "endGame"
+  ],
+  "traits": [
+   "alien",
+   "chromo",
+   "development",
+   "genes",
+   "imperium",
+   "military",
+   "novelty",
+   "production",
+   "rare",
+   "rebel",
+   "start",
+   "terraforming",
+   "uplift",
+   "windfall",
+   "world"
+  ],
+  "effectTypes": [
+   "consumeAllGoods",
+   "consumeGoodForTradePrice",
+   "consumeGoods",
+   "developmentCostReduction",
+   "discardHandForVp",
+   "drawAfterDevelopment",
+   "drawAfterSettling",
+   "drawAtDevelopStart",
+   "drawCards",
+   "drawIfLucky",
+   "drawIfMostRareProduced",
+   "drawOnProducedGoodHere",
+   "drawPerDifferentKindProduced",
+   "drawPerGoodOfKindProduced",
+   "drawPerWorldOfKind",
+   "endGameVpPerCard",
+   "endGameVpPerNamedCard",
+   "exploreDrawBonus",
+   "exploreKeepBonus",
+   "militaryStrength",
+   "payForMilitary",
+   "produceGoodOnThisWorld",
+   "produceWindfallGood",
+   "settleCostReduction",
+   "settleCostToZeroByDiscardingThisCard",
+   "specialScoring",
+   "temporaryMilitaryByDiscardingThisCard",
+   "tradeBonus"
+  ],
+  "specialEffectIds": [
+   "score-per-three-vp-chips",
+   "score-total-military"
+  ],
+  "nonFunctionalInBase": [
+   "uplift",
+   "imperium",
+   "chromo",
+   "terraforming"
+  ]
+ },
+ "tradePrices": {
+  "novelty": 2,
+  "rare": 3,
+  "genes": 4,
+  "alien": 5
+ },
+ "expectedTotals": {
+  "uniqueDefinitions": 95,
+  "physicalCards": 114,
+  "worlds": 64,
+  "developments": 31,
+  "startWorlds": 5,
+  "militaryWorlds": 23,
+  "windfallWorlds": 25,
+  "productionWorlds": 21,
+  "sixCostDevelopments": 12
+ },
+ "knownGaps": [
+  "This file contains the 5 basic start worlds only. The 2nd edition rulebook lists 11 start worlds in the box (5 basic + 6 optional for experienced players); the source database assigns the additional start worlds to expansion levels, so their base-set membership could not be confirmed and they are deliberately excluded rather than guessed. Consequently this file holds 95 definitions / 114 physical cards rather than 101 / 120.",
+  "With the 5 basic start worlds only, the payment-world cost distribution is [2,6,11,10,5,5,2,0] against a rulebook expectation of [2,6,17,9,4,5,2,0] for the full 120-card box. The military distribution differs only by the 2 missing military start worlds. The residual +1 at cost 3 and +1 at cost 4 is unexplained and needs a human check.",
+  "Cards are described by structured powers only. Printed card text is not reproduced."
+ ],
+ "cards": [
+  {
+   "cardId": "alien-robot-scout-ship",
+   "name": "Alien Robot Scout Ship",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "military",
+    "defense": 4,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "alien",
+    "isRebel": false,
+    "isAlien": true
+   },
+   "startWorld": null,
+   "traits": [
+    "alien",
+    "military",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "alien-robot-sentry",
+   "name": "Alien Robot Sentry",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "military",
+    "defense": 2,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "alien",
+    "isRebel": false,
+    "isAlien": true
+   },
+   "startWorld": null,
+   "traits": [
+    "alien",
+    "military",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "alien-robotic-factory",
+   "name": "Alien Robotic Factory",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 5,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 6,
+    "productionMode": "production",
+    "resourceType": "alien",
+    "isRebel": false,
+    "isAlien": true
+   },
+   "startWorld": null,
+   "traits": [
+    "alien",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "alien-rosetta-stone-world",
+   "name": "Alien Rosetta Stone World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 3,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 3,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": true
+   },
+   "startWorld": null,
+   "traits": [
+    "alien",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "ALIEN",
+      "REDUCE"
+     ],
+     "effectType": "settleCostReduction",
+     "value": 2,
+     "conditions": {
+      "resourceType": "alien"
+     }
+    },
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "ALIEN",
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 2,
+     "conditions": {
+      "resourceType": "alien"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "WINDFALL_ALIEN"
+     ],
+     "effectType": "produceWindfallGood",
+     "value": 1,
+     "conditions": {
+      "resourceType": "alien"
+     }
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "alien-tech-institute",
+   "name": "Alien Tech Institute",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": true,
+   "cost": 6,
+   "victoryPoints": null,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "alien",
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "ALIEN",
+      "REDUCE"
+     ],
+     "effectType": "settleCostReduction",
+     "value": 2,
+     "conditions": {
+      "resourceType": "alien"
+     }
+    },
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "ALIEN",
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 2,
+     "conditions": {
+      "resourceType": "alien"
+     }
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 3,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "productionMode": "production",
+      "resourceType": "alien"
+     },
+     "sourceCodes": [
+      "ALIEN_PRODUCTION"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "productionMode": "windfall",
+      "resourceType": "alien"
+     },
+     "sourceCodes": [
+      "ALIEN_WINDFALL"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "traits": [
+       "alien"
+      ]
+     },
+     "sourceCodes": [
+      "ALIEN_FLAG"
+     ]
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "alpha-centauri",
+   "name": "Alpha Centauri",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": true,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 0,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 2,
+    "productionMode": "windfall",
+    "resourceType": "rare",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": {
+    "startWorldNumber": null,
+    "isBasicStartWorld": true,
+    "startingWindfallGood": true,
+    "setupSpecialEffectId": null,
+    "notes": []
+   },
+   "traits": [
+    "rare",
+    "start",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "RARE",
+      "REDUCE"
+     ],
+     "effectType": "settleCostReduction",
+     "value": 1,
+     "conditions": {
+      "resourceType": "rare"
+     }
+    },
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY",
+      "RARE"
+     ],
+     "effectType": "militaryStrength",
+     "value": 1,
+     "conditions": {
+      "resourceType": "rare"
+     }
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "aquatic-uplift-race",
+   "name": "Aquatic Uplift Race",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "military",
+    "defense": 2,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "genes",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "chromo",
+    "genes",
+    "military",
+    "uplift",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [
+    "chromo",
+    "uplift"
+   ],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "artist-colony",
+   "name": "Artist Colony",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 1,
+    "productionMode": "production",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "novelty",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "asteroid-belt",
+   "name": "Asteroid Belt",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 2,
+    "productionMode": "windfall",
+    "resourceType": "rare",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "rare",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "avian-uplift-race",
+   "name": "Avian Uplift Race",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "military",
+    "defense": 2,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "genes",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "chromo",
+    "genes",
+    "military",
+    "uplift",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [
+    "chromo",
+    "uplift"
+   ],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "bio-hazard-mining-world",
+   "name": "Bio-Hazard Mining World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 3,
+    "productionMode": "production",
+    "resourceType": "rare",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "production",
+    "rare",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_GENE"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 2,
+     "conditions": {
+      "resourceType": "genes"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "black-market-trading-world",
+   "name": "Black Market Trading World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 3,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_ACTION",
+      "TRADE_NO_BONUS"
+     ],
+     "effectType": "consumeGoodForTradePrice",
+     "appliesTradePowers": false,
+     "times": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "blaster-gem-mines",
+   "name": "Blaster Gem Mines",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 3,
+    "productionMode": "windfall",
+    "resourceType": "rare",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "rare",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "colony-ship",
+   "name": "Colony Ship",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 2,
+   "victoryPoints": 1,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "DISCARD",
+      "REDUCE_ZERO"
+     ],
+     "effectType": "settleCostToZeroByDiscardingThisCard",
+     "value": 0
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "comet-zone",
+   "name": "Comet Zone",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 3,
+    "productionMode": "production",
+    "resourceType": "rare",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "production",
+    "rare",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "DRAW_IF"
+     ],
+     "effectType": "drawOnProducedGoodHere",
+     "cardsDrawn": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "consumer-markets",
+   "name": "Consumer Markets",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 5,
+   "victoryPoints": 3,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_NOVELTY",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 3,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 0,
+     "conditions": {
+      "resourceType": "novelty"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "DRAW_EACH_NOVELTY"
+     ],
+     "effectType": "drawPerGoodOfKindProduced",
+     "cardsDrawn": 1,
+     "conditions": {
+      "resourceType": "novelty"
+     }
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "contact-specialist",
+   "name": "Contact Specialist",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 1,
+   "victoryPoints": 1,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": -1
+    },
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "PAY_MILITARY"
+     ],
+     "effectType": "payForMilitary",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "deficit-spending",
+   "name": "Deficit Spending",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 2,
+   "victoryPoints": 1,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "DISCARD_HAND",
+      "GET_VP"
+     ],
+     "effectType": "discardHandForVp",
+     "vpGained": 1,
+     "times": 2,
+     "optional": true
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "deserted-alien-colony",
+   "name": "Deserted Alien Colony",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 4,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 5,
+    "productionMode": "windfall",
+    "resourceType": "alien",
+    "isRebel": false,
+    "isAlien": true
+   },
+   "startWorld": null,
+   "traits": [
+    "alien",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "deserted-alien-library",
+   "name": "Deserted Alien Library",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 5,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 6,
+    "productionMode": "windfall",
+    "resourceType": "alien",
+    "isRebel": false,
+    "isAlien": true
+   },
+   "startWorld": null,
+   "traits": [
+    "alien",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "deserted-alien-outpost",
+   "name": "Deserted Alien Outpost",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 3,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 4,
+    "productionMode": "windfall",
+    "resourceType": "alien",
+    "isRebel": false,
+    "isAlien": true
+   },
+   "startWorld": null,
+   "traits": [
+    "alien",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "destroyed-world",
+   "name": "Destroyed World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 0,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 1,
+    "productionMode": "windfall",
+    "resourceType": "rare",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "rare",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "distant-world",
+   "name": "Distant World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 4,
+    "productionMode": "production",
+    "resourceType": "genes",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "genes",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_NOVELTY"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 3,
+     "conditions": {
+      "resourceType": "novelty"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "diversified-economy",
+   "name": "Diversified Economy",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 4,
+   "victoryPoints": 2,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_3_DIFF",
+      "GET_VP"
+     ],
+     "goodsConsumed": 3,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 3,
+     "cardsDrawn": 0,
+     "conditions": {
+      "distinctKinds": true
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "DRAW_DIFFERENT"
+     ],
+     "effectType": "drawPerDifferentKindProduced",
+     "cardsDrawn": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "drop-ships",
+   "name": "Drop Ships",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 4,
+   "victoryPoints": 2,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 3
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "earths-lost-colony",
+   "name": "Earth's Lost Colony",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": true,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 2,
+    "productionMode": "production",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": {
+    "startWorldNumber": null,
+    "isBasicStartWorld": true,
+    "startingWindfallGood": false,
+    "setupSpecialEffectId": null,
+    "notes": []
+   },
+   "traits": [
+    "novelty",
+    "production",
+    "start",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 0
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "empath-world",
+   "name": "Empath World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 1,
+    "productionMode": "windfall",
+    "resourceType": "genes",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "genes",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": -1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "epsilon-eridani",
+   "name": "Epsilon Eridani",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": true,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 2,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": {
+    "startWorldNumber": null,
+    "isBasicStartWorld": true,
+    "startingWindfallGood": false,
+    "setupSpecialEffectId": null,
+    "notes": []
+   },
+   "traits": [
+    "start",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 1
+    },
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_CARD",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "expanding-colony",
+   "name": "Expanding Colony",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 1,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 0
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "WINDFALL_NOVELTY"
+     ],
+     "effectType": "produceWindfallGood",
+     "value": 1,
+     "conditions": {
+      "resourceType": "novelty"
+     }
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "expedition-force",
+   "name": "Expedition Force",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 1,
+   "victoryPoints": 1,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "explore",
+     "sourceCodes": [
+      "DRAW"
+     ],
+     "effectType": "exploreDrawBonus",
+     "value": 1
+    },
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "export-duties",
+   "name": "Export Duties",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 1,
+   "victoryPoints": 1,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_ANY"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "former-penal-colony",
+   "name": "Former Penal Colony",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "military",
+    "defense": 2,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "military",
+    "novelty",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "free-trade-association",
+   "name": "Free Trade Association",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": true,
+   "cost": 6,
+   "victoryPoints": null,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_NOVELTY",
+      "GET_CARD",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 3,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 1,
+     "conditions": {
+      "resourceType": "novelty"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "WINDFALL_NOVELTY"
+     ],
+     "effectType": "produceWindfallGood",
+     "value": 1,
+     "conditions": {
+      "resourceType": "novelty"
+     }
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "productionMode": "production",
+      "resourceType": "novelty"
+     },
+     "sourceCodes": [
+      "NOVELTY_PRODUCTION"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 1,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "productionMode": "windfall",
+      "resourceType": "novelty"
+     },
+     "sourceCodes": [
+      "NOVELTY_WINDFALL"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerNamedCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardId": "consumer-markets"
+     },
+     "sourceCodes": [
+      "NAME"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerNamedCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardId": "expanding-colony"
+     },
+     "sourceCodes": [
+      "NAME"
+     ]
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "galactic-engineers",
+   "name": "Galactic Engineers",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 2,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_ANY"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 1
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "WINDFALL_ANY"
+     ],
+     "effectType": "produceWindfallGood",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "galactic-federation",
+   "name": "Galactic Federation",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": true,
+   "cost": 6,
+   "victoryPoints": null,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "develop",
+     "sourceCodes": [
+      "REDUCE"
+     ],
+     "effectType": "developmentCostReduction",
+     "value": 2
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "development",
+      "isSixCostDevelopment": true
+     },
+     "sourceCodes": [
+      "SIX_DEVEL"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 1,
+     "target": {
+      "owner": "self",
+      "cardType": "development"
+     },
+     "sourceCodes": [
+      "DEVEL"
+     ]
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "galactic-imperium",
+   "name": "Galactic Imperium",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": true,
+   "cost": 6,
+   "victoryPoints": null,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development",
+    "imperium"
+   ],
+   "nonFunctionalTraits": [
+    "imperium"
+   ],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "AGAINST_REBEL",
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 4,
+     "conditions": {
+      "targetTrait": "rebel"
+     }
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "settlementMode": "military",
+      "traits": [
+       "rebel"
+      ]
+     },
+     "sourceCodes": [
+      "REBEL_MILITARY"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 1,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "settlementMode": "military"
+     },
+     "sourceCodes": [
+      "MILITARY"
+     ]
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "galactic-renaissance",
+   "name": "Galactic Renaissance",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": true,
+   "cost": 6,
+   "victoryPoints": null,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "explore",
+     "sourceCodes": [
+      "DRAW"
+     ],
+     "effectType": "exploreDrawBonus",
+     "value": 2
+    },
+    {
+     "phase": "explore",
+     "sourceCodes": [
+      "KEEP"
+     ],
+     "effectType": "exploreKeepBonus",
+     "value": 1
+    },
+    {
+     "phase": "endGame",
+     "effectType": "specialScoring",
+     "value": 1,
+     "specialEffectId": "score-per-three-vp-chips",
+     "sourceCodes": [
+      "THREE_VP"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerNamedCard",
+     "value": 3,
+     "target": {
+      "owner": "self",
+      "cardId": "research-labs"
+     },
+     "sourceCodes": [
+      "NAME"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerNamedCard",
+     "value": 3,
+     "target": {
+      "owner": "self",
+      "cardId": "galactic-trendsetters"
+     },
+     "sourceCodes": [
+      "NAME"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerNamedCard",
+     "value": 3,
+     "target": {
+      "owner": "self",
+      "cardId": "artist-colony"
+     },
+     "sourceCodes": [
+      "NAME"
+     ]
+    }
+   ],
+   "specialEffectIds": [
+    "score-per-three-vp-chips"
+   ],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "galactic-resort",
+   "name": "Galactic Resort",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 3,
+    "productionMode": "windfall",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "novelty",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_CARD",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "galactic-survey-seti",
+   "name": "Galactic Survey: SETI",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": true,
+   "cost": 6,
+   "victoryPoints": null,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "explore",
+     "sourceCodes": [
+      "DRAW"
+     ],
+     "effectType": "exploreDrawBonus",
+     "value": 2
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 1,
+     "target": {
+      "owner": "self",
+      "cardType": "development",
+      "hasPowerInPhase": "explore"
+     },
+     "sourceCodes": [
+      "DEVEL_EXPLORE"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "hasPowerInPhase": "explore"
+     },
+     "sourceCodes": [
+      "WORLD_EXPLORE"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 1,
+     "target": {
+      "owner": "self",
+      "cardType": "world"
+     },
+     "sourceCodes": [
+      "WORLD"
+     ]
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "galactic-trendsetters",
+   "name": "Galactic Trendsetters",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 3,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 5,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 2,
+     "cardsDrawn": 0
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "gambling-world",
+   "name": "Gambling World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 1,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 0
+    },
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "DRAW_LUCKY"
+     ],
+     "effectType": "drawIfLucky",
+     "value": 0
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "gem-world",
+   "name": "Gem World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 2,
+    "productionMode": "production",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "novelty",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "DRAW_IF"
+     ],
+     "effectType": "drawOnProducedGoodHere",
+     "cardsDrawn": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "genetics-lab",
+   "name": "Genetics Lab",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 2,
+   "victoryPoints": 1,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_GENE"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 1,
+     "conditions": {
+      "resourceType": "genes"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "WINDFALL_GENE"
+     ],
+     "effectType": "produceWindfallGood",
+     "value": 1,
+     "conditions": {
+      "resourceType": "genes"
+     }
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "imperium-armaments-world",
+   "name": "Imperium Armaments World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 4,
+    "productionMode": "production",
+    "resourceType": "rare",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "imperium",
+    "production",
+    "rare",
+    "world"
+   ],
+   "nonFunctionalTraits": [
+    "imperium"
+   ],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 1
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "interstellar-bank",
+   "name": "Interstellar Bank",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 2,
+   "victoryPoints": 1,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "develop",
+     "sourceCodes": [
+      "DRAW"
+     ],
+     "effectType": "drawAtDevelopStart",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "investment-credits",
+   "name": "Investment Credits",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 1,
+   "victoryPoints": 1,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "develop",
+     "sourceCodes": [
+      "REDUCE"
+     ],
+     "effectType": "developmentCostReduction",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "lost-alien-battle-fleet",
+   "name": "Lost Alien Battle Fleet",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 4,
+   "world": {
+    "settlementMode": "military",
+    "defense": 6,
+    "settleCost": null,
+    "productionMode": "production",
+    "resourceType": "alien",
+    "isRebel": false,
+    "isAlien": true
+   },
+   "startWorld": null,
+   "traits": [
+    "alien",
+    "military",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 3
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "lost-alien-warship",
+   "name": "Lost Alien Warship",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 3,
+   "world": {
+    "settlementMode": "military",
+    "defense": 5,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "alien",
+    "isRebel": false,
+    "isAlien": true
+   },
+   "startWorld": null,
+   "traits": [
+    "alien",
+    "military",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 2
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "lost-species-ark-world",
+   "name": "Lost Species Ark World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 3,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 5,
+    "productionMode": "production",
+    "resourceType": "genes",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "genes",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "DRAW_IF"
+     ],
+     "effectType": "drawOnProducedGoodHere",
+     "cardsDrawn": 2
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "malevolent-lifeforms",
+   "name": "Malevolent Lifeforms",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "military",
+    "defense": 4,
+    "settleCost": null,
+    "productionMode": "production",
+    "resourceType": "genes",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "genes",
+    "military",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "explore",
+     "sourceCodes": [
+      "DRAW"
+     ],
+     "effectType": "exploreDrawBonus",
+     "value": 1
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "merchant-guild",
+   "name": "Merchant Guild",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": true,
+   "cost": 6,
+   "victoryPoints": null,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "DRAW"
+     ],
+     "effectType": "drawCards",
+     "cardsDrawn": 2
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "productionMode": "production",
+      "resourceType": "novelty"
+     },
+     "sourceCodes": [
+      "NOVELTY_PRODUCTION"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "productionMode": "production",
+      "resourceType": "rare"
+     },
+     "sourceCodes": [
+      "RARE_PRODUCTION"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "productionMode": "production",
+      "resourceType": "genes"
+     },
+     "sourceCodes": [
+      "GENE_PRODUCTION"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "productionMode": "production",
+      "resourceType": "alien"
+     },
+     "sourceCodes": [
+      "ALIEN_PRODUCTION"
+     ]
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "merchant-world",
+   "name": "Merchant World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 4,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_ANY"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 2
+    },
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "DISCARD_HAND",
+      "GET_VP"
+     ],
+     "effectType": "discardHandForVp",
+     "vpGained": 1,
+     "times": 2,
+     "optional": true
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "mining-conglomerate",
+   "name": "Mining Conglomerate",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 3,
+   "victoryPoints": 2,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_RARE"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 1,
+     "conditions": {
+      "resourceType": "rare"
+     }
+    },
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_RARE",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 2,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 0,
+     "conditions": {
+      "resourceType": "rare"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "DRAW_MOST_RARE"
+     ],
+     "effectType": "drawIfMostRareProduced",
+     "cardsDrawn": 2
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "mining-league",
+   "name": "Mining League",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": true,
+   "cost": 6,
+   "victoryPoints": null,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_RARE",
+      "CONSUME_TWO",
+      "GET_VP"
+     ],
+     "goodsConsumed": 2,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 3,
+     "cardsDrawn": 0,
+     "conditions": {
+      "resourceType": "rare"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "WINDFALL_RARE"
+     ],
+     "effectType": "produceWindfallGood",
+     "value": 1,
+     "conditions": {
+      "resourceType": "rare"
+     }
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "productionMode": "production",
+      "resourceType": "rare"
+     },
+     "sourceCodes": [
+      "RARE_PRODUCTION"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 1,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "productionMode": "windfall",
+      "resourceType": "rare"
+     },
+     "sourceCodes": [
+      "RARE_WINDFALL"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerNamedCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardId": "mining-robots"
+     },
+     "sourceCodes": [
+      "NAME"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerNamedCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardId": "mining-conglomerate"
+     },
+     "sourceCodes": [
+      "NAME"
+     ]
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "mining-robots",
+   "name": "Mining Robots",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 2,
+   "victoryPoints": 1,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "RARE",
+      "REDUCE"
+     ],
+     "effectType": "settleCostReduction",
+     "value": 1,
+     "conditions": {
+      "resourceType": "rare"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "WINDFALL_RARE"
+     ],
+     "effectType": "produceWindfallGood",
+     "value": 1,
+     "conditions": {
+      "resourceType": "rare"
+     }
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "mining-world",
+   "name": "Mining World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 3,
+    "productionMode": "production",
+    "resourceType": "rare",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "production",
+    "rare",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "DRAW_IF"
+     ],
+     "effectType": "drawOnProducedGoodHere",
+     "cardsDrawn": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "new-earth",
+   "name": "New Earth",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 3,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 5,
+    "productionMode": "production",
+    "resourceType": "rare",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "production",
+    "rare",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_CARD",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 1
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "new-economy",
+   "name": "New Economy",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": true,
+   "cost": 6,
+   "victoryPoints": null,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "DRAW"
+     ],
+     "goodsConsumed": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 0,
+     "cardsDrawn": 0
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "development",
+      "hasPowerInPhase": "consume"
+     },
+     "sourceCodes": [
+      "DEVEL_CONSUME"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 1,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "hasPowerInPhase": "consume"
+     },
+     "sourceCodes": [
+      "WORLD_CONSUME"
+     ]
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "new-galactic-order",
+   "name": "New Galactic Order",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": true,
+   "cost": 6,
+   "victoryPoints": null,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 2
+    },
+    {
+     "phase": "endGame",
+     "effectType": "specialScoring",
+     "value": 1,
+     "specialEffectId": "score-total-military",
+     "sourceCodes": [
+      "TOTAL_MILITARY"
+     ]
+    }
+   ],
+   "specialEffectIds": [
+    "score-total-military"
+   ],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "new-military-tactics",
+   "name": "New Military Tactics",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 1,
+   "victoryPoints": 1,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "DISCARD",
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "temporaryMilitaryByDiscardingThisCard",
+     "value": 3
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "new-sparta",
+   "name": "New Sparta",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": true,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "military",
+    "defense": 2,
+    "settleCost": null,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": {
+    "startWorldNumber": null,
+    "isBasicStartWorld": true,
+    "startingWindfallGood": false,
+    "setupSpecialEffectId": null,
+    "notes": []
+   },
+   "traits": [
+    "military",
+    "start",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 2
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "new-survivalists",
+   "name": "New Survivalists",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "military",
+    "defense": 1,
+    "settleCost": null,
+    "productionMode": "production",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "military",
+    "novelty",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_NOVELTY",
+      "GET_CARD"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 0,
+     "cardsDrawn": 1,
+     "conditions": {
+      "resourceType": "novelty"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "new-vinland",
+   "name": "New Vinland",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 2,
+    "productionMode": "production",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "novelty",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_2_CARD"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 0,
+     "cardsDrawn": 2
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "old-earth",
+   "name": "Old Earth",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": true,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 3,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": {
+    "startWorldNumber": null,
+    "isBasicStartWorld": true,
+    "startingWindfallGood": false,
+    "setupSpecialEffectId": null,
+    "notes": []
+   },
+   "traits": [
+    "start",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_ANY"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 1
+    },
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 2,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 0
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "outlaw-world",
+   "name": "Outlaw World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "military",
+    "defense": 1,
+    "settleCost": null,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "military",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_CARD",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "pan-galactic-league",
+   "name": "Pan-Galactic League",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": true,
+   "cost": 6,
+   "victoryPoints": null,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": -1
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "DRAW_WORLD_GENE"
+     ],
+     "effectType": "drawPerWorldOfKind",
+     "cardsDrawn": 1,
+     "conditions": {
+      "resourceType": "genes"
+     }
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "productionMode": "production",
+      "resourceType": "genes"
+     },
+     "sourceCodes": [
+      "GENE_PRODUCTION"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "productionMode": "windfall",
+      "resourceType": "genes"
+     },
+     "sourceCodes": [
+      "GENE_WINDFALL"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 1,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "settlementMode": "military"
+     },
+     "sourceCodes": [
+      "MILITARY"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerNamedCard",
+     "value": 3,
+     "target": {
+      "owner": "self",
+      "cardId": "contact-specialist"
+     },
+     "sourceCodes": [
+      "NAME"
+     ]
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "pilgrimage-world",
+   "name": "Pilgrimage World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 0,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ALL",
+      "GET_VP"
+     ],
+     "effectType": "consumeAllGoods",
+     "vpFormula": "goods-1"
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "pirate-world",
+   "name": "Pirate World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "military",
+    "defense": 3,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "military",
+    "novelty",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_THIS"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 3,
+     "conditions": {
+      "source": "thisWorld"
+     }
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "plague-world",
+   "name": "Plague World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 0,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 3,
+    "productionMode": "production",
+    "resourceType": "genes",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "genes",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_GENE",
+      "GET_CARD",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 1,
+     "conditions": {
+      "resourceType": "genes"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "pre-sentient-race",
+   "name": "Pre-Sentient Race",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 2,
+    "productionMode": "windfall",
+    "resourceType": "genes",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "genes",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "prosperous-world",
+   "name": "Prosperous World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 3,
+    "productionMode": "production",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "novelty",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 0
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "public-works",
+   "name": "Public Works",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 1,
+   "victoryPoints": 1,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "develop",
+     "sourceCodes": [
+      "DRAW_AFTER"
+     ],
+     "effectType": "drawAfterDevelopment",
+     "value": 1
+    },
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 0
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "radioactive-world",
+   "name": "Radioactive World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 2,
+    "productionMode": "windfall",
+    "resourceType": "rare",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "rare",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "rebel-base",
+   "name": "Rebel Base",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 6,
+   "world": {
+    "settlementMode": "military",
+    "defense": 6,
+    "settleCost": null,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": true,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "military",
+    "rebel",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "rebel-fuel-cache",
+   "name": "Rebel Fuel Cache",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "military",
+    "defense": 1,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "rare",
+    "isRebel": true,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "military",
+    "rare",
+    "rebel",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "rebel-homeworld",
+   "name": "Rebel Homeworld",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 7,
+   "world": {
+    "settlementMode": "military",
+    "defense": 7,
+    "settleCost": null,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": true,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "military",
+    "rebel",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "rebel-miners",
+   "name": "Rebel Miners",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "military",
+    "defense": 2,
+    "settleCost": null,
+    "productionMode": "production",
+    "resourceType": "rare",
+    "isRebel": true,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "military",
+    "production",
+    "rare",
+    "rebel",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "rebel-outpost",
+   "name": "Rebel Outpost",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 5,
+   "world": {
+    "settlementMode": "military",
+    "defense": 5,
+    "settleCost": null,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": true,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "military",
+    "rebel",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "rebel-underground",
+   "name": "Rebel Underground",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 4,
+   "world": {
+    "settlementMode": "military",
+    "defense": 3,
+    "settleCost": null,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": true,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "military",
+    "rebel",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "DRAW"
+     ],
+     "effectType": "drawCards",
+     "cardsDrawn": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "rebel-warrior-race",
+   "name": "Rebel Warrior Race",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "military",
+    "defense": 3,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "genes",
+    "isRebel": true,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "genes",
+    "military",
+    "rebel",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "refugee-world",
+   "name": "Refugee World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 0,
+    "productionMode": "windfall",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "novelty",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": -1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "replicant-robots",
+   "name": "Replicant Robots",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 4,
+   "victoryPoints": 2,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "REDUCE"
+     ],
+     "effectType": "settleCostReduction",
+     "value": 2
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "reptilian-uplift-race",
+   "name": "Reptilian Uplift Race",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "military",
+    "defense": 2,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "genes",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "chromo",
+    "genes",
+    "military",
+    "uplift",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [
+    "chromo",
+    "uplift"
+   ],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "research-labs",
+   "name": "Research Labs",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 4,
+   "victoryPoints": 2,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "explore",
+     "sourceCodes": [
+      "KEEP"
+     ],
+     "effectType": "exploreKeepBonus",
+     "value": 1
+    },
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_GENE",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 0,
+     "conditions": {
+      "resourceType": "genes"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "DRAW_EACH_ALIEN"
+     ],
+     "effectType": "drawPerGoodOfKindProduced",
+     "cardsDrawn": 1,
+     "conditions": {
+      "resourceType": "alien"
+     }
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "runaway-robots",
+   "name": "Runaway Robots",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "military",
+    "defense": 1,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "rare",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "military",
+    "rare",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "DRAW_IF"
+     ],
+     "effectType": "drawOnProducedGoodHere",
+     "cardsDrawn": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "secluded-world",
+   "name": "Secluded World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 1,
+    "productionMode": "production",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "novelty",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_CARD"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 0,
+     "cardsDrawn": 1
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "space-marines",
+   "name": "Space Marines",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 2,
+   "victoryPoints": 1,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "EXTRA_MILITARY"
+     ],
+     "effectType": "militaryStrength",
+     "value": 2
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "space-port",
+   "name": "Space Port",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 2,
+    "productionMode": "production",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "novelty",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_RARE"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 2,
+     "conditions": {
+      "resourceType": "rare"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "spice-world",
+   "name": "Spice World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 2,
+    "productionMode": "production",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "novelty",
+    "production",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_NOVELTY"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 2,
+     "conditions": {
+      "resourceType": "novelty"
+     }
+    },
+    {
+     "phase": "produce",
+     "sourceCodes": [
+      "PRODUCE"
+     ],
+     "effectType": "produceGoodOnThisWorld",
+     "value": 1
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "star-nomad-lair",
+   "name": "Star Nomad Lair",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 1,
+   "world": {
+    "settlementMode": "military",
+    "defense": 1,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "novelty",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "military",
+    "novelty",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "explore",
+     "sourceCodes": [
+      "DRAW"
+     ],
+     "effectType": "exploreDrawBonus",
+     "value": 1
+    },
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_THIS"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 1,
+     "conditions": {
+      "source": "thisWorld"
+     }
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "terraformed-world",
+   "name": "Terraformed World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 5,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 5,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 0
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "terraforming-robots",
+   "name": "Terraforming Robots",
+   "setId": "base",
+   "quantity": 2,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": 3,
+   "victoryPoints": 2,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development",
+    "terraforming"
+   ],
+   "nonFunctionalTraits": [
+    "terraforming"
+   ],
+   "powers": [
+    {
+     "phase": "settle",
+     "sourceCodes": [
+      "DRAW_AFTER"
+     ],
+     "effectType": "drawAfterSettling",
+     "value": 1
+    },
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_RARE",
+      "GET_CARD",
+      "GET_VP"
+     ],
+     "goodsConsumed": 1,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 1,
+     "cardsDrawn": 1,
+     "conditions": {
+      "resourceType": "rare"
+     }
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "the-last-of-the-uplift-gnarssh",
+   "name": "The Last of the Uplift Gnarssh",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 0,
+   "world": {
+    "settlementMode": "military",
+    "defense": 1,
+    "settleCost": null,
+    "productionMode": "windfall",
+    "resourceType": "genes",
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "chromo",
+    "genes",
+    "military",
+    "uplift",
+    "windfall",
+    "world"
+   ],
+   "nonFunctionalTraits": [
+    "chromo",
+    "uplift"
+   ],
+   "powers": [],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "defense",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType",
+     "resourceType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "tourist-world",
+   "name": "Tourist World",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "world",
+   "isStartWorld": false,
+   "isSixCostDevelopment": false,
+   "cost": null,
+   "victoryPoints": 2,
+   "world": {
+    "settlementMode": "payment",
+    "defense": null,
+    "settleCost": 4,
+    "productionMode": "none",
+    "resourceType": null,
+    "isRebel": false,
+    "isAlien": false
+   },
+   "startWorld": null,
+   "traits": [
+    "world"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "CONSUME_ANY",
+      "CONSUME_TWO",
+      "GET_VP"
+     ],
+     "goodsConsumed": 2,
+     "times": 1,
+     "effectType": "consumeGoods",
+     "vpGained": 3,
+     "cardsDrawn": 0
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "settleCost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  },
+  {
+   "cardId": "trade-league",
+   "name": "Trade League",
+   "setId": "base",
+   "quantity": 1,
+   "cardType": "development",
+   "isStartWorld": false,
+   "isSixCostDevelopment": true,
+   "cost": 6,
+   "victoryPoints": null,
+   "world": null,
+   "startWorld": null,
+   "traits": [
+    "development"
+   ],
+   "nonFunctionalTraits": [],
+   "powers": [
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_ANY"
+     ],
+     "effectType": "tradeBonus",
+     "cardsDrawn": 1
+    },
+    {
+     "phase": "consume",
+     "sourceCodes": [
+      "TRADE_ACTION"
+     ],
+     "effectType": "consumeGoodForTradePrice",
+     "appliesTradePowers": true,
+     "times": 1
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 2,
+     "target": {
+      "owner": "self",
+      "cardType": "development",
+      "hasTradePower": true
+     },
+     "sourceCodes": [
+      "DEVEL_TRADE"
+     ]
+    },
+    {
+     "phase": "endGame",
+     "effectType": "endGameVpPerCard",
+     "value": 1,
+     "target": {
+      "owner": "self",
+      "cardType": "world",
+      "hasTradePower": true
+     },
+     "sourceCodes": [
+      "WORLD_TRADE"
+     ]
+    }
+   ],
+   "specialEffectIds": [],
+   "image": null,
+   "display": {
+    "primaryStats": [
+     "cost",
+     "victoryPoints"
+    ],
+    "badges": [
+     "cardType"
+    ]
+   },
+   "source": [
+    "bnordli/rftg src/cards.txt (expansion level 0)",
+    "Race for the Galaxy rulebook v2.01 (2nd ed., 2018) — structural totals"
+   ],
+   "validation": {
+    "verified": true,
+    "notes": []
+   }
+  }
+ ]
+}
