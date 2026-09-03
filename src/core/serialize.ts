@@ -22,6 +22,7 @@ export interface PlayerView {
   players: Array<{
     id: PlayerId; name: string; seat: number; connected: boolean; ready: boolean;
     handCount: number; score: number; scoreParts: Record<string, number>;
+    stats: Record<string, number | string>;
     tableau: TableauEntry[];
   }>;
   hand: Array<{ instanceId: string; defId: string }>;
@@ -67,6 +68,7 @@ export function serializeForPlayer(
       handCount: all.filter(c => c.zone === ZONE.hand && c.owner === p.id).length,
       score: playing ? def.calculateScore(state, p.id) : 0,
       scoreParts: playing && def.scoreParts ? def.scoreParts(state, p.id) : {},
+      stats: playing && def.playerStats ? def.playerStats(state, p.id) : {},
       tableau: tableauOf(p.id),
     })),
     hand: all.filter(c => c.zone === ZONE.hand && c.owner === viewer)

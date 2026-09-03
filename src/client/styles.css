@@ -240,3 +240,67 @@ label { display:block; margin:12px 0; }
 @media (prefers-reduced-motion:reduce) {
   *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.01ms !important; }
 }
+
+/* ------------------------------------------------------------ view stack */
+.viewlayer { position:fixed; inset:0; background:rgba(0,0,0,.62); backdrop-filter:blur(3px);
+  display:flex; align-items:center; justify-content:center; padding:14px; animation:fade .15s ease; }
+.viewlayer__body { background:var(--panel); border-radius:14px; width:100%; max-width:460px;
+  max-height:92vh; overflow:auto; box-shadow:var(--shadow); animation:rise .18s ease; }
+.viewlayer__body--wide { max-width:1000px; }
+.viewlayer__bar { position:sticky; top:0; z-index:2; display:flex; align-items:center;
+  justify-content:space-between; gap:8px; padding:8px 10px; background:var(--panel);
+  border-bottom:1px solid var(--line); }
+.viewlayer__bar b { font-size:14px; }
+.sheetbody { padding:14px 16px 18px; }
+
+.menulist { display:flex; flex-direction:column; gap:8px; padding:14px 16px 18px; }
+.menuitem { display:flex; flex-direction:column; align-items:flex-start; gap:2px;
+  padding:12px 14px; text-align:left; }
+.menuitem b { font-size:15px; }
+.menuitem i { font-style:normal; font-size:12px; color:var(--muted); }
+.menuitem--danger b { color:var(--err); }
+.menuitem--primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+.menuitem--primary i { color:rgba(255,255,255,.8); }
+
+/* ------------------------------------------------------------ deck browser */
+.deckview__controls { position:sticky; top:41px; z-index:1; background:var(--panel);
+  padding:12px 16px 8px; border-bottom:1px solid var(--line); }
+.deckgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(136px,1fr));
+  gap:10px; padding:14px 16px 20px; }
+.deckgrid .card { width:100%; }
+
+.sortbar { display:flex; flex-wrap:wrap; gap:5px; align-items:center; margin:8px 0; }
+.sortbar__label { font-size:10px; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--muted); font-weight:700; margin-right:2px; }
+.chip { min-height:30px; padding:4px 10px; border-radius:99px; font-size:12px;
+  display:inline-flex; align-items:center; gap:5px; }
+.chip--on { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:600; }
+.chip--on i { font-style:normal; font-size:9px; background:rgba(255,255,255,.28);
+  border-radius:99px; padding:0 5px; }
+.chip--clear { color:var(--muted); border-style:dashed; }
+
+/* ------------------------------------------------------- action prompt */
+.prompt { border:2px solid var(--accent); border-radius:var(--r); padding:14px;
+  margin:12px 0; background:var(--panel); box-shadow:var(--shadow); animation:rise .2s ease; }
+.prompt--waiting { display:flex; align-items:center; justify-content:space-between; gap:14px; }
+.actiongrid--rich { margin-top:10px; }
+.actioncard { display:flex !important; flex-direction:row !important; align-items:center;
+  gap:10px; padding:10px 12px; }
+.actioncard__num { flex:0 0 auto; width:28px; height:28px; display:grid; place-items:center;
+  border-radius:6px; background:var(--accent); color:#fff; font-weight:800; font-size:12px; }
+.actioncard b { display:block; font-size:13px; }
+.actioncard i { display:block; font-style:normal; font-size:11px; color:var(--muted); }
+.spinner { width:22px; height:22px; border-radius:50%; border:3px solid var(--line);
+  border-top-color:var(--accent); animation:spin .9s linear infinite; flex:0 0 auto; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.clock { color:var(--err); font-weight:700; font-size:13px; margin:4px 0; }
+.peek { width:100%; margin:8px 0; border-style:dashed; color:var(--muted); }
+.ghost--on { color:var(--accent); font-weight:700; }
+.phase__who { display:inline-block; margin-left:5px; font-style:normal; font-size:9px;
+  background:var(--accent); color:#fff; border-radius:99px; padding:0 5px; font-weight:800; }
+.phase--now .phase__who { background:#fff; color:var(--accent); }
+.whotag { margin-left:6px; background:var(--accent); color:#fff; border-radius:99px;
+  padding:0 6px; font-size:9.5px; font-weight:700; }
+.away { color:var(--err); font-size:11px; font-weight:600; }
+.ok-tick { color:var(--ok); font-weight:700; }

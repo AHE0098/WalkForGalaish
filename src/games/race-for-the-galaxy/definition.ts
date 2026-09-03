@@ -14,8 +14,8 @@ import {
 import type { RaceCard } from './types.js';
 import {
   canDevelop, canSettle, chose, developCost, exploreDraw, exploreKeep, goodsOn, handSize,
-  playerGoods, priceOf, settleCost, tableauCards, tableauInstances, vpChips, vpPool,
-  calculateScore, scoreBreakdown,
+  militaryStrength, playerGoods, priceOf, settleCost, tableauCards, tableauInstances,
+  vpChips, vpPool, calculateScore, scoreBreakdown,
 } from './rules.js';
 
 const currentPhase = (s: GameState) => s.phasesThisRound[s.phaseIndex] ?? null;
@@ -298,6 +298,37 @@ export const raceForTheGalaxy: GameDefinition = {
 
   calculateScore(state, playerId) { return calculateScore(state, playerId); },
 
+  phaseTimeoutSeconds: 120,
+
+  playerStats(state, playerId) {
+    return {
+      military: militaryStrength(state, playerId),
+      goods: playerGoods(state, playerId).length,
+      tableau: tableauCards(state, playerId).length,
+      hand: handSize(state, playerId),
+    };
+  },
+
+  /** Used when a player is absent or the phase clock runs out. */
+  autoAction(state, playerId) {
+    const phaseId = state.phaseId;
+    if (state.gameData.openingDiscard) {
+      const two = cardsIn(state, ZONE.hand, playerId).slice(0, 2).map(c => c.instanceId);
+      return two.length === 2 ? { type: 'DISCARD_CARDS', phaseId, payload: { instanceIds: two } } : null;
+    }
+    const phase = currentPhase(state);
+    if (phase === null)
+      return { type: 'SELECT_ACTION_CARD', phaseId, payload: { actionCard: 'explore-1-1' } };
+    if (phase === 'explore') {
+      const pool = cardsIn(state, ZONE.selection, playerId);
+      const keep = Math.min(exploreKeep(state, playerId), pool.length);
+      return { type: 'KEEP_CARDS', phaseId,
+               payload: { instanceIds: pool.slice(0, keep).map(c => c.instanceId) } };
+    }
+    if (phase === 'develop' || phase === 'settle') return { type: 'PASS', phaseId };
+    return null; // everything else just needs readiness
+  },
+
   scoreParts(state, playerId) {
     const b = scoreBreakdown(state, playerId);
     return { 'card VP': b.cards, 'VP chips': b.chips, 'end-game bonuses': b.bonus };
@@ -311,6 +342,16 @@ export const raceForTheGalaxy: GameDefinition = {
   display: {
     primaryStats: ['cost', 'victoryPoints'],
     badges: ['cardType', 'resourceType'],
+    sortKeys: [
+      { id: 'name', label: 'Name', path: 'name' },
+      { id: 'type', label: 'Type', path: 'cardType' },
+      { id: 'cost', label: 'Cost', path: 'cost' },
+      { id: 'defense', label: 'Defense', path: 'world.defense' },
+      { id: 'settle', label: 'Settle cost', path: 'world.settleCost' },
+      { id: 'vp', label: 'VP', path: 'victoryPoints', direction: 'desc' },
+      { id: 'good', label: 'Good', path: 'world.resourceType' },
+      { id: 'mode', label: 'Production', path: 'world.productionMode' },
+    ],
     symbolTokens: {
       novelty: 'resource-novelty', rare: 'resource-rare',
       genes: 'resource-genes', alien: 'resource-alien',

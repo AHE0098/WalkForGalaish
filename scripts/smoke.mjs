@@ -158,6 +158,29 @@ async function main() {
      `graveyard tracked: ${A.latest.view.discardCount} cards`);
   ok(A.latest.view.players.every(p => p.scoreParts && 'card VP' in p.scoreParts),
      'each player carries a score breakdown');
+  ok(A.latest.view.players.every(p => typeof p.stats?.military === 'number'),
+     'military strength is reported for every player');
+  ok(typeof A.latest.secondsLeft === 'number' && A.latest.secondsLeft > 0,
+     `phase clock running: ${A.latest.secondsLeft}s left`);
+
+  // A player who drops must not freeze the table: the server plays for them.
+  const cards = await (await fetch(`${URL}/api/games/race-for-the-galaxy/cards`)).json();
+  ok(Array.isArray(cards.cards) && cards.cards.length === 95,
+     `card database served over HTTP (${cards.cards.length} definitions)`);
+  ok(Array.isArray(cards.display?.sortKeys) && cards.display.sortKeys.length > 0,
+     `deck browser sort keys published (${cards.display?.sortKeys?.length})`);
+
+  // Leaving mid-game keeps the seat, and rejoining restores the same hand.
+  const carolHand = JSON.stringify(C2.latest.view.hand.map(c => c.instanceId));
+  await C2.rpc('leaveRoom', { code: second.code });
+  await sleep(60);
+  const stillSeated = A.latest.room.players.some(p => p.id === 'carol');
+  ok(stillSeated, 'a player who leaves mid-game keeps their seat');
+  const back = await C2.rpc('joinRoom', { code: second.code });
+  await sleep(80);
+  ok(back.ok, 'that player can walk straight back in');
+  ok(JSON.stringify(C2.latest.view.hand.map(c => c.instanceId)) === carolHand,
+     'their hand is exactly as they left it');
 
   A.close(); B.close(); C2.close();
 }

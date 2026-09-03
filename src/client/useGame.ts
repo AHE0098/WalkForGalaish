@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { io, type Socket } from 'socket.io-client';
 import { sessionId, playerName } from './session.js';
 
-export interface ServerPayload { room: any; view: any; }
+export interface ServerPayload { room: any; view: any; secondsLeft?: number | null; }
 
 export function useGame() {
   const socketRef = useRef<Socket | null>(null);
@@ -19,7 +19,9 @@ export function useGame() {
       if (p.view) version.current = p.view.version;
       setPayload(p);
     });
-    s.on('connect_error', () => setError('Lost connection to the server.'));
+    s.on('connect_error', () => setError('Lost connection — retrying…'));
+    s.on('disconnect', () => setError('Disconnected. Your seat is held; reconnecting…'));
+    s.on('connect', () => setError(null));
     return () => { s.close(); };
   }, []);
 

@@ -36,11 +36,32 @@ function broadcast(code: string): void {
   if (!room) return;
   for (const p of room.players) {
     const payload = host
-      ? { room: publicRoom(room), view: host.view(p.id) }
-      : { room: publicRoom(room), view: null };
+      ? { room: publicRoom(room), view: host.view(p.id), secondsLeft: host.secondsLeft() }
+      : { room: publicRoom(room), view: null, secondsLeft: null };
     io.to(`${code}:${p.id}`).emit('state', payload);
   }
 }
+
+/**
+ * One clock for every room. Absent players are played for after a grace period,
+ * and a stalled phase is pushed along when its timer expires, so a closed tab
+ * never freezes the table.
+ */
+setInterval(() => {
+  for (const room of rooms.list()) {
+    const host = hosts.get(room.code);
+    if (!host) {
+      // Reap empty lobbies so codes are recycled.
+      if (room.players.every(p => !p.connected) && Date.now() - room.createdAt > 30 * 60_000)
+        rooms.delete(room.code);
+      continue;
+    }
+    if (host.tick()) {
+      rooms.update(room.code, r => ({ ...r, players: host.state.players }));
+      broadcast(room.code);
+    }
+  }
+}, 2000).unref?.();
 
 function publicRoom(room: Room) {
   return {
@@ -80,7 +101,8 @@ io.on('connection', socket => {
           connected: true, ready: false }, def.maxPlayers))!;
       joined = { code: updated.code, playerId };
       socket.join(`${updated.code}:${playerId}`);
-      cb?.({ ok: true, code: updated.code });
+      hosts.get(updated.code)?.setConnected(playerId, true);
+      cb?.({ ok: true, code: updated.code, rejoined: !!hosts.get(updated.code) });
       broadcast(updated.code);
     } catch (e) {
       return fail(cb, e instanceof RoomError ? e.message : 'Could not join that room.');
@@ -120,11 +142,19 @@ io.on('connection', socket => {
 
   socket.on('leaveRoom', ({ code, playerId }, cb) => {
     const room = rooms.get(code);
+    const host = hosts.get(code);
     if (room) {
-      rooms.update(code, r => ({ ...r, players: r.players.filter(p => p.id !== playerId) }));
-      const after = rooms.get(code);
-      if (after && after.players.length === 0) { rooms.delete(code); hosts.delete(code); }
-      else broadcast(code);
+      if (host) {
+        // Mid-game: keep the seat so the player can walk back in.
+        host.setConnected(playerId, false);
+        rooms.update(code, r => ({ ...r, players: host.state.players }));
+      } else {
+        rooms.update(code, r => ({ ...r, players: r.players.filter(p => p.id !== playerId) }));
+        const after = rooms.get(code);
+        if (after && after.players.length === 0) rooms.delete(code);
+      }
+      socket.leave(`${code}:${playerId}`);
+      if (rooms.get(code)) broadcast(code);
     }
     joined = null;
     cb?.({ ok: true });
@@ -132,6 +162,7 @@ io.on('connection', socket => {
 
   socket.on('disconnect', () => {
     if (!joined) return;
+    hosts.get(joined.code)?.setConnected(joined.playerId, false);
     rooms.update(joined.code, r => ({
       ...r, players: r.players.map(p => p.id === joined!.playerId ? { ...p, connected: false } : p),
     }));

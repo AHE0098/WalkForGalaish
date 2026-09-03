@@ -98,6 +98,25 @@ tapping anywhere closes it. All game numbers live behind one status button.
 When the supply runs out the table stops at a Reshuffle step: every player confirms, the
 graveyard is shuffled back in, and play resumes.
 
+### Staying robust
+
+Seats survive disconnects. Closing a tab, losing signal or hitting "Leave game" mid-game
+keeps your seat and your hand; rejoining with the same browser puts you straight back.
+A server clock runs per phase: a disconnected player is played for after a short grace
+period, and once the phase timer expires everyone still thinking is moved along with a
+safe default. The table can never be frozen by someone who walked away.
+
+### Views
+
+Anything that takes over the screen — the card reader, the deck browser, the status
+sheet, the menu — is pushed onto a generic view stack (`src/client/views/ViewHost.tsx`).
+Escape or a backdrop tap pops one level. Adding a new full-screen view is one `push` call
+and needs no changes to the board.
+
+The deck browser is game-agnostic: it renders whatever card list it is given and offers
+whichever sort keys the game declares in its `display.sortKeys`. Sorting is multi-key and
+applied in the order the player picks the keys.
+
 ## Not yet implemented
 
 - Consume is auto-resolved greedily rather than letting the player order their powers

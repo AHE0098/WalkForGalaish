@@ -94,6 +94,12 @@ export interface GameDefinition {
   calculateScore(state: GameState, playerId: PlayerId): number;
   /** Optional named components of the score, shown on the results screen. */
   scoreParts?(state: GameState, playerId: PlayerId): Record<string, number>;
+  /** Live per-player numbers for the status panel (military, goods, ...). */
+  playerStats?(state: GameState, playerId: PlayerId): Record<string, number | string>;
+  /** A safe default move so an absent player never stalls the table. */
+  autoAction?(state: GameState, playerId: PlayerId): GameAction | null;
+  /** Seconds a phase may sit idle before absent players are moved along. */
+  phaseTimeoutSeconds?: number;
   determineGameEnd(state: GameState): boolean;
   display: DisplayConfig;
 }
@@ -112,9 +118,19 @@ export interface GameAction {
 }
 
 /** Tells the generic renderer what to show without telling it what any of it means. */
+export interface SortKey {
+  id: string;
+  label: string;
+  /** Dotted path into the card payload, e.g. "world.defense". */
+  path: string;
+  direction?: 'asc' | 'desc';
+}
+
 export interface DisplayConfig {
   primaryStats: string[];
   badges: string[];
+  /** Offered to the player as hand/deck sort options. */
+  sortKeys?: SortKey[];
   /** cardPropertyValue -> symbol token, plus a text fallback per token. */
   symbolTokens: Record<string, string>;
   symbolFallbacks: Record<string, string>;

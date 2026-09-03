@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Home } from './pages/Home.js';
 import { Room } from './pages/Room.js';
+import { ViewProvider } from './views/ViewHost.js';
 
 class Boundary extends React.Component<{ children: React.ReactNode }, { err: Error | null }> {
   state = { err: null as Error | null };
@@ -23,11 +24,13 @@ export function App() {
   return (
     <Boundary>
       <BrowserRouter>
+        <ViewProvider>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/room/:code" element={<Room />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </ViewProvider>
       </BrowserRouter>
     </Boundary>
   );

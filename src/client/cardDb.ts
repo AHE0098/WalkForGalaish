@@ -18,6 +18,7 @@ export interface CardFace {
 }
 
 let cache: Record<string, CardFace> | null = null;
+let displayCache: any = null;
 
 export function useCardDb(gameId = 'race-for-the-galaxy') {
   const [db, setDb] = useState<Record<string, CardFace> | null>(cache);
@@ -25,10 +26,17 @@ export function useCardDb(gameId = 'race-for-the-galaxy') {
     if (cache) return;
     fetch(`/api/games/${gameId}/cards`).then(r => r.json()).then(d => {
       cache = Object.fromEntries((d.cards as CardFace[]).map(c => [c.cardId, c]));
+      displayCache = d.display ?? null;
       setDb(cache);
     }).catch(() => setDb({}));
   }, [gameId]);
   return db;
+}
+
+/** The active game's display configuration, including its sort keys. */
+export function useDisplay() {
+  const db = useCardDb();
+  return db ? displayCache : null;
 }
 
 const PHASE_NUM: Record<string, string> = {
