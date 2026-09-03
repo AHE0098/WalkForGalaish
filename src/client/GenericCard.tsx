@@ -1,5 +1,6 @@
 import React from 'react';
 import { costFace, powersByPhase, type CardFace } from './cardDb.js';
+import { useAssets } from './assets.js';
 
 export type CardMood = 'plain' | 'playable' | 'blocked' | 'selected';
 export type CardSize = 'mini' | 'normal' | 'large';
@@ -18,7 +19,9 @@ export function GenericCard({
   face: CardFace | undefined; mood?: CardMood; size?: CardSize;
   badge?: string; goods?: number; onClick?: () => void; imageUrl?: string | null;
 }) {
+  const assets = useAssets();
   if (!face) return <div className={`card card--${size} card--ghost`} />;
+  const art = imageUrl ?? (assets.renderMode === 'generated' ? null : assets.card(face.cardId));
 
   const pip = costFace(face);
   const { rows, endGame } = powersByPhase(face);
@@ -27,9 +30,9 @@ export function GenericCard({
 
   return (
     <button type="button" onClick={onClick} disabled={!onClick} aria-label={face.name}
-            className={`card card--${size} card--${mood}${imageUrl ? ' card--art' : ''}`}>
-      {imageUrl && <img className="card__image" src={imageUrl} alt=""
-                        onError={e => { e.currentTarget.style.display = 'none'; }} />}
+            className={`card card--${size} card--${mood}${art ? ' card--art' : ''}`}>
+      {art && <img className="card__image" src={art} alt="" loading="lazy"
+                   onError={e => { e.currentTarget.style.display = 'none'; }} />}
 
       <span className="card__top">
         <span className={`pip pip--${pip.shape}${pip.military ? ' pip--mil' : ''}`}

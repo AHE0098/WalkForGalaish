@@ -1,20 +1,55 @@
+/* ============================================================
+   Neon-mechanical space theme.
+   One dark substrate, emissive accents, everything else quiet.
+   ============================================================ */
 :root {
-  --bg:#f3f3ef; --panel:#fff; --ink:#191917; --muted:#6c6c66; --line:#d7d7d0;
-  --accent:#2f5d8c; --ok:#2c7a4b; --err:#a32323;
-  --dev:#1c1c1a; --mil:#b32424;
-  --novelty:#2f6fb0; --rare:#8a5a2b; --genes:#2f8a55; --alien:#c8a520;
-  --scrim:rgba(255,255,255,.86); --shadow:0 1px 2px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.06);
-  --r:9px;
+  color-scheme: dark;
+  --bg:#080c0e; --bg2:#0d1417;
+  --panel:#111a1e; --panel2:#16232a;
+  --ink:#dff5ea; --muted:#7d9a92; --line:#1f3138; --line2:#2b464f;
+
+  --neon:#3dffa2;            /* primary: signal green */
+  --neon-dim:#1c7a56;
+  --cyan:#3fe0ff;            /* novelty */
+  --amber:#ffb454;           /* rare */
+  --lime:#9bff5c;            /* genes */
+  --violet:#c77dff;          /* alien */
+  --danger:#ff5c72;          /* military / errors */
+
+  --accent:var(--neon);
+  --ok:var(--neon); --err:var(--danger);
+  --dev:#dff5ea; --mil:var(--danger);
+  --novelty:var(--cyan); --rare:var(--amber); --genes:var(--lime); --alien:var(--violet);
+
+  --scrim:rgba(8,14,16,.82);
+  --glow:0 0 0 1px rgba(61,255,162,.28), 0 0 18px rgba(61,255,162,.16);
+  --shadow:0 1px 2px rgba(0,0,0,.6), 0 10px 30px rgba(0,0,0,.45);
+  --r:14px; --r-sm:9px;
 }
-@media (prefers-color-scheme: dark) {
+/* The theme is dark by design; light mode gets a softened variant. */
+@media (prefers-color-scheme: light) {
   :root {
-    --bg:#141618; --panel:#1e2124; --ink:#eaeae7; --muted:#9a9a94; --line:#353a3d;
-    --accent:#7fb2d9; --ok:#79c99a; --err:#e28c8c;
-    --dev:#cfcfca; --mil:#e05c5c;
-    --novelty:#6fa8de; --rare:#c99a68; --genes:#6fc994; --alien:#dcc355;
-    --scrim:rgba(24,26,28,.86); --shadow:0 1px 2px rgba(0,0,0,.5), 0 6px 18px rgba(0,0,0,.35);
+    --bg:#0b1113; --bg2:#101a1d; --panel:#141f24; --panel2:#1a2b32;
   }
 }
+body {
+  background:
+    radial-gradient(1100px 620px at 12% -8%, rgba(61,255,162,.10), transparent 60%),
+    radial-gradient(900px 520px at 92% 0%, rgba(63,224,255,.07), transparent 62%),
+    linear-gradient(180deg, var(--bg2), var(--bg) 45%);
+  background-attachment: fixed;
+}
+/* Faint engineering grid, so flat areas read as machined surface. */
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.35;
+  background-image:
+    linear-gradient(rgba(61,255,162,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61,255,162,.045) 1px, transparent 1px);
+  background-size:44px 44px;
+  mask-image: radial-gradient(80% 60% at 50% 0%, #000 30%, transparent 100%);
+}
+body > * { position:relative; z-index:1; }
+
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 html,body { margin:0; background:var(--bg); color:var(--ink);
   font:15px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
@@ -304,3 +339,130 @@ label { display:block; margin:12px 0; }
   padding:0 6px; font-size:9.5px; font-weight:700; }
 .away { color:var(--err); font-size:11px; font-weight:600; }
 .ok-tick { color:var(--ok); font-weight:700; }
+
+
+/* ============================================================
+   Surfaces, buttons, and edges
+   ============================================================ */
+h1, h2, h3 { letter-spacing:.01em; }
+h1 { font-weight:750; }
+h2 { color:var(--neon); opacity:.85; }
+
+.pill, .opp, .card, .highlightbox, .prompt, .reshuffle,
+.viewlayer__body, .statusbtn, .logbox {
+  background-image:linear-gradient(180deg, rgba(255,255,255,.035), transparent 55%);
+}
+
+button {
+  border-radius:999px; border:1px solid var(--line2); background:var(--panel2);
+  letter-spacing:.01em; font-weight:550;
+  transition:transform .1s cubic-bezier(.2,.8,.3,1), box-shadow .18s ease,
+             border-color .18s ease, background .18s ease, color .18s ease;
+}
+button:hover:not(:disabled) { border-color:var(--neon-dim); color:var(--ink);
+  box-shadow:0 0 0 1px rgba(61,255,162,.18), 0 6px 18px rgba(0,0,0,.4); }
+button:active:not(:disabled) { transform:translateY(1px) scale(.99); }
+button:focus-visible { outline:none; box-shadow:var(--glow); }
+button.primary {
+  background:linear-gradient(180deg, #4dffb0, #17c97a);
+  color:#05221a; border-color:transparent; font-weight:750;
+  box-shadow:0 0 18px rgba(61,255,162,.35), inset 0 1px 0 rgba(255,255,255,.35);
+}
+button.primary:hover:not(:disabled) { box-shadow:0 0 26px rgba(61,255,162,.5); color:#05221a; }
+button.ghost { border-color:transparent; background:transparent; color:var(--muted); }
+button.ghost:hover:not(:disabled) { color:var(--neon); background:rgba(61,255,162,.07); }
+.ghost--on { color:var(--neon); background:rgba(61,255,162,.10); }
+input { border-radius:999px; background:var(--panel2); border-color:var(--line2); }
+input:focus { outline:none; box-shadow:var(--glow); border-color:var(--neon-dim); }
+input::placeholder { color:var(--muted); }
+
+.pill, .opp, .viewlayer__body, .statusbtn, .card, .highlightbox, .prompt, .reshuffle {
+  border-color:var(--line2);
+}
+.topbar { background:linear-gradient(180deg, var(--bg2) 70%, transparent);
+  border-bottom-color:var(--line2); backdrop-filter:blur(8px); }
+.statusbtn { border-radius:var(--r); }
+.statusbtn__main b { color:var(--neon); text-shadow:0 0 12px rgba(61,255,162,.5); }
+
+.phase { border-radius:999px; border-color:var(--line2); }
+.phase--on { border-color:var(--neon-dim); color:var(--ink); }
+.phase--now { background:linear-gradient(180deg, #4dffb0, #17c97a); color:#05221a;
+  border-color:transparent; box-shadow:0 0 16px rgba(61,255,162,.35); }
+.phase--now .phase__who { background:#05221a; color:var(--neon); }
+.phase__who, .whotag { background:var(--neon-dim); color:#eafff5; }
+
+.card { border-radius:var(--r); border-color:var(--line2);
+  background-color:var(--panel); }
+.card--playable { border-color:var(--neon-dim);
+  box-shadow:0 0 0 1px rgba(61,255,162,.45), 0 0 22px rgba(61,255,162,.18), var(--shadow); }
+.card--playable::after { content:''; position:absolute; inset:0; border-radius:inherit;
+  pointer-events:none; box-shadow:inset 0 0 26px rgba(61,255,162,.10); }
+.card--selected { border-color:var(--cyan);
+  box-shadow:0 0 0 2px rgba(63,224,255,.55), 0 0 24px rgba(63,224,255,.25), var(--shadow); }
+.card--blocked { opacity:.32; filter:grayscale(.75); }
+.card:not(:disabled):hover { transform:translateY(-4px);
+  box-shadow:0 14px 34px rgba(0,0,0,.55), 0 0 0 1px var(--line2); }
+.pip { background:var(--panel2); border-color:var(--ink); }
+.pip i { text-shadow:0 0 8px rgba(0,0,0,.8); }
+.pip--mil { border-color:var(--mil); box-shadow:0 0 12px rgba(255,92,114,.35); }
+.pip[data-fill] { box-shadow:0 0 14px currentColor; }
+.pip[data-halo]::after { box-shadow:0 0 12px currentColor; }
+.vp { color:var(--ink); }
+.rail { border-top-color:var(--line2); }
+.rail__num { color:var(--neon); }
+.rail__row--empty .rail__num, .rail__row--empty .rail__text { color:var(--line2); }
+.card__badge { background:var(--neon-dim); color:#eafff5; border-radius:0 8px 0 12px; }
+.good { background:var(--neon); color:#05221a; box-shadow:0 0 10px rgba(61,255,162,.6); }
+.tag { border-radius:999px; }
+
+.chip { border-color:var(--line2); }
+.chip--on { background:linear-gradient(180deg,#4dffb0,#17c97a); color:#05221a;
+  border-color:transparent; }
+.chip--wide { width:100%; justify-content:center; margin-bottom:10px; }
+
+.actionbar { background:linear-gradient(0deg, var(--bg) 60%, rgba(13,20,23,.92));
+  border-top-color:var(--line2); backdrop-filter:blur(10px);
+  box-shadow:0 -10px 30px rgba(0,0,0,.5); }
+.actioncard { border-radius:var(--r-sm); }
+.actioncard__num { background:linear-gradient(180deg,#4dffb0,#17c97a); color:#05221a;
+  border-radius:8px; box-shadow:0 0 12px rgba(61,255,162,.35); }
+.menuitem { border-radius:var(--r-sm); }
+.viewlayer { background:rgba(3,6,7,.72); }
+.viewlayer__bar { background:var(--panel); border-bottom-color:var(--line2); }
+.spinner { border-color:var(--line2); border-top-color:var(--neon); }
+.dot--ready { background:var(--neon); box-shadow:0 0 0 3px rgba(61,255,162,.2),
+  0 0 12px rgba(61,255,162,.7); }
+.riffle__card { background:var(--panel2); border-color:var(--line2); }
+.scoretable th { color:var(--neon); opacity:.75; }
+.scoretable td, .scoretable th { border-bottom-color:var(--line); }
+.statgrid span { background:var(--panel2); border:1px solid var(--line); border-radius:var(--r-sm); }
+.statgrid b { color:var(--neon); }
+.logbox { background:var(--bg2); border:1px solid var(--line); }
+.clock { color:var(--danger); text-shadow:0 0 12px rgba(255,92,114,.4); }
+.roomcode { color:var(--neon); text-shadow:0 0 16px rgba(61,255,162,.45); }
+
+/* ============================================================
+   Card reader: callouts and the help panel
+   ============================================================ */
+.inspector__cardwrap { position:relative; flex:0 0 auto; }
+.inspector__headline { margin:-4px 0 10px; color:var(--neon); font-size:12.5px;
+  font-weight:650; letter-spacing:.02em; }
+.callout { position:absolute; width:22px; height:22px; border-radius:50%;
+  background:var(--neon); color:#05221a; font-size:12px; font-weight:800;
+  display:grid; place-items:center; box-shadow:0 0 14px rgba(61,255,162,.7);
+  animation:pop .2s ease backwards; z-index:3; }
+.callout--inline { position:static; display:inline-grid; width:18px; height:18px;
+  font-size:10px; margin-right:6px; vertical-align:-3px; box-shadow:none; }
+@keyframes pop { from { transform:scale(.4); opacity:0; } }
+.helpbox { border:1px solid var(--line2); border-radius:var(--r-sm); padding:10px 12px;
+  margin-bottom:12px; background:var(--bg2); animation:rise .18s ease; }
+.helpbox__phase { margin:0 0 8px; font-size:12px; color:var(--neon); font-weight:600; }
+.helpbox__list { margin:0 0 10px; padding:0; list-style:none;
+  display:flex; flex-direction:column; gap:7px; font-size:12px; line-height:1.4; }
+.helpbox__list b { color:var(--ink); }
+.phasestrip { display:flex; flex-direction:column; gap:2px; border-top:1px solid var(--line);
+  padding-top:8px; }
+.phasestrip span { font-size:11px; color:var(--muted); }
+.phasestrip b { display:inline-block; min-width:22px; color:var(--neon); font-weight:800; }
+.phasestrip i { font-style:normal; opacity:.75; margin-left:6px; }
+.powergrid dt.star { color:var(--danger); }

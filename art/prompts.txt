@@ -1,0 +1,285 @@
+=== cards/alien-robot-scout-ship.webp
+"Alien Robot Scout Ship" a fortified or contested world seen from orbit, with defensive installations non-human geometry, unsettling symmetry accent palette violet and magenta neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/alien-robot-sentry.webp
+"Alien Robot Sentry" a fortified or contested world seen from orbit, with defensive installations non-human geometry, unsettling symmetry accent palette violet and magenta neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/alien-robotic-factory.webp
+"Alien Robotic Factory" an industrious inhabited world with visible extraction or refinery works non-human geometry, unsettling symmetry accent palette violet and magenta neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/alien-rosetta-stone-world.webp
+"Alien Rosetta Stone World" a quiet colonised world seen from orbit non-human geometry, unsettling symmetry accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/alien-tech-institute.webp
+"Alien Tech Institute" a vast orbital institution or megastructure, seen from a distance accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/alpha-centauri.webp
+"Alpha Centauri" an untouched or abandoned world holding an unclaimed resource cache homeworld scale, welcoming and established accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/aquatic-uplift-race.webp
+"Aquatic Uplift Race" a fortified or contested world seen from orbit, with defensive installations accent palette acid green and pale jade neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/artist-colony.webp
+"Artist Colony" an industrious inhabited world with visible extraction or refinery works accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/asteroid-belt.webp
+"Asteroid Belt" an untouched or abandoned world holding an unclaimed resource cache accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/avian-uplift-race.webp
+"Avian Uplift Race" a fortified or contested world seen from orbit, with defensive installations accent palette acid green and pale jade neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/bio-hazard-mining-world.webp
+"Bio-Hazard Mining World" an industrious inhabited world with visible extraction or refinery works accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/black-market-trading-world.webp
+"Black Market Trading World" a quiet colonised world seen from orbit accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/blaster-gem-mines.webp
+"Blaster Gem Mines" an untouched or abandoned world holding an unclaimed resource cache accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/colony-ship.webp
+"Colony Ship" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/comet-zone.webp
+"Comet Zone" an industrious inhabited world with visible extraction or refinery works accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/consumer-markets.webp
+"Consumer Markets" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/contact-specialist.webp
+"Contact Specialist" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/deficit-spending.webp
+"Deficit Spending" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/deserted-alien-colony.webp
+"Deserted Alien Colony" an untouched or abandoned world holding an unclaimed resource cache non-human geometry, unsettling symmetry accent palette violet and magenta neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/deserted-alien-library.webp
+"Deserted Alien Library" an untouched or abandoned world holding an unclaimed resource cache non-human geometry, unsettling symmetry accent palette violet and magenta neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/deserted-alien-outpost.webp
+"Deserted Alien Outpost" an untouched or abandoned world holding an unclaimed resource cache non-human geometry, unsettling symmetry accent palette violet and magenta neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/destroyed-world.webp
+"Destroyed World" an untouched or abandoned world holding an unclaimed resource cache accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/distant-world.webp
+"Distant World" an industrious inhabited world with visible extraction or refinery works accent palette acid green and pale jade neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/diversified-economy.webp
+"Diversified Economy" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/drop-ships.webp
+"Drop Ships" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/earths-lost-colony.webp
+"Earth's Lost Colony" an industrious inhabited world with visible extraction or refinery works homeworld scale, welcoming and established accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/empath-world.webp
+"Empath World" an untouched or abandoned world holding an unclaimed resource cache accent palette acid green and pale jade neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/epsilon-eridani.webp
+"Epsilon Eridani" a quiet colonised world seen from orbit homeworld scale, welcoming and established accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/expanding-colony.webp
+"Expanding Colony" a quiet colonised world seen from orbit accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/expedition-force.webp
+"Expedition Force" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/export-duties.webp
+"Export Duties" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/former-penal-colony.webp
+"Former Penal Colony" a fortified or contested world seen from orbit, with defensive installations accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/free-trade-association.webp
+"Free Trade Association" a vast orbital institution or megastructure, seen from a distance accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/galactic-engineers.webp
+"Galactic Engineers" a quiet colonised world seen from orbit accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/galactic-federation.webp
+"Galactic Federation" a vast orbital institution or megastructure, seen from a distance accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/galactic-imperium.webp
+"Galactic Imperium" a vast orbital institution or megastructure, seen from a distance accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/galactic-renaissance.webp
+"Galactic Renaissance" a vast orbital institution or megastructure, seen from a distance accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/galactic-resort.webp
+"Galactic Resort" an untouched or abandoned world holding an unclaimed resource cache accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/galactic-survey-seti.webp
+"Galactic Survey: SETI" a vast orbital institution or megastructure, seen from a distance accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/galactic-trendsetters.webp
+"Galactic Trendsetters" a quiet colonised world seen from orbit accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/gambling-world.webp
+"Gambling World" a quiet colonised world seen from orbit accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/gem-world.webp
+"Gem World" an industrious inhabited world with visible extraction or refinery works accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/genetics-lab.webp
+"Genetics Lab" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/imperium-armaments-world.webp
+"Imperium Armaments World" an industrious inhabited world with visible extraction or refinery works accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/interstellar-bank.webp
+"Interstellar Bank" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/investment-credits.webp
+"Investment Credits" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/lost-alien-battle-fleet.webp
+"Lost Alien Battle Fleet" a fortified or contested world seen from orbit, with defensive installations non-human geometry, unsettling symmetry accent palette violet and magenta neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/lost-alien-warship.webp
+"Lost Alien Warship" a fortified or contested world seen from orbit, with defensive installations non-human geometry, unsettling symmetry accent palette violet and magenta neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/lost-species-ark-world.webp
+"Lost Species Ark World" an industrious inhabited world with visible extraction or refinery works accent palette acid green and pale jade neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/malevolent-lifeforms.webp
+"Malevolent Lifeforms" a fortified or contested world seen from orbit, with defensive installations accent palette acid green and pale jade neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/merchant-guild.webp
+"Merchant Guild" a vast orbital institution or megastructure, seen from a distance accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/merchant-world.webp
+"Merchant World" a quiet colonised world seen from orbit accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/mining-conglomerate.webp
+"Mining Conglomerate" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/mining-league.webp
+"Mining League" a vast orbital institution or megastructure, seen from a distance accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/mining-robots.webp
+"Mining Robots" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/mining-world.webp
+"Mining World" an industrious inhabited world with visible extraction or refinery works accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/new-earth.webp
+"New Earth" an industrious inhabited world with visible extraction or refinery works accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/new-economy.webp
+"New Economy" a vast orbital institution or megastructure, seen from a distance accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/new-galactic-order.webp
+"New Galactic Order" a vast orbital institution or megastructure, seen from a distance accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/new-military-tactics.webp
+"New Military Tactics" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/new-sparta.webp
+"New Sparta" a fortified or contested world seen from orbit, with defensive installations homeworld scale, welcoming and established accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/new-survivalists.webp
+"New Survivalists" a fortified or contested world seen from orbit, with defensive installations accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/new-vinland.webp
+"New Vinland" an industrious inhabited world with visible extraction or refinery works accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/old-earth.webp
+"Old Earth" a quiet colonised world seen from orbit homeworld scale, welcoming and established accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/outlaw-world.webp
+"Outlaw World" a fortified or contested world seen from orbit, with defensive installations accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/pan-galactic-league.webp
+"Pan-Galactic League" a vast orbital institution or megastructure, seen from a distance accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/pilgrimage-world.webp
+"Pilgrimage World" a quiet colonised world seen from orbit accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/pirate-world.webp
+"Pirate World" a fortified or contested world seen from orbit, with defensive installations accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/plague-world.webp
+"Plague World" an industrious inhabited world with visible extraction or refinery works accent palette acid green and pale jade neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/pre-sentient-race.webp
+"Pre-Sentient Race" an untouched or abandoned world holding an unclaimed resource cache accent palette acid green and pale jade neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/prosperous-world.webp
+"Prosperous World" an industrious inhabited world with visible extraction or refinery works accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/public-works.webp
+"Public Works" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/radioactive-world.webp
+"Radioactive World" an untouched or abandoned world holding an unclaimed resource cache accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/rebel-base.webp
+"Rebel Base" a fortified or contested world seen from orbit, with defensive installations insurgent markings, scorched armour plating accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/rebel-fuel-cache.webp
+"Rebel Fuel Cache" a fortified or contested world seen from orbit, with defensive installations insurgent markings, scorched armour plating accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/rebel-homeworld.webp
+"Rebel Homeworld" a fortified or contested world seen from orbit, with defensive installations insurgent markings, scorched armour plating accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/rebel-miners.webp
+"Rebel Miners" a fortified or contested world seen from orbit, with defensive installations insurgent markings, scorched armour plating accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/rebel-outpost.webp
+"Rebel Outpost" a fortified or contested world seen from orbit, with defensive installations insurgent markings, scorched armour plating accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/rebel-underground.webp
+"Rebel Underground" a fortified or contested world seen from orbit, with defensive installations insurgent markings, scorched armour plating accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/rebel-warrior-race.webp
+"Rebel Warrior Race" a fortified or contested world seen from orbit, with defensive installations insurgent markings, scorched armour plating accent palette acid green and pale jade neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/refugee-world.webp
+"Refugee World" an untouched or abandoned world holding an unclaimed resource cache accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/replicant-robots.webp
+"Replicant Robots" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/reptilian-uplift-race.webp
+"Reptilian Uplift Race" a fortified or contested world seen from orbit, with defensive installations accent palette acid green and pale jade neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/research-labs.webp
+"Research Labs" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/runaway-robots.webp
+"Runaway Robots" a fortified or contested world seen from orbit, with defensive installations accent palette amber and burnt copper neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/secluded-world.webp
+"Secluded World" an industrious inhabited world with visible extraction or refinery works accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/space-marines.webp
+"Space Marines" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/space-port.webp
+"Space Port" an industrious inhabited world with visible extraction or refinery works accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/spice-world.webp
+"Spice World" an industrious inhabited world with visible extraction or refinery works accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/star-nomad-lair.webp
+"Star Nomad Lair" a fortified or contested world seen from orbit, with defensive installations accent palette electric cyan and white neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/terraformed-world.webp
+"Terraformed World" a quiet colonised world seen from orbit accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/terraforming-robots.webp
+"Terraforming Robots" an engineered facility, machine, or civic structure in deep space accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/the-last-of-the-uplift-gnarssh.webp
+"The Last of the Uplift Gnarssh" a fortified or contested world seen from orbit, with defensive installations accent palette acid green and pale jade neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/tourist-world.webp
+"Tourist World" a quiet colonised world seen from orbit accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+
+=== cards/trade-league.webp
+"Trade League" a vast orbital institution or megastructure, seen from a distance accent palette neon lime on gunmetal neon-mechanical science fiction, dark substrate, emissive rim light, clean geometric silhouettes, thin glowing linework, volumetric haze, no text, no letters, no numbers, no logos, no people in close-up, centred composition with calm mid-tone middle so overlaid UI stays legible, portrait 3:4
+

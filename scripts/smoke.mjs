@@ -170,6 +170,12 @@ async function main() {
   ok(Array.isArray(cards.display?.sortKeys) && cards.display.sortKeys.length > 0,
      `deck browser sort keys published (${cards.display?.sortKeys?.length})`);
 
+  const assets = await (await fetch(`${URL}/api/assets`)).json();
+  ok(typeof assets.packId === 'string' && Array.isArray(assets.files),
+     `asset pack endpoint serving "${assets.packId}" (${assets.files.length} files)`);
+  const bogus = await (await fetch(`${URL}/api/assets?pack=../../etc`)).json();
+  ok(bogus.packId === 'generated', 'asset pack names are validated against traversal');
+
   // Leaving mid-game keeps the seat, and rejoining restores the same hand.
   const carolHand = JSON.stringify(C2.latest.view.hand.map(c => c.instanceId));
   await C2.rpc('leaveRoom', { code: second.code });

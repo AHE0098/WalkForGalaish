@@ -82,6 +82,21 @@ unexplained residual against the rulebook's full-box table.
 Cards render from data. Artwork is optional and swappable — see `docs/ASSETS.md`.
 `npm run assets:check` reports coverage and misnamed files.
 
+The repo ships with a **procedural pack** (`public/assets/packs/neon`): 95 card
+images and 23 symbols drawn as SVG from the card data itself by
+`npm run assets:generate`. Resource hue, a filled disc for production worlds, a
+ring for windfall worlds, hazard chevrons for military worlds and megastructure
+scale for six-cost developments all come straight from the card's own fields, so
+the picture can never disagree with the mechanics. It is our own output, so it is
+committed. `ASSET_PACK=neon` is the default.
+
+To replace it with model-generated or commissioned art, hand `art/ART-BRIEF.md`, `art/prompts.txt` and
+`art/art-manifest.csv` to an image model. They specify all 119 images (95 cards,
+23 symbols, one card back), the exact filenames the resolver expects, and a style
+guide that keeps the card corners and lower third quiet so the overlaid numbers
+and phase rail stay readable. Drop the results into
+`public/assets/packs/neon/` and set `ASSET_PACK=neon`.
+
 ## What the game does now
 
 Full round loop: opening 6-choose-4 discard → secret action-card selection → only the

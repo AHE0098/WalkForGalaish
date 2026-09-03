@@ -8,11 +8,12 @@
     "dev": "concurrently -k -n server,client -c blue,green \"npm:dev:server\" \"npm:dev:client\"",
     "dev:server": "tsx watch src/server/index.ts",
     "dev:client": "vite",
-    "build": "tsc -p tsconfig.build.json && node scripts/copy-data.mjs && vite build",
+    "build": "npm run assets:generate && tsc -p tsconfig.build.json && node scripts/copy-data.mjs && vite build",
     "start": "node dist/server/server/index.js",
     "test": "vitest run",
     "smoke": "node scripts/smoke.mjs",
     "assets:check": "node scripts/assets-check.mjs",
+    "assets:generate": "node scripts/generate-art.mjs && node scripts/generate-symbols.mjs",
     "validate:cards": "node scripts/validate-rftg-cards.cjs src/games/race-for-the-galaxy/cards/race_for_the_galaxy_base_cards.json"
   },
   "dependencies": {

@@ -1,0 +1,9 @@
+{
+  "packId": "neon",
+  "name": "Neon Mechanical (procedural)",
+  "renderMode": "hybrid",
+  "cardAspectRatio": "0.75",
+  "license": "Generated procedurally from the card data by scripts/generate-art.mjs. No third-party assets.",
+  "attribution": null,
+  "overrides": { "cards": {}, "symbols": {} }
+}

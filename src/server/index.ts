@@ -2,6 +2,7 @@ import express from 'express';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
 import path from 'node:path';
+import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { GameHost, GAMES, emptyState, type GameId } from './gameHost.js';
 import {
@@ -15,6 +16,29 @@ const rooms = createMemoryRoomStore();
 const hosts = new Map<string, GameHost>();
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
+/** Which asset pack is active, and exactly which files it contains. */
+app.get('/api/assets', (req, res) => {
+  const packId = String(req.query.pack ?? process.env.ASSET_PACK ?? 'generated');
+  const root = path.join(process.cwd(), 'public/assets/packs', packId);
+  const safe = /^[a-z0-9][a-z0-9-]*$/.test(packId);
+  if (!safe || !fs.existsSync(root))
+    return res.json({ packId: 'generated', manifest: null, files: [], baseUrl: '' });
+
+  const walk = (dir: string, prefix = ''): string[] =>
+    fs.readdirSync(dir).flatMap(f => {
+      const full = path.join(dir, f);
+      return fs.statSync(full).isDirectory()
+        ? walk(full, `${prefix}${f}/`) : [`${prefix}${f}`];
+    });
+
+  let manifest: unknown = null;
+  const mf = path.join(root, 'pack.json');
+  if (fs.existsSync(mf)) { try { manifest = JSON.parse(fs.readFileSync(mf, 'utf8')); } catch {} }
+  res.set('Cache-Control', 'public, max-age=60');
+  res.json({ packId, manifest, files: walk(root),
+             baseUrl: process.env.ASSET_BASE_URL ?? '' });
+});
+
 app.get('/api/games/:id/cards', (req, res) => {
   const g = GAMES[req.params.id as GameId];
   if (!g) return res.status(404).json({ error: 'unknown game' });
