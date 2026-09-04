@@ -203,6 +203,11 @@ async function main() {
   const bogus = await (await fetch(`${URL}/api/assets?pack=../../etc`)).json();
   ok(bogus.packId === 'generated', 'asset pack names are validated against traversal');
 
+  ok(Array.isArray(A.latest.view.options),
+     'the server publishes the choices offered to each player');
+  ok('pending' in A.latest.view.info,
+     'the server tells a player when it is waiting on a card selection');
+
   // Leaving mid-game keeps the seat, and rejoining restores the same hand.
   const carolHand = JSON.stringify(C2.latest.view.hand.map(c => c.instanceId));
   await C2.rpc('leaveRoom', { code: second.code });

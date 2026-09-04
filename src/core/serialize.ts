@@ -1,4 +1,4 @@
-import type { GameDefinition, GameState, PlayerId, Playable } from './types.js';
+import type { GameDefinition, GameState, PlayerId, Playable, PlayerOption } from './types.js';
 import { ZONE } from './zones.js';
 import { supplyCount, discardCount } from './deck.js';
 
@@ -30,6 +30,8 @@ export interface PlayerView {
   /** Per-hand-card legality for the phase in play, so the UI can highlight. */
   playable: Record<string, Playable>;
   legalActions: string[];
+  /** One-click choices the game is offering this player right now. */
+  options: PlayerOption[];
   yourChoiceSubmitted: boolean;
   revealedChoices: Record<PlayerId, unknown> | null;
   roundActions: Record<PlayerId, unknown>;
@@ -81,6 +83,7 @@ export function serializeForPlayer(
                   .map(c => ({ instanceId: c.instanceId, defId: c.defId })),
     playable: playing && def.playability ? def.playability(state, viewer) : {},
     legalActions: playing ? def.legalActions(state, viewer) : [],
+    options: playing && def.playerOptions ? def.playerOptions(state, viewer) : [],
     yourChoiceSubmitted: state.hiddenChoices[viewer] !== undefined,
     revealedChoices: state.revealedChoices,
     roundActions: (state.gameData.roundActions as Record<PlayerId, unknown>) ?? {},
@@ -110,5 +113,7 @@ function publicInfo(state: GameState, viewer: PlayerId): Record<string, unknown>
     openingDiscard: g.openingDiscard ?? false,
     keepCount: (g.keepCounts as Record<string, number> | undefined)?.[viewer] ?? null,
     reshuffleNeeded: g.reshuffleNeeded ?? false,
+    // What the game is waiting for this player to pick, if anything.
+    pending: ((g.pending as Record<string, unknown>) ?? {})[viewer] ?? null,
   };
 }

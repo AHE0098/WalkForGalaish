@@ -28,6 +28,31 @@ export function vpPool(state: GameState): number {
   return (state.gameData.vpPool as number) ?? 0;
 }
 
+/**
+ * Effects that last only for the current Settle phase. Keyed by phaseId so they
+ * cannot leak into a later phase, exactly like the action ledger.
+ */
+function phaseFlag<T>(state: GameState, bag: string, pid: PlayerId, fallback: T): T {
+  const all = (state.gameData[bag] as Record<string, Record<string, T>>) ?? {};
+  return all[state.phaseId]?.[pid] ?? fallback;
+}
+export function setPhaseFlag<T>(
+  state: GameState, bag: string, pid: PlayerId, value: T,
+): GameState {
+  const here = { ...(((state.gameData[bag] as Record<string, Record<string, T>>) ?? {})[state.phaseId] ?? {}) };
+  here[pid] = value;
+  return { ...state, gameData: { ...state.gameData, [bag]: { [state.phaseId]: here } } };
+}
+
+/** Military granted this phase by discarding a card, e.g. New Military Tactics. */
+export function temporaryMilitary(state: GameState, pid: PlayerId): number {
+  return phaseFlag<number>(state, 'tempMilitary', pid, 0);
+}
+/** A Colony Ship has been spent: the next non-military world costs nothing. */
+export function hasFreeSettle(state: GameState, pid: PlayerId): boolean {
+  return phaseFlag<boolean>(state, 'freeSettle', pid, false);
+}
+
 /** Every power in a player's tableau, in one flat list. */
 function powers(state: GameState, pid: PlayerId, phase: RacePower['phase']): RacePower[] {
   return tableauCards(state, pid).flatMap(c => c.powers.filter(p => p.phase === phase));
@@ -92,7 +117,7 @@ export function canDevelop(state: GameState, pid: PlayerId, defId: string): stri
 // ---------------------------------------------------------------- settle
 
 export function militaryStrength(state: GameState, pid: PlayerId, target?: RaceCard): number {
-  let total = 0;
+  let total = temporaryMilitary(state, pid);
   for (const p of powers(state, pid, 'settle')) {
     if (p.effectType !== 'militaryStrength' && p.effectType !== 'militaryStrengthVsTrait') continue;
     const cond = p.conditions ?? {};
@@ -103,8 +128,16 @@ export function militaryStrength(state: GameState, pid: PlayerId, target?: RaceC
   return total;
 }
 
+/** A Colony Ship cannot place an Alien production or windfall world. */
+export function colonyShipAllows(c: RaceCard): boolean {
+  const w = c.world;
+  if (!w) return false;
+  return !(w.resourceType === 'alien' && w.productionMode !== 'none');
+}
+
 export function settleCost(state: GameState, pid: PlayerId, c: RaceCard): number {
   if (c.world?.settlementMode !== 'payment') return 0;
+  if (hasFreeSettle(state, pid) && colonyShipAllows(c)) return 0;
   let cost = c.world.settleCost ?? 0;
   for (const p of powers(state, pid, 'settle')) {
     if (p.effectType !== 'settleCostReduction') continue;
@@ -115,14 +148,38 @@ export function settleCost(state: GameState, pid: PlayerId, c: RaceCard): number
   return Math.max(0, cost);
 }
 
+/** Does this player hold a "pay for military" power, and may it target this world? */
+export function payForMilitaryCost(
+  state: GameState, pid: PlayerId, c: RaceCard,
+): number | null {
+  const w = c.world;
+  if (!w || w.settlementMode !== 'military') return null;
+  // Never allowed against an Alien production or windfall world.
+  if (w.resourceType === 'alien' && w.productionMode !== 'none') return null;
+  const has = tableauCards(state, pid).some(t =>
+    t.powers.some(p => p.phase === 'settle' && p.effectType === 'payForMilitary'));
+  if (!has) return null;
+  let cost = (w.defense ?? 0) - 1;
+  // Cost discounts combine with it; Military never does.
+  for (const p of tableauCards(state, pid).flatMap(t => t.powers)) {
+    if (p.phase !== 'settle' || p.effectType !== 'settleCostReduction') continue;
+    if (p.conditions?.resourceType && p.conditions.resourceType !== w.resourceType) continue;
+    cost -= p.value ?? 0;
+  }
+  if (hasFreeSettle(state, pid) && colonyShipAllows(c)) cost = 0;
+  return Math.max(0, cost);
+}
+
 export function canSettle(state: GameState, pid: PlayerId, defId: string): string | null {
   const c = card(defId);
   if (c.cardType !== 'world' || !c.world) return 'Not a world.';
   if (c.world.settlementMode === 'military') {
     const mil = militaryStrength(state, pid, c);
     const need = c.world.defense ?? 0;
-    if (mil < need) return `Needs ${need} military; you have ${mil}.`;
-    return null;
+    if (mil >= need) return null;
+    const pay = payForMilitaryCost(state, pid, c);
+    if (pay !== null && handSize(state, pid) - 1 >= pay) return null;
+    return `Needs ${need} military; you have ${mil}.`;
   }
   const cost = settleCost(state, pid, c);
   if (handSize(state, pid) - 1 < cost) return `Costs ${cost}; not enough cards to pay.`;
@@ -133,8 +190,13 @@ export function canSettle(state: GameState, pid: PlayerId, defId: string): strin
 export function priceOf(state: GameState, pid: PlayerId, defId: string, phase: string): number | null {
   const c = card(defId);
   if (phase === 'develop') return c.cardType === 'development' ? developCost(state, pid, c) : null;
-  if (phase === 'settle')  return c.cardType === 'world'
-    ? (c.world?.settlementMode === 'military' ? 0 : settleCost(state, pid, c)) : null;
+  if (phase === 'settle') {
+    if (c.cardType !== 'world') return null;
+    if (c.world?.settlementMode !== 'military') return settleCost(state, pid, c);
+    // Conquest is free; paying is only relevant when military is short.
+    if (militaryStrength(state, pid, c) >= (c.world.defense ?? 0)) return 0;
+    return payForMilitaryCost(state, pid, c) ?? 0;
+  }
   return null;
 }
 

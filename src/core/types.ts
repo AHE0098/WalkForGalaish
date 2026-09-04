@@ -98,6 +98,12 @@ export interface GameDefinition {
   playerStats?(state: GameState, playerId: PlayerId): Record<string, number | string>;
   /** Public label for a face-down token sitting on a card, e.g. a good's kind. */
   tokenKind?(state: GameState, hostInstanceId: string): string | null;
+  /**
+   * Concrete choices this player may take right now, each a single click.
+   * Used where the rules force an action but leave the player the decision of
+   * which one — Race's Consume phase, for example.
+   */
+  playerOptions?(state: GameState, playerId: PlayerId): PlayerOption[];
   /** A safe default move so an absent player never stalls the table. */
   autoAction?(state: GameState, playerId: PlayerId): GameAction | null;
   /** Seconds a phase may sit idle before absent players are moved along. */
@@ -120,6 +126,18 @@ export interface GameAction {
 }
 
 /** Tells the generic renderer what to show without telling it what any of it means. */
+export interface PlayerOption {
+  id: string;
+  label: string;
+  detail?: string;
+  /** Card instance ids this option would spend, so the UI can highlight them. */
+  spends?: string[];
+  /** Kinds involved, for icon rendering. */
+  kinds?: string[];
+  /** The rules compel this; the click exists so the table can follow along. */
+  forced?: boolean;
+}
+
 export interface SortKey {
   id: string;
   label: string;

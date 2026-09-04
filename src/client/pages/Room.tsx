@@ -13,6 +13,7 @@ import { ActionPrompt, ACTION_CARDS } from '../views/ActionPrompt.js';
 import { SortBar } from '../views/SortBar.js';
 import { sortByKeys, type SortKey } from '../sort.js';
 import { GoodTally } from '../Good.js';
+import { OptionList } from '../views/OptionList.js';
 
 const PHASES = [
   { id: 'explore', label: 'I Explore' }, { id: 'develop', label: 'II Develop' },
@@ -122,6 +123,8 @@ export function Room() {
   const phase = view.currentPhase;
   const legal: string[] = view.legalActions ?? [];
   const opening = !!view.info?.openingDiscard;
+  const pending = view.info?.pending as
+    { purpose: string; count: number; label: string } | null | undefined;
   const keepCount = view.info?.keepCount ?? 1;
   const iAmReady = !!me?.ready;
   // yourChoiceSubmitted is authoritative for "have I chosen this round".
@@ -143,7 +146,7 @@ export function Room() {
   };
 
   const moodOf = (instanceId: string): CardMood => {
-    if (opening) return picked.includes(instanceId) ? 'selected' : 'plain';
+    if (opening || pending) return picked.includes(instanceId) ? 'selected' : 'playable';
     if (paying) return payment.includes(instanceId) ? 'selected'
       : instanceId === paying.instanceId ? 'plain' : 'playable';
     const p = view.playable[instanceId];
@@ -153,6 +156,7 @@ export function Room() {
 
   const tapHandCard = (c: any) => {
     if (opening) return toggle(c.instanceId, 2);
+    if (pending) return toggle(c.instanceId, pending.count);
     if (paying) {
       if (c.instanceId === paying.instanceId) return;
       return setPayment(prev => prev.includes(c.instanceId)
@@ -169,10 +173,14 @@ export function Room() {
   };
 
   const instruction = opening ? `Discard 2 cards to finish setup (${picked.length}/2)`
+    : pending ? `${pending.label} — choose ${pending.count} (${picked.length}/${pending.count})`
     : phase === 'explore' ? `Keep ${keepCount} of the drawn cards (${picked.length}/${keepCount})`
     : phase === 'develop' ? 'Play one development, or pass'
     : phase === 'settle' ? 'Settle one world, or pass'
-    : phase === 'consume' ? 'Consume resolved — open status to see what happened'
+    : phase === 'consume'
+      ? ((view.options ?? []).length
+          ? 'Consume: choose how to spend your goods'
+          : 'Nothing left to consume — continue when ready')
     : phase === 'reshuffle' ? 'Everyone must agree before the graveyard is shuffled back'
     : phase === 'produce' ? 'Goods produced — open status to see what happened'
     : '';
@@ -184,7 +192,8 @@ export function Room() {
           { id: 'status', title: 'Game status', node: <StatusView view={view} room={room} /> })}>
           <span className="statusbtn__main"><b>{me?.score ?? 0}</b> VP<em>R{view.round}</em></span>
           <span className="statusbtn__sub">
-            deck {view.supplyCount} · grave {view.discardCount} · mil {me?.stats?.military ?? 0} ·
+            deck {view.supplyCount} · grave {view.discardCount} · mil {me?.stats?.military ?? 0}
+            {Number(me?.stats?.tempMilitary ?? 0) > 0 && ` (+${me!.stats!.tempMilitary} temp)`} ·
             goods {me?.stats?.goods ?? 0} ·
             ready {view.players.filter((p: any) => p.ready).length}/{view.players.length}
           </span>
@@ -231,6 +240,35 @@ export function Room() {
       )}
       {instruction && <p className="instruction">{instruction}</p>}
       {error && <p className="err" onClick={() => setError(null)}>{error}</p>}
+
+      {(view.options ?? []).length > 0 && !pending && (
+        <OptionList
+          title={phase === 'produce' ? 'Produce'
+            : phase === 'settle' ? 'Optional: discard a card for an advantage'
+            : 'Spend your goods'}
+          note={phase === 'produce'
+            ? 'The rules place these goods for you — confirm so everyone can follow along.'
+            : phase === 'settle'
+              ? 'These cards leave your tableau permanently, and only help this phase.'
+              : 'Consuming is compulsory in Race, but which good and which power is your call.'}
+          options={view.options}
+          onChoose={id => act('CHOOSE_OPTION', { optionId: id })}
+          onAuto={phase === 'consume' ? () => act('AUTO_RESOLVE') : undefined} />
+      )}
+
+      {pending && (
+        <section className="options">
+          <h2 className="tight">{pending.label}</h2>
+          <p className="muted tiny">
+            Choose {pending.count} card{pending.count === 1 ? '' : 's'} from your hand below
+            {pending.purpose === 'discardForVp' ? ' — each is worth a victory point.' : '.'}
+          </p>
+          <button className="primary" disabled={picked.length !== pending.count}
+                  onClick={() => act('SUBMIT_SELECTION', { instanceIds: picked })}>
+            Discard {picked.length}/{pending.count}
+          </button>
+        </section>
+      )}
 
       {phase === 'reshuffle' && (
         <Reshuffle ready={iAmReady} discardCount={view.discardCount}
@@ -283,6 +321,7 @@ export function Room() {
           {me?.tableau.map((t: any) => (
             <GenericCard key={t.instanceId} face={face(t.defId)} goods={t.goods.length}
               goodKind={t.goods[0]?.kind}
+              mood={phase === 'consume' && t.goods.length ? 'playable' : 'plain'}
               onClick={() => { const f = face(t.defId); if (f) openCard(f); }} />
           ))}
           {!me?.tableau.length && <p className="muted">Nothing played yet.</p>}

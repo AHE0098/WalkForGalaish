@@ -42,3 +42,41 @@
 - **`npm test` runs `tsc --noEmit` over everything first**, tests included. The failure
   mode this prevents is real: a stray line in a test file passed `vitest` (which strips
   types without checking them) and only surfaced on Render.
+
+## Consume belongs to the player
+
+Auto-resolving Consume was wrong. It was rules-legal — consumption is compulsory — but
+it silently made choices that are the player's: which good to sell for the Trade bonus,
+and which power to spend a good on. A playtester traded a good he wanted to keep and
+had a second one eaten in the same invisible step.
+
+The engine now enumerates concrete options through the generic `playerOptions` hook and
+waits. `legalActions` returns `CHOOSE_OPTION` while any option remains, so the phase
+cannot end early, and `READY` only once nothing is left — compulsion is preserved
+without removing agency. `AUTO_RESOLVE` is opt-in, and is what an absent player gets.
+
+## Choice by default; forced moves are still clicked
+
+Every point where the engine used to pick cards on the player's behalf now asks:
+
+- the end-of-round hand limit inserts a **Discard step** into the round, and each player
+  over the limit chooses what to lose (anyone who does not choose is trimmed when the
+  step completes, so the table cannot hang);
+- **Deficit Spending** raises a pending selection instead of eating the first cards in hand;
+- **Produce** is compulsory by the rules, so it is offered as a single option flagged
+  `forced: true` and labelled "compulsory" — the click exists purely so the move is
+  visible.
+
+`Pending` (pick N cards) and `PlayerOption.forced` both live in the generic layer, so any
+game gets both behaviours for free.
+
+## Discard-this-card powers
+
+New Military Tactics, Colony Ship and Contact Specialist were all completely inert:
+`militaryStrength` summed only the plain military powers, and nothing consulted the
+other two effect types at all. They are now implemented, with the two discretionary
+ones offered as Settle-phase options so the player decides whether to spend the card.
+
+Their effects last for one phase only and are stored keyed by `phaseId` — the same
+pattern as the action ledger — so a boost cannot leak into a later phase. A test
+asserts exactly that.

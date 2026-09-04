@@ -105,11 +105,20 @@ never from the card underneath, and consuming it returns that card to the discar
 Clients are told a good's kind (public) but never its identity (secret).
 
 Production worlds refill every Produce phase; windfall worlds receive one good when
-settled, and otherwise only via the Produce bonus or a card power. Consume is resolved by
-the engine because the rules make it mandatory: kind-specific powers run before generic
-ones so a general power cannot eat the good a specific one needed, then powers are applied
-by how much each pays per good. Trade sells at 2/3/4/5 cards for novelty/rare/genes/alien
-plus any Trade powers.
+settled, and otherwise only via the Produce bonus or a card power.
+
+**Nothing is discarded or spent without a click.** Paying for a card, keeping explore
+draws, trimming to the hand limit at the end of a round, and giving up cards for victory
+points are all choices the player makes. Where the rules genuinely force a move — placing
+production goods — the player still confirms it, and the button is marked *forced*, so
+the table can follow what happened rather than watching goods appear silently.
+
+**Consuming is compulsory, but every decision inside it belongs to the player.** The
+engine enumerates each legal move — sell this genes good, spend that novelty good on
+Consumer Markets — and the phase does not end while any remains. Nothing is spent
+without a click. A "resolve the rest for me" button is there for players who don't
+want to click through, and an absent player has it done for them. Trade sells at
+2/3/4/5 cards for novelty/rare/genes/alien plus any Trade powers.
 
 ## What the game does now
 
@@ -149,9 +158,9 @@ applied in the order the player picks the keys.
 
 ## Not yet implemented
 
-- Consume is auto-resolved greedily rather than letting the player order their powers
 - Explore/settle/produce powers are applied for the common cases; rarer ones are inert
   (the card still plays with its printed cost and VP)
+- Some rarer card powers remain inert; those cards still play at their printed cost and VP
 - The experienced two-player variant (nine action cards, choose two)
 - The six optional start worlds
 - No card artwork yet — see `docs/ASSETS.md` to add some

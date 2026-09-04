@@ -32,7 +32,12 @@ export function StatusView({ view, room }: { view: any; room: any }) {
               </td>
               <td>{p.score}</td>
               <td>{chips[p.id] ?? 0}</td>
-              <td>{p.stats?.military ?? 0}</td>
+              <td>
+                {p.stats?.military ?? 0}
+                {Number(p.stats?.tempMilitary ?? 0) > 0 &&
+                  <span className="temp" title="temporary this phase">
+                    +{p.stats.tempMilitary}</span>}
+              </td>
               <td><GoodTally stats={p.stats} /></td>
               <td>{p.handCount}</td>
               <td>{p.tableau.length}/12</td>

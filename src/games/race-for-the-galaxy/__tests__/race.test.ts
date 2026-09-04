@@ -283,7 +283,13 @@ describe('produce', () => {
       const [withCard, inst] = giveCard(s, 'p1', id);
       s = moveCard(withCard, inst, ZONE.tableau, { owner: 'p1', faceDown: false });
     }
-    const after = race.onPhaseEnter!(inPhase(s, 'produce'), 'produce', createRng(9));
+    const ready = inPhase(s, 'produce');
+    // Producing is compulsory but still confirmed, so the table can follow along.
+    const opt = race.playerOptions!(ready, 'p1')[0]!;
+    expect(opt.forced).toBe(true);
+    const after = race.resolveAction(ready, 'p1',
+      { type: 'CHOOSE_OPTION', phaseId: ready.phaseId, payload: { optionId: opt.id } },
+      createRng(9)).state!;
     const prodInst = cardsIn(after, ZONE.tableau, 'p1').find(c => c.defId === prod.cardId)!;
     const windInst = cardsIn(after, ZONE.tableau, 'p1').find(c => c.defId === wind.cardId)!;
     expect(goodsOn(after, prodInst.instanceId)).toHaveLength(1);
@@ -296,7 +302,10 @@ describe('produce', () => {
     const [withCard, inst] = giveCard(s, 'p1', wind.cardId);
     s = moveCard(withCard, inst, ZONE.tableau, { owner: 'p1', faceDown: false });
     s = { ...s, gameData: { ...s.gameData, roundActions: { p1: 'produce' } } };
-    const after = race.onPhaseEnter!(inPhase(s, 'produce'), 'produce', createRng(9));
+    const ready = inPhase(s, 'produce');
+    const after = race.resolveAction(ready, 'p1',
+      { type: 'CHOOSE_OPTION', phaseId: ready.phaseId, payload: { optionId: '@produce' } },
+      createRng(9)).state!;
     expect(goodsOn(after, inst)).toHaveLength(1);
   });
 });
@@ -312,7 +321,15 @@ describe('consume', () => {
       { owner: 'p1', attachedTo: inst, faceDown: true });
 
     const poolBefore = vpPool(s);
-    const after = race.onPhaseEnter!(inPhase(s, 'consume'), 'consume', createRng(2));
+    // Consumption is now the player's choice: the engine offers, it does not act.
+    const ready = inPhase(s, 'consume');
+    const opts = race.playerOptions!(ready, 'p1');
+    expect(opts.length).toBeGreaterThan(0);
+    const r = race.resolveAction(ready, 'p1',
+      { type: 'CHOOSE_OPTION', phaseId: ready.phaseId, payload: { optionId: opts[0]!.id } },
+      createRng(2));
+    expect(r.ok).toBe(true);
+    const after = r.state!;
     expect(vpChips(after, 'p1')).toBeGreaterThan(0);
     expect(vpPool(after)).toBeLessThan(poolBefore);
     expect(goodsOn(after, inst)).toHaveLength(0);
@@ -340,14 +357,42 @@ describe('playability', () => {
 });
 
 describe('hand limit', () => {
-  it('discards down to ten at the end of the last phase of a round', () => {
+  it('asks the player which cards to lose, rather than taking the first ones', () => {
     let s = setup();
     while (cardsIn(s, ZONE.hand, 'p1').length < 14) {
       const c = cardsIn(s, ZONE.supply)[0]!;
       s = moveCard(s, c.instanceId, ZONE.hand, { owner: 'p1', faceDown: false });
     }
+    // Ending the round schedules a Discard step instead of discarding silently.
     const after = race.onPhaseComplete(inPhase(s, 'produce'), 'produce', createRng(1));
-    expect(cardsIn(after, ZONE.hand, 'p1')).toHaveLength(10);
+    expect(cardsIn(after, ZONE.hand, 'p1')).toHaveLength(14);
+    expect(after.phasesThisRound).toContain('discard');
+
+    const step = { ...after, phasesThisRound: ['discard'], phaseIndex: 0 };
+    expect(race.legalActions(step, 'p1')).toEqual(['SUBMIT_SELECTION']);
+
+    // The player keeps whichever four they choose to throw away.
+    const hand = cardsIn(step, ZONE.hand, 'p1');
+    const sacrifice = hand.slice(-4).map(c => c.instanceId);
+    const kept = hand.slice(0, 10).map(c => c.instanceId);
+    const done = race.resolveAction(step, 'p1',
+      { type: 'SUBMIT_SELECTION', phaseId: step.phaseId,
+        payload: { instanceIds: sacrifice } }, createRng(1));
+    expect(done.ok).toBe(true);
+    expect(cardsIn(done.state!, ZONE.hand, 'p1').map(c => c.instanceId).sort())
+      .toEqual(kept.sort());
+  });
+
+  it('trims anyone who never chose, once the discard step completes', () => {
+    let s = setup();
+    while (cardsIn(s, ZONE.hand, 'p1').length < 13) {
+      const c = cardsIn(s, ZONE.supply)[0]!;
+      s = moveCard(s, c.instanceId, ZONE.hand, { owner: 'p1', faceDown: false });
+    }
+    const scheduled = race.onPhaseComplete(inPhase(s, 'produce'), 'produce', createRng(1));
+    const step = { ...scheduled, phasesThisRound: ['discard'], phaseIndex: 0 };
+    const done = race.onPhaseComplete(step, 'discard', createRng(1));
+    expect(cardsIn(done, ZONE.hand, 'p1')).toHaveLength(10);
   });
 });
 

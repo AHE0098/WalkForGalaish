@@ -488,3 +488,20 @@ input::placeholder { color:var(--muted); }
 .tally__item i { font-style:normal; font-size:10.5px; font-weight:700; color:var(--ink); }
 .headtally { float:right; font-size:10px; text-transform:none; letter-spacing:0;
   color:var(--muted); display:inline-flex; align-items:center; gap:5px; }
+
+/* ---------------------------------------------------------------- options */
+.options { border:2px solid var(--neon-dim); border-radius:var(--r); padding:12px;
+  margin:12px 0; background:var(--panel); box-shadow:var(--shadow); animation:rise .18s ease; }
+.options h2 { color:var(--neon); opacity:1; }
+.optiongrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:7px; margin:10px 0 8px; }
+.optionbtn { display:flex; align-items:center; gap:9px; text-align:left; padding:9px 11px;
+  border-radius:var(--r-sm); }
+.optionbtn b { display:block; font-size:13px; }
+.optionbtn i { display:block; font-style:normal; font-size:11px; color:var(--neon); }
+.optionbtn__kinds { display:flex; gap:2px; flex:0 0 auto; }
+
+.forced { margin-left:auto; font-size:9px; font-weight:800; text-transform:uppercase;
+  letter-spacing:.06em; color:var(--bg); background:var(--amber); border-radius:999px;
+  padding:2px 7px; flex:0 0 auto; }
+.temp { color:var(--amber); font-size:10px; font-weight:800; margin-left:3px; }
