@@ -33,3 +33,12 @@
 - **`waitingOn` is computed on the server** and sent to every client, so all players
   see the same answer to "who are we waiting for" instead of each deriving it from
   data that could be stale.
+
+## Build hygiene
+
+- **Tests are excluded from the production build.** `tsconfig.build.json` compiles only
+  `core`, `games` and `server` source; a type error in a test file has no business
+  breaking a deploy.
+- **`npm test` runs `tsc --noEmit` over everything first**, tests included. The failure
+  mode this prevents is real: a stray line in a test file passed `vitest` (which strips
+  types without checking them) and only surfaced on Render.

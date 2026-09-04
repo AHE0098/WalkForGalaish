@@ -4,5 +4,6 @@
     "noEmit": false, "outDir": "dist/server", "module": "ESNext",
     "moduleResolution": "Bundler", "rootDir": "src"
   },
-  "include": ["src/core", "src/games", "src/server"]
+  "include": ["src/core", "src/games", "src/server"],
+  "exclude": ["**/__tests__/**", "**/*.test.ts", "**/*.test.tsx"]
 }

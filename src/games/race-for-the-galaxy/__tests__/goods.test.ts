@@ -5,6 +5,7 @@ import { raceForTheGalaxy as race } from '../definition.js';
 import { RACE_CARDS, card } from '../cards.js';
 import { goodsOn, playerGoods, vpChips, vpPool, tableauInstances } from '../rules.js';
 import { emptyState } from '../../../server/gameHost.js';
+import { serializeForPlayer } from '../../../core/serialize.js';
 import type { GameState, Player } from '../../../core/types.js';
 
 const players: Player[] = [
@@ -63,10 +64,13 @@ describe('goods have a kind, taken from the world they sit on', () => {
     const [s, inst] = inTableau(base(), 'p1', world.cardId);
     const withIt = withGood(s, 'p1', inst);
     const good = Object.values(withIt.cards).find(c => c.zone === ZONE.goods)!;
-    const view = race.serializePublicState ? null : null;
-    const entry = { kind: race.tokenKind!(withIt, inst) };
+    const view = serializeForPlayer(withIt, race, 'p2');   // an opponent's view
+    const entry = view.players.find(p => p.id === 'p1')!.tableau
+      .find(t => t.instanceId === inst)!.goods[0]!;
     expect(entry.kind).toBe('genes');
     expect(good.faceDown).toBe(true);
+    // The kind is public; the card sitting under it is not.
+    expect(JSON.stringify(view)).not.toContain(good.instanceId);
   });
 });
 

@@ -10,7 +10,7 @@ Requires Node 20+.
 ```bash
 npm install
 npm run dev      # http://localhost:5173 (client) + :3000 (server)
-npm test         # unit tests
+npm test         # typecheck + unit tests
 npm run smoke    # two-client end-to-end check against the production build
 npm run build    # production build
 npm start        # serve the build on $PORT (default 3000)
