@@ -12,6 +12,7 @@ import { MenuView } from '../views/MenuView.js';
 import { ActionPrompt, ACTION_CARDS } from '../views/ActionPrompt.js';
 import { SortBar } from '../views/SortBar.js';
 import { sortByKeys, type SortKey } from '../sort.js';
+import { GoodTally } from '../Good.js';
 
 const PHASES = [
   { id: 'explore', label: 'I Explore' }, { id: 'develop', label: 'II Develop' },
@@ -184,6 +185,7 @@ export function Room() {
           <span className="statusbtn__main"><b>{me?.score ?? 0}</b> VP<em>R{view.round}</em></span>
           <span className="statusbtn__sub">
             deck {view.supplyCount} · grave {view.discardCount} · mil {me?.stats?.military ?? 0} ·
+            goods {me?.stats?.goods ?? 0} ·
             ready {view.players.filter((p: any) => p.ready).length}/{view.players.length}
           </span>
         </button>
@@ -252,14 +254,14 @@ export function Room() {
               </header>
               <div className="opp__stats">
                 hand {p.handCount} · {p.score} vp · mil {p.stats?.military ?? 0} ·
-                goods {p.stats?.goods ?? 0} · {p.tableau.length}/12
+                {p.tableau.length}/12 <GoodTally stats={p.stats} />
                 {view.roundActions?.[p.id] &&
                   <span className="whotag">{String(view.roundActions[p.id])}</span>}
               </div>
               <div className="minirow">
                 {p.tableau.map((t: any) => (
                   <GenericCard key={t.instanceId} face={face(t.defId)} size="mini"
-                    goods={t.goods.length}
+                    goods={t.goods.length} goodKind={t.goods[0]?.kind}
                     onClick={() => { const f = face(t.defId); if (f) openCard(f); }} />
                 ))}
               </div>
@@ -273,10 +275,14 @@ export function Room() {
       )}
 
       <section>
-        <h2>Your tableau <span className="muted">({me?.tableau.length ?? 0} of 12)</span></h2>
+        <h2>
+          Your tableau <span className="muted">({me?.tableau.length ?? 0} of 12)</span>
+          <span className="headtally">goods <GoodTally stats={me?.stats} /></span>
+        </h2>
         <div className="cardrow">
           {me?.tableau.map((t: any) => (
             <GenericCard key={t.instanceId} face={face(t.defId)} goods={t.goods.length}
+              goodKind={t.goods[0]?.kind}
               onClick={() => { const f = face(t.defId); if (f) openCard(f); }} />
           ))}
           {!me?.tableau.length && <p className="muted">Nothing played yet.</p>}

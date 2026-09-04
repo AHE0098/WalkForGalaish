@@ -1,4 +1,5 @@
 import React from 'react';
+import { GoodTally } from '../Good.js';
 
 /** Everything a player might want to check, including live military strength. */
 export function StatusView({ view, room }: { view: any; room: any }) {
@@ -32,7 +33,7 @@ export function StatusView({ view, room }: { view: any; room: any }) {
               <td>{p.score}</td>
               <td>{chips[p.id] ?? 0}</td>
               <td>{p.stats?.military ?? 0}</td>
-              <td>{p.stats?.goods ?? 0}</td>
+              <td><GoodTally stats={p.stats} /></td>
               <td>{p.handCount}</td>
               <td>{p.tableau.length}/12</td>
               <td className="tiny">{String(actions[p.id] ?? '—')}</td>

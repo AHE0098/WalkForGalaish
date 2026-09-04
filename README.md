@@ -97,6 +97,20 @@ guide that keeps the card corners and lower third quiet so the overlaid numbers
 and phase rail stay readable. Drop the results into
 `public/assets/packs/neon/` and set `ASSET_PACK=neon`.
 
+## Goods
+
+There are four kinds — novelty, rare elements, genes and alien technology. A good is a
+real face-down card from the supply sitting on a world; its **kind comes from the world**,
+never from the card underneath, and consuming it returns that card to the discard pile.
+Clients are told a good's kind (public) but never its identity (secret).
+
+Production worlds refill every Produce phase; windfall worlds receive one good when
+settled, and otherwise only via the Produce bonus or a card power. Consume is resolved by
+the engine because the rules make it mandatory: kind-specific powers run before generic
+ones so a general power cannot eat the good a specific one needed, then powers are applied
+by how much each pays per good. Trade sells at 2/3/4/5 cards for novelty/rare/genes/alien
+plus any Trade powers.
+
 ## What the game does now
 
 Full round loop: opening 6-choose-4 discard → secret action-card selection → only the

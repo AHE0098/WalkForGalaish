@@ -182,6 +182,12 @@ async function main() {
      'each player carries a score breakdown');
   ok(A.latest.view.players.every(p => typeof p.stats?.military === 'number'),
      'military strength is reported for every player');
+  ok(A.latest.view.players.every(p =>
+       ['novelty','rare','genes','alien'].every(k => typeof p.stats?.[k] === 'number')),
+     'goods are broken down by kind for every player');
+  const anyGoods = A.latest.view.players.flatMap(p => p.tableau).flatMap(t => t.goods);
+  ok(anyGoods.every(g => 'kind' in g && !/#/.test(g.goodId ?? '')),
+     `goods carry a public kind and an opaque id (${anyGoods.length} on the table)`);
   ok(Array.isArray(A.latest.view.waitingOn), 'the server names who the table waits on');
 
   // A player who drops must not freeze the table: the server plays for them.

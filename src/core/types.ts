@@ -96,6 +96,8 @@ export interface GameDefinition {
   scoreParts?(state: GameState, playerId: PlayerId): Record<string, number>;
   /** Live per-player numbers for the status panel (military, goods, ...). */
   playerStats?(state: GameState, playerId: PlayerId): Record<string, number | string>;
+  /** Public label for a face-down token sitting on a card, e.g. a good's kind. */
+  tokenKind?(state: GameState, hostInstanceId: string): string | null;
   /** A safe default move so an absent player never stalls the table. */
   autoAction?(state: GameState, playerId: PlayerId): GameAction | null;
   /** Seconds a phase may sit idle before absent players are moved along. */

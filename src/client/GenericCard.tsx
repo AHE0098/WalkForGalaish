@@ -1,6 +1,7 @@
 import React from 'react';
 import { costFace, powersByPhase, type CardFace } from './cardDb.js';
 import { useAssets } from './assets.js';
+import { Good } from './Good.js';
 
 export type CardMood = 'plain' | 'playable' | 'blocked' | 'selected';
 export type CardSize = 'mini' | 'normal' | 'large';
@@ -14,10 +15,11 @@ export type CardSize = 'mini' | 'normal' | 'large';
  * dropped in behind it.
  */
 export function GenericCard({
-  face, mood = 'plain', size = 'normal', badge, goods = 0, onClick, imageUrl,
+  face, mood = 'plain', size = 'normal', badge, goods = 0, goodKind, onClick, imageUrl,
 }: {
   face: CardFace | undefined; mood?: CardMood; size?: CardSize;
-  badge?: string; goods?: number; onClick?: () => void; imageUrl?: string | null;
+  badge?: string; goods?: number; goodKind?: string | null;
+  onClick?: () => void; imageUrl?: string | null;
 }) {
   const assets = useAssets();
   if (!face) return <div className={`card card--${size} card--ghost`} />;
@@ -76,7 +78,12 @@ export function GenericCard({
       )}
 
       {mini && hasPowers && <span className="card__more" aria-hidden>…</span>}
-      {goods > 0 && <span className="good" title={`${goods} good`}>{goods > 1 ? goods : ''}</span>}
+      {goods > 0 && (
+        <span className="goodslot" title={`${goods} ${goodKind ?? ''} good${goods > 1 ? 's' : ''}`}>
+          <Good kind={goodKind ?? face.world?.resourceType ?? null} size={size === 'mini' ? 13 : 17} />
+          {goods > 1 && <i>{goods}</i>}
+        </span>
+      )}
       {badge && <span className="card__badge">{badge}</span>}
       {size === 'normal' && <span className="card__more card__more--corner" aria-hidden>…</span>}
     </button>

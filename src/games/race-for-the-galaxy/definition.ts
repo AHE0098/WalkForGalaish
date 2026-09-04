@@ -139,26 +139,7 @@ export const raceForTheGalaxy: GameDefinition = {
       return next;
     }
 
-    if (phase === 'produce') {
-      for (const p of next.players) {
-        for (const inst of tableauInstances(next, p.id)) {
-          const c = card(inst.defId);
-          if (c.world?.productionMode !== 'production') continue;
-          if (goodsOn(next, inst.instanceId).length) continue;
-          next = placeGood(next, p.id, inst.instanceId, rng);
-          for (const pow of c.powers)
-            if (pow.phase === 'produce' && pow.effectType === 'drawOnProducedGoodHere')
-              next = drawToHand(next, p.id, pow.cardsDrawn ?? 1, rng);
-        }
-        // Produce action bonus: a good on one empty windfall world.
-        if (chose(next, p.id, 'produce')) {
-          const empty = tableauInstances(next, p.id).find(i =>
-            card(i.defId).world?.productionMode === 'windfall' && !goodsOn(next, i.instanceId).length);
-          if (empty) next = placeGood(next, p.id, empty.instanceId, rng);
-        }
-      }
-      return { ...next, log: [...next.log, 'Produce: goods placed.'] };
-    }
+    if (phase === 'produce') return resolveProduce(next, rng);
     return next;
   },
 
@@ -334,10 +315,19 @@ export const raceForTheGalaxy: GameDefinition = {
   // dropped their connection are ever played for (see GameHost.tick).
   phaseTimeoutSeconds: 0,
 
+  tokenKind(state, hostInstanceId) {
+    const inst = state.cards[hostInstanceId];
+    return inst ? card(inst.defId).world?.resourceType ?? null : null;
+  },
+
   playerStats(state, playerId) {
+    const goods = playerGoods(state, playerId);
+    const byKind = (k: string) => goods.filter(g => g.kind === k).length;
     return {
       military: militaryStrength(state, playerId),
-      goods: playerGoods(state, playerId).length,
+      goods: goods.length,
+      novelty: byKind('novelty'), rare: byKind('rare'),
+      genes: byKind('genes'), alien: byKind('alien'),
       tableau: tableauCards(state, playerId).length,
       hand: handSize(state, playerId),
     };
@@ -409,64 +399,225 @@ function name(state: GameState, pid: PlayerId): string {
   return state.players.find(p => p.id === pid)?.name ?? pid;
 }
 
+/** Goods a player holds of one kind, or of any kind. */
+function goodsOfKind(state: GameState, pid: PlayerId, kind?: string) {
+  return playerGoods(state, pid).filter(g => !kind || g.kind === kind);
+}
+
+function spendGood(state: GameState, good: { good: { instanceId: string } }): GameState {
+  return moveCard(state, good.good.instanceId, ZONE.discard, { owner: null, faceDown: true });
+}
+
+/** Extra cards drawn when selling a good, from Trade powers in the tableau. */
+function tradeBonusFor(state: GameState, pid: PlayerId, kind: string | null,
+                       worldInstanceId: string): number {
+  let extra = 0;
+  for (const inst of tableauInstances(state, pid)) {
+    for (const p of card(inst.defId).powers) {
+      if (p.phase !== 'consume' || p.effectType !== 'tradeBonus') continue;
+      const cond = p.conditions ?? {};
+      if (cond.source === 'thisWorld' && inst.instanceId !== worldInstanceId) continue;
+      if (cond.resourceType && cond.resourceType !== kind) continue;
+      extra += p.cardsDrawn ?? p.value ?? 0;
+    }
+  }
+  return extra;
+}
+
+function tradePrice(kind: string | null): number {
+  return TRADE_PRICES[kind as keyof typeof TRADE_PRICES] ?? 0;
+}
+
+/** Sell one good for cards. Used by the Trade bonus and by trade-price powers. */
+function sellGood(state: GameState, pid: PlayerId, rng: Rng,
+                  opts: { applyTradePowers: boolean; kind?: string }): [GameState, string | null] {
+  const goods = goodsOfKind(state, pid, opts.kind);
+  if (!goods.length) return [state, null];
+  // Sell the most valuable good available.
+  const best = goods.slice().sort((a, b) => tradePrice(b.kind) - tradePrice(a.kind))[0]!;
+  const cards = tradePrice(best.kind)
+    + (opts.applyTradePowers ? tradeBonusFor(state, pid, best.kind, best.world) : 0);
+  let next = spendGood(state, best);
+  next = drawToHand(next, pid, cards, rng);
+  return [next, `sold a ${best.kind} good for ${cards} cards`];
+}
+
+interface ConsumePower {
+  power: ReturnType<typeof card>['powers'][number];
+  /** VP per good, used to spend goods on the most valuable power first. */
+  rank: number;
+  specific: boolean;
+}
+
 /**
- * Consume is mandatory, so v1 resolves it automatically: sell first if the player
- * took the Trade bonus, then apply each consume power greedily.
+ * Consume is mandatory, so the engine resolves it. Powers are applied in a
+ * sensible order rather than tableau order: kind-specific powers first, so a
+ * generic power does not eat the good a specific one needed, then by how much
+ * each pays per good.
  */
 function resolveConsume(state: GameState, pid: PlayerId, rng: Rng): GameState {
   let next = state;
   const notes: string[] = [];
+  const doubled = chose(next, pid, 'consume-2x');
 
+  // The Trade action bonus sells one good before any consume power runs.
   if (chose(next, pid, 'consume-trade')) {
-    const goods = playerGoods(next, pid);
-    const best = goods.slice().sort((a, b) =>
-      (TRADE_PRICES[b.kind as keyof typeof TRADE_PRICES] ?? 0) -
-      (TRADE_PRICES[a.kind as keyof typeof TRADE_PRICES] ?? 0))[0];
-    if (best) {
-      const price = TRADE_PRICES[best.kind as keyof typeof TRADE_PRICES] ?? 0;
-      next = moveCard(next, best.good.instanceId, ZONE.discard, { owner: null, faceDown: true });
-      next = drawToHand(next, pid, price, rng);
-      notes.push(`sold a ${best.kind} good for ${price} cards`);
-    }
+    const [after, note] = sellGood(next, pid, rng, { applyTradePowers: true });
+    next = after;
+    if (note) notes.push(note);
   }
 
-  const doubled = chose(next, pid, 'consume-2x');
-  for (const c of tableauCards(next, pid)) {
-    for (const pow of c.powers) {
-      if (pow.phase !== 'consume') continue;
-      if (pow.effectType === 'discardHandForVp') {
-        const n = Math.min(pow.times ?? 1, handSize(next, pid));
-        for (const h of cardsIn(next, ZONE.hand, pid).slice(0, n))
-          next = moveCard(next, h.instanceId, ZONE.discard, { owner: null, faceDown: true });
-        if (n > 0) { next = grantVp(next, pid, n * (pow.vpGained ?? 1)); notes.push(`${n} cards for VP`); }
-        continue;
-      }
-      if (pow.effectType !== 'consumeGoods' && pow.effectType !== 'consumeAllGoods') continue;
-
-      const kind = pow.conditions?.resourceType as string | undefined;
-      const available = playerGoods(next, pid).filter(g => !kind || g.kind === kind);
-      if (!available.length) continue;
-
-      const want = pow.effectType === 'consumeAllGoods'
-        ? available.length
-        : Math.min((pow.goodsConsumed ?? 1) * (pow.times ?? 1), available.length);
-      const spend = available.slice(0, want);
-      if (pow.effectType !== 'consumeAllGoods' && spend.length < (pow.goodsConsumed ?? 1)) continue;
-
-      for (const g of spend)
-        next = moveCard(next, g.good.instanceId, ZONE.discard, { owner: null, faceDown: true });
-
-      const vp = pow.effectType === 'consumeAllGoods'
-        ? Math.max(0, spend.length - 1)
-        : (pow.vpGained ?? 0) * (spend.length / Math.max(1, pow.goodsConsumed ?? 1));
-      if (vp > 0) next = grantVp(next, pid, Math.floor(vp * (doubled ? 2 : 1)));
-      const cards = (pow.cardsDrawn ?? 0) * (spend.length / Math.max(1, pow.goodsConsumed ?? 1));
-      if (cards > 0) next = drawToHand(next, pid, Math.floor(cards), rng);
-      notes.push(`consumed ${spend.length} good(s)`);
+  const powers: ConsumePower[] = [];
+  for (const c of tableauCards(next, pid))
+    for (const power of c.powers) {
+      if (power.phase !== 'consume') continue;
+      if (power.effectType === 'tradeBonus') continue;   // handled during a sale
+      const perGood = (power.vpGained ?? 0) / Math.max(1, power.goodsConsumed ?? 1);
+      powers.push({ power, rank: perGood, specific: !!power.conditions?.resourceType });
     }
+  powers.sort((a, b) => Number(b.specific) - Number(a.specific) || b.rank - a.rank);
+
+  for (const { power: pow } of powers) {
+    if (pow.effectType === 'discardHandForVp') {
+      const n = Math.min(pow.times ?? 1, handSize(next, pid));
+      if (!n) continue;
+      for (const h of cardsIn(next, ZONE.hand, pid).slice(0, n))
+        next = moveCard(next, h.instanceId, ZONE.discard, { owner: null, faceDown: true });
+      // Explicitly not doubled by the x2 bonus.
+      next = grantVp(next, pid, n * (pow.vpGained ?? 1));
+      notes.push(`discarded ${n} card(s) for VP`);
+      continue;
+    }
+
+    if (pow.effectType === 'consumeGoodForTradePrice') {
+      const [after, note] = sellGood(next, pid, rng,
+        { applyTradePowers: pow.appliesTradePowers !== false });
+      next = after;
+      if (note) notes.push(note.replace('sold', 'traded'));
+      continue;
+    }
+
+    if (pow.effectType === 'consumeAllGoods') {
+      const all = playerGoods(next, pid);
+      if (!all.length) continue;
+      for (const g of all) next = spendGood(next, g);
+      const vp = Math.max(0, all.length - 1);
+      next = grantVp(next, pid, vp * (doubled ? 2 : 1));
+      notes.push(`consumed all ${all.length} goods for ${vp} VP`);
+      continue;
+    }
+
+    if (pow.effectType !== 'consumeGoods') continue;
+
+    const kind = pow.conditions?.resourceType as string | undefined;
+    const distinct = !!pow.conditions?.distinctKinds;
+    const per = Math.max(1, pow.goodsConsumed ?? 1);
+    const uses = Math.max(1, pow.times ?? 1);
+
+    let spent = 0;
+    for (let use = 0; use < uses; use++) {
+      const available = goodsOfKind(next, pid, kind);
+      let take: typeof available;
+      if (distinct) {
+        // One good of each of `per` different kinds, or the power cannot be used.
+        const seen = new Set<string>();
+        take = available.filter(g => g.kind && !seen.has(g.kind) && seen.add(g.kind));
+        if (take.length < per) break;
+        take = take.slice(0, per);
+      } else {
+        if (available.length < per) break;
+        take = available.slice(0, per);
+      }
+      for (const g of take) next = spendGood(next, g);
+      spent += take.length;
+      const vp = (pow.vpGained ?? 0) * (doubled ? 2 : 1);
+      if (vp) next = grantVp(next, pid, vp);
+      if (pow.cardsDrawn) next = drawToHand(next, pid, pow.cardsDrawn, rng);
+    }
+    if (spent) notes.push(`consumed ${spent} good(s)`);
   }
 
   return notes.length
     ? { ...next, log: [...next.log, `${name(next, pid)}: ${notes.join(', ')}.`] }
     : next;
+}
+
+/**
+ * Produce fills every empty production world, then applies windfall-producing
+ * powers, then the draw powers that depend on what was actually produced.
+ */
+function resolveProduce(state: GameState, rng: Rng): GameState {
+  let next = state;
+  const producedKinds: Record<string, string[]> = {};
+
+  const putGood = (pid: PlayerId, worldInstanceId: string): void => {
+    const kind = card(next.cards[worldInstanceId]!.defId).world?.resourceType ?? null;
+    next = placeGood(next, pid, worldInstanceId, rng);
+    if (kind) (producedKinds[pid] ??= []).push(kind);
+    for (const pow of card(next.cards[worldInstanceId]!.defId).powers)
+      if (pow.phase === 'produce' && pow.effectType === 'drawOnProducedGoodHere')
+        next = drawToHand(next, pid, pow.cardsDrawn ?? pow.value ?? 1, rng);
+  };
+
+  const emptyWorlds = (pid: PlayerId, mode: 'production' | 'windfall', kind?: string) =>
+    tableauInstances(next, pid).filter(i => {
+      const w = card(i.defId).world;
+      return w?.productionMode === mode && (!kind || w.resourceType === kind)
+        && goodsOn(next, i.instanceId).length === 0;
+    });
+
+  for (const p of next.players) {
+    for (const inst of emptyWorlds(p.id, 'production')) putGood(p.id, inst.instanceId);
+
+    // Powers that place a good on a windfall world.
+    for (const c of tableauCards(next, p.id))
+      for (const pow of c.powers) {
+        if (pow.phase !== 'produce' || pow.effectType !== 'produceWindfallGood') continue;
+        const kind = pow.conditions?.resourceType as string | undefined;
+        const target = emptyWorlds(p.id, 'windfall', kind)[0];
+        if (target) putGood(p.id, target.instanceId);
+      }
+
+    // The Produce action bonus: one more windfall good.
+    if (chose(next, p.id, 'produce')) {
+      const target = emptyWorlds(p.id, 'windfall')[0];
+      if (target) putGood(p.id, target.instanceId);
+    }
+  }
+
+  // Draw powers that depend on what was produced this phase.
+  const rareCount = (pid: PlayerId) => (producedKinds[pid] ?? []).filter(k => k === 'rare').length;
+  for (const p of next.players) {
+    const mine = producedKinds[p.id] ?? [];
+    for (const c of tableauCards(next, p.id))
+      for (const pow of c.powers) {
+        if (pow.phase !== 'produce') continue;
+        const n = pow.cardsDrawn ?? pow.value ?? 1;
+        switch (pow.effectType) {
+          case 'drawCards':
+            next = drawToHand(next, p.id, n, rng); break;
+          case 'drawPerGoodOfKindProduced': {
+            const kind = pow.conditions?.resourceType as string | undefined;
+            next = drawToHand(next, p.id, n * mine.filter(k => k === kind).length, rng); break;
+          }
+          case 'drawPerDifferentKindProduced':
+            next = drawToHand(next, p.id, n * new Set(mine).size, rng); break;
+          case 'drawPerWorldOfKind': {
+            const kind = pow.conditions?.resourceType as string | undefined;
+            const worlds = tableauCards(next, p.id).filter(x =>
+              x.world?.resourceType === kind && x.world?.productionMode !== 'none').length;
+            next = drawToHand(next, p.id, n * worlds, rng); break;
+          }
+          case 'drawIfMostRareProduced': {
+            const mineRare = rareCount(p.id);
+            const beaten = next.players.some(o => o.id !== p.id && rareCount(o.id) >= mineRare);
+            if (mineRare > 0 && !beaten) next = drawToHand(next, p.id, n, rng);
+            break;
+          }
+        }
+      }
+  }
+
+  const total = Object.values(producedKinds).reduce((a, b) => a + b.length, 0);
+  return { ...next, log: [...next.log, `Produce: ${total} good(s) placed.`] };
 }

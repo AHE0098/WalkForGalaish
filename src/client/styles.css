@@ -468,3 +468,23 @@ input::placeholder { color:var(--muted); }
 .phasestrip b { display:inline-block; min-width:22px; color:var(--neon); font-weight:800; }
 .phasestrip i { font-style:normal; opacity:.75; margin-left:6px; }
 .powergrid dt.star { color:var(--danger); }
+
+/* ------------------------------------------------------------------ goods */
+.good-token { flex:0 0 auto; }
+.good-token--novelty { fill:var(--novelty); stroke:var(--novelty); }
+.good-token--rare    { fill:var(--rare);    stroke:var(--rare); }
+.good-token--genes   { fill:none;           stroke:var(--genes); }
+.good-token--alien   { fill:var(--alien);   stroke:var(--alien); }
+.good-token { filter:drop-shadow(0 0 5px currentColor); }
+
+.goodslot { position:absolute; right:6px; top:34px; display:flex; align-items:center; gap:2px;
+  padding:3px 5px; border-radius:999px; background:rgba(8,14,16,.85);
+  border:1px solid var(--line2); box-shadow:0 0 10px rgba(0,0,0,.6); }
+.goodslot i { font-style:normal; font-size:10px; font-weight:800; color:var(--ink); }
+.card--mini .goodslot { top:auto; bottom:5px; right:5px; padding:2px 4px; }
+
+.tally { display:inline-flex; align-items:center; gap:6px; vertical-align:-3px; }
+.tally__item { display:inline-flex; align-items:center; gap:2px; }
+.tally__item i { font-style:normal; font-size:10.5px; font-weight:700; color:var(--ink); }
+.headtally { float:right; font-size:10px; text-transform:none; letter-spacing:0;
+  color:var(--muted); display:inline-flex; align-items:center; gap:5px; }

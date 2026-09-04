@@ -6,7 +6,7 @@ export interface TableauEntry {
   instanceId: string;
   defId: string;
   /** Face-down goods: a count and their public kind, never the card underneath. */
-  goods: Array<{ goodId: string }>;
+  goods: Array<{ goodId: string; kind: string | null }>;
 }
 
 export interface PlayerView {
@@ -49,8 +49,10 @@ export function serializeForPlayer(
       instanceId: c.instanceId,
       defId: c.defId,
       // Instance ids embed the definition id, so face-down goods get opaque handles.
+      // The good's kind is public (it comes from the world); the card is not.
       goods: all.filter(g => g.zone === ZONE.goods && g.attachedTo === c.instanceId)
-                .map((_g, i) => ({ goodId: `${c.instanceId}/g${i}` })),
+                .map((_g, i) => ({ goodId: `${c.instanceId}/g${i}`,
+                                   kind: def.tokenKind?.(state, c.instanceId) ?? null })),
     }));
 
   const playing = state.status !== 'lobby';
