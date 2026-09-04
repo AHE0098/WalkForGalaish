@@ -20,6 +20,27 @@ import {
 
 const currentPhase = (s: GameState) => s.phasesThisRound[s.phaseIndex] ?? null;
 
+/**
+ * Who has already taken their one action in the current step. Keyed by phaseId,
+ * so it is impossible for a stale entry to leak into the next phase, and equally
+ * impossible to play twice in one phase.
+ */
+function actedIn(state: GameState): string[] {
+  const ledger = (state.gameData.acted as Record<string, string[]>) ?? {};
+  return ledger[state.phaseId] ?? [];
+}
+function hasActed(state: GameState, playerId: PlayerId): boolean {
+  return actedIn(state).includes(playerId);
+}
+function markActed(state: GameState, playerId: PlayerId): GameState {
+  const ledger = { ...((state.gameData.acted as Record<string, string[]>) ?? {}) };
+  const here = ledger[state.phaseId] ?? [];
+  if (here.includes(playerId)) return state;
+  // Only the current phase is retained; older entries cannot accumulate.
+  return { ...state, gameData: { ...state.gameData,
+    acted: { [state.phaseId]: [...here, playerId] } } };
+}
+
 function grantVp(state: GameState, pid: PlayerId, amount: number): GameState {
   const pool = vpPool(state);
   const given = Math.max(0, Math.min(amount, pool));
@@ -143,9 +164,15 @@ export const raceForTheGalaxy: GameDefinition = {
 
   legalActions(state, playerId) {
     if (state.status !== 'playing') return [];
-    if (state.gameData.openingDiscard) return ['DISCARD_CARDS'];
+    if (state.gameData.openingDiscard) {
+      const done = (state.gameData.openingDone as Record<string, boolean>) ?? {};
+      return done[playerId] ? [] : ['DISCARD_CARDS'];
+    }
     const phase = currentPhase(state);
-    if (phase === null) return ['SELECT_ACTION_CARD'];
+    if (phase === null)
+      return state.hiddenChoices[playerId] === undefined ? ['SELECT_ACTION_CARD'] : [];
+    // One action per player per phase, full stop.
+    if (hasActed(state, playerId)) return [];
     if (phase === 'reshuffle') return ['READY'];
     if (phase === 'explore') return ['KEEP_CARDS'];
     if (phase === 'develop' || phase === 'settle') return ['PLAY_CARD', 'PASS'];
@@ -156,9 +183,14 @@ export const raceForTheGalaxy: GameDefinition = {
     const phase = currentPhase(state);
     const out: Record<string, Playable> = {};
     if (state.status !== 'playing') return out;
+    const spent = hasActed(state, playerId);
     for (const inst of cardsIn(state, ZONE.hand, playerId)) {
       if (state.gameData.openingDiscard) { out[inst.instanceId] = { ok: true, cost: 0 }; continue; }
       if (phase !== 'develop' && phase !== 'settle') { out[inst.instanceId] = { ok: false }; continue; }
+      if (spent) {
+        out[inst.instanceId] = { ok: false, reason: `You have already acted this ${phase} phase.` };
+        continue;
+      }
       const reason = phase === 'develop'
         ? canDevelop(state, playerId, inst.defId)
         : canSettle(state, playerId, inst.defId);
@@ -219,8 +251,8 @@ export const raceForTheGalaxy: GameDefinition = {
           next = moveCard(next, c.instanceId, keeping ? ZONE.hand : ZONE.discard,
             { owner: keeping ? playerId : null, faceDown: !keeping });
         }
-        return { ok: true, state: { ...next, version: next.version + 1,
-          log: [...next.log, `${name(next, playerId)} kept ${keep.length} card(s).`] } };
+        return { ok: true, state: markActed({ ...next, version: next.version + 1,
+          log: [...next.log, `${name(next, playerId)} kept ${keep.length} card(s).`] }, playerId) };
       }
 
       case 'PLAY_CARD': {
@@ -258,13 +290,13 @@ export const raceForTheGalaxy: GameDefinition = {
         if (phase === 'settle' && chose(next, playerId, 'settle'))
           next = drawToHand(next, playerId, 1, rng);
 
-        return { ok: true, state: { ...next, version: next.version + 1,
-          log: [...next.log, `${name(next, playerId)} played ${c.name}.`] } };
+        return { ok: true, state: markActed({ ...next, version: next.version + 1,
+          log: [...next.log, `${name(next, playerId)} played ${c.name}.`] }, playerId) };
       }
 
       case 'PASS':
-        return { ok: true, state: { ...state, version: state.version + 1,
-          log: [...state.log, `${name(state, playerId)} passed.`] } };
+        return { ok: true, state: markActed({ ...state, version: state.version + 1,
+          log: [...state.log, `${name(state, playerId)} passed.`] }, playerId) };
 
       default:
         return { ok: false, error: `Unhandled action ${action.type}.` };
@@ -298,7 +330,9 @@ export const raceForTheGalaxy: GameDefinition = {
 
   calculateScore(state, playerId) { return calculateScore(state, playerId); },
 
-  phaseTimeoutSeconds: 120,
+  // No clock: players take as long as they like. Only players who have actually
+  // dropped their connection are ever played for (see GameHost.tick).
+  phaseTimeoutSeconds: 0,
 
   playerStats(state, playerId) {
     return {
@@ -312,6 +346,7 @@ export const raceForTheGalaxy: GameDefinition = {
   /** Used when a player is absent or the phase clock runs out. */
   autoAction(state, playerId) {
     const phaseId = state.phaseId;
+    if (state.phaseIndex >= 0 && hasActed(state, playerId)) return null;
     if (state.gameData.openingDiscard) {
       const two = cardsIn(state, ZONE.hand, playerId).slice(0, 2).map(c => c.instanceId);
       return two.length === 2 ? { type: 'DISCARD_CARDS', phaseId, payload: { instanceIds: two } } : null;

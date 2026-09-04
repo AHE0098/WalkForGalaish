@@ -383,3 +383,70 @@ describe('reshuffle step', () => {
     expect(after.gameData.reshuffleNeeded).toBeFalsy();
   });
 });
+
+// ---------------------------------------------------------------- regressions
+
+describe('one action per phase (regression)', () => {
+  it('refuses a second card in the same Settle phase, free or paid', () => {
+    let s = setup();
+    // A military world costs nothing, so this is the case that slipped through.
+    const mil = RACE_CARDS.find(c => c.world?.settlementMode === 'military'
+      && (c.world.defense ?? 9) <= 2 && !c.isStartWorld)!;
+    const cheap = RACE_CARDS.find(c => c.world?.settlementMode === 'payment'
+      && (c.world.settleCost ?? 9) === 0)!;
+    const [a, milInst] = giveCard(s, 'p1', mil.cardId);
+    const [b, freeInst] = giveCard(a, 'p1', cheap.cardId);
+    // Give p1 enough military to conquer.
+    const booster = RACE_CARDS.find(c => c.powers.some(p =>
+      p.effectType === 'militaryStrength' && (p.value ?? 0) >= 2 && !p.conditions))!;
+    const [c2, boostInst] = giveCard(b, 'p1', booster.cardId);
+    s = inPhase(moveCard(c2, boostInst, ZONE.tableau, { owner: 'p1', faceDown: false }), 'settle');
+
+    const first = race.resolveAction(s, 'p1',
+      { type: 'PLAY_CARD', phaseId: s.phaseId, payload: { instanceId: milInst, payment: [] } },
+      createRng(3));
+    expect(first.ok).toBe(true);
+
+    const second = race.resolveAction(first.state!, 'p1',
+      { type: 'PLAY_CARD', phaseId: first.state!.phaseId,
+        payload: { instanceId: freeInst, payment: [] } }, createRng(3));
+    expect(second.ok).toBe(false);
+    expect(race.legalActions(first.state!, 'p1')).toEqual([]);
+    expect(cardsIn(first.state!, ZONE.tableau, 'p1').filter(x => x.instanceId === freeInst))
+      .toHaveLength(0);
+  });
+
+  it('refuses a pass after a card has been played', () => {
+    let s = setup();
+    const dev = RACE_CARDS.find(c => c.cardType === 'development' && c.cost === 1)!;
+    const [a, inst] = giveCard(s, 'p1', dev.cardId);
+    s = inPhase(a, 'develop');
+    const pay = cardsIn(s, ZONE.hand, 'p1').filter(c => c.instanceId !== inst)
+      .slice(0, 1).map(c => c.instanceId);
+    const r = race.resolveAction(s, 'p1',
+      { type: 'PLAY_CARD', phaseId: s.phaseId, payload: { instanceId: inst, payment: pay } },
+      createRng(1));
+    expect(r.ok).toBe(true);
+    expect(race.resolveAction(r.state!, 'p1',
+      { type: 'PASS', phaseId: r.state!.phaseId }, createRng(1)).ok).toBe(false);
+  });
+
+  it('marks every hand card unplayable with a reason once you have acted', () => {
+    let s = setup();
+    s = inPhase(s, 'develop');
+    const after = race.resolveAction(s, 'p1', { type: 'PASS', phaseId: s.phaseId }, createRng(1));
+    const p = race.playability!(after.state!, 'p1');
+    for (const v of Object.values(p)) {
+      expect(v.ok).toBe(false);
+      expect(v.reason).toMatch(/already acted/);
+    }
+  });
+
+  it('lets the player act again once the phase changes', () => {
+    let s = inPhase(setup(), 'develop');
+    const after = race.resolveAction(s, 'p1', { type: 'PASS', phaseId: s.phaseId }, createRng(1));
+    expect(race.legalActions(after.state!, 'p1')).toEqual([]);
+    const nextPhase = { ...after.state!, phaseId: 'a-brand-new-phase' };
+    expect(race.legalActions(nextPhase, 'p1')).toEqual(['PLAY_CARD', 'PASS']);
+  });
+});

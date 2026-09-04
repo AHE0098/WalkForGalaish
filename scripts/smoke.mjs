@@ -123,6 +123,28 @@ async function main() {
   await sleep(100);
   ok(A.latest.view.round === 2, `round advanced to ${A.latest.view.round}`);
   ok(A.latest.view.currentPhase === null, 'new round waits on action selection');
+  // The bug that stranded players on "revealing…" in round 2.
+  ok(A.latest.view.yourChoiceSubmitted === false && B.latest.view.yourChoiceSubmitted === false,
+     'round 2 starts with nobody marked as having chosen');
+  ok(Object.keys(A.latest.view.roundActions).length === 0,
+     'last round\'s chosen actions were cleared');
+  ok(A.latest.view.legalActions.includes('SELECT_ACTION_CARD'),
+     'both players are offered the action choice again');
+
+  // Nobody may take two actions in one phase.
+  for (const C of [A, B])
+    await C.rpc('action', { code, action: { type: 'SELECT_ACTION_CARD',
+      phaseId: C.latest.view.phaseId, payload: { actionCard: 'settle' } } });
+  await sleep(90);
+  ok(A.latest.view.currentPhase === 'settle', 'settle phase opened in round 2');
+  const firstPass = await A.rpc('action', { code, action:
+    { type: 'PASS', phaseId: A.latest.view.phaseId } });
+  ok(firstPass.ok, 'first action accepted');
+  const secondPass = await A.rpc('action', { code, action:
+    { type: 'PASS', phaseId: A.latest.view.phaseId } });
+  ok(!secondPass.ok, `a second action in the same phase is refused: "${secondPass.error}"`);
+  await sleep(50);
+  ok(A.latest.view.legalActions.length === 0, 'no further actions are offered this phase');
 
   await A.rpc('leaveRoom', { code });
   const second = await A.rpc('createRoom', { gameId: 'race-for-the-galaxy' });
@@ -160,8 +182,7 @@ async function main() {
      'each player carries a score breakdown');
   ok(A.latest.view.players.every(p => typeof p.stats?.military === 'number'),
      'military strength is reported for every player');
-  ok(typeof A.latest.secondsLeft === 'number' && A.latest.secondsLeft > 0,
-     `phase clock running: ${A.latest.secondsLeft}s left`);
+  ok(Array.isArray(A.latest.view.waitingOn), 'the server names who the table waits on');
 
   // A player who drops must not freeze the table: the server plays for them.
   const cards = await (await fetch(`${URL}/api/games/race-for-the-galaxy/cards`)).json();

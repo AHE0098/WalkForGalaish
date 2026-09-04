@@ -117,9 +117,10 @@ graveyard is shuffled back in, and play resumes.
 
 Seats survive disconnects. Closing a tab, losing signal or hitting "Leave game" mid-game
 keeps your seat and your hand; rejoining with the same browser puts you straight back.
-A server clock runs per phase: a disconnected player is played for after a short grace
-period, and once the phase timer expires everyone still thinking is moved along with a
-safe default. The table can never be frozen by someone who walked away.
+There is no move timer: connected players may think as long as they like. Only a
+player whose connection has actually dropped is played for, after a few seconds'
+grace, so the table can never be frozen by someone who closed their laptop. The
+server tells every client who it is still waiting on.
 
 ### Views
 

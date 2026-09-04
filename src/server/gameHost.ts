@@ -48,8 +48,20 @@ export class GameHost {
   }
 
   private resetClock(): void {
-    const secs = this.def.phaseTimeoutSeconds ?? 120;
-    this.deadlineAt = Date.now() + secs * 1000;
+    // 0 or undefined means "no clock": connected players are never rushed.
+    const secs = this.def.phaseTimeoutSeconds ?? 0;
+    this.deadlineAt = secs > 0 ? Date.now() + secs * 1000 : Number.POSITIVE_INFINITY;
+  }
+
+  /**
+   * A new round must not inherit last round's chosen actions, keep counts or
+   * action ledger — stale values here are what made the client believe a player
+   * had already chosen and leave them stranded on the waiting screen.
+   */
+  private startOfRoundCleanup(): void {
+    if (this.state.phaseIndex >= 0) return;      // still mid-round
+    const { roundActions, keepCounts, acted, ...rest } = this.state.gameData as Record<string, unknown>;
+    this.state = { ...this.state, gameData: rest, hiddenChoices: {}, revealedChoices: null };
   }
 
   setConnected(playerId: PlayerId, connected: boolean): void {
@@ -121,6 +133,7 @@ export class GameHost {
     if (allReady(this.state)) {
       // advancePhase is guarded by phaseId, so repeated calls cannot double-advance.
       this.state = advancePhase(this.state, this.def, this.rng, phaseId);
+      this.startOfRoundCleanup();
       this.resetClock();
     }
     return { ok: true };

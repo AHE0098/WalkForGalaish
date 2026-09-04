@@ -35,17 +35,53 @@ describe('absent players', () => {
     expect(h.state.log.some(l => l.includes('auto-played'))).toBe(true);
   });
 
-  it('leaves connected players alone until the phase clock expires', () => {
+  it('never forces a connected player, however long they think', () => {
     const h = openingDone(host());
-    expect(h.tick(Date.now())).toBe(false);
     const before = h.state.version;
-    h.tick(h.deadlineAt + 1000);
-    expect(h.state.version).toBeGreaterThan(before);
+    // Far beyond any plausible clock.
+    expect(h.tick(Date.now() + 60 * 60_000)).toBe(false);
+    expect(h.state.version).toBe(before);
+  });
+});
+
+describe('round bookkeeping', () => {
+  it('does not carry chosen actions into the next round', () => {
+    const h = openingDone(host());
+    for (const p of h.state.players)
+      h.submit(p.id, { type: 'SELECT_ACTION_CARD', phaseId: h.state.phaseId,
+        payload: { actionCard: 'develop' } });
+    expect(h.view('p1').roundActions.p1).toBe('develop');
+
+    // Drive the round to its end: both pass, then continue through every phase.
+    let guard = 0;
+    while (h.state.phaseIndex >= 0 && guard++ < 40) {
+      for (const p of h.state.players) {
+        const legal = h.view(p.id).legalActions;
+        if (legal.includes('PASS')) h.submit(p.id, { type: 'PASS', phaseId: h.state.phaseId });
+        else if (legal.includes('KEEP_CARDS')) {
+          const v = h.view(p.id);
+          const k = Math.min((v.info.keepCount as number) ?? 1, v.selection.length);
+          h.submit(p.id, { type: 'KEEP_CARDS', phaseId: h.state.phaseId,
+            payload: { instanceIds: v.selection.slice(0, k).map(c => c.instanceId) } });
+        } else h.ready(p.id, h.state.phaseId, true);
+      }
+    }
+
+    // A new round: nobody has chosen, and the client is offered the choice again.
+    const v = h.view('p1');
+    expect(v.currentPhase).toBeNull();
+    expect(v.yourChoiceSubmitted).toBe(false);
+    expect(v.roundActions).toEqual({});
+    expect(v.legalActions).toEqual(['SELECT_ACTION_CARD']);
+    expect(v.waitingOn.length).toBe(2);
   });
 
-  it('keeps a live clock', () => {
+  it('reports who the table is waiting on', () => {
     const h = openingDone(host());
-    expect(h.secondsLeft()).toBeGreaterThan(0);
+    expect(h.view('p1').waitingOn.sort()).toEqual(['One', 'Two']);
+    h.submit('p1', { type: 'SELECT_ACTION_CARD', phaseId: h.state.phaseId,
+      payload: { actionCard: 'settle' } });
+    expect(h.view('p1').waitingOn).toEqual(['Two']);
   });
 });
 

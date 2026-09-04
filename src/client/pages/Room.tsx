@@ -123,7 +123,9 @@ export function Room() {
   const opening = !!view.info?.openingDiscard;
   const keepCount = view.info?.keepCount ?? 1;
   const iAmReady = !!me?.ready;
-  const myAction = (view.roundActions ?? {})[playerId] ?? null;
+  // yourChoiceSubmitted is authoritative for "have I chosen this round".
+  const myAction = view.yourChoiceSubmitted
+    ? ((view.roundActions ?? {})[playerId] ?? 'chosen') : null;
   const choosing = !opening && phase === null;
 
   const sortedHand = sortByKeys(view.hand, handSort, (c: any) => db?.[c.defId] ?? {});
@@ -222,8 +224,8 @@ export function Room() {
         })}
       </nav>
 
-      {secondsLeft !== null && secondsLeft <= 30 && !iAmReady && (
-        <p className="clock">Phase advances automatically in {secondsLeft}s</p>
+      {(view.waitingOn ?? []).length > 0 && (
+        <p className="waiting">Waiting for {view.waitingOn.join(', ')}</p>
       )}
       {instruction && <p className="instruction">{instruction}</p>}
       {error && <p className="err" onClick={() => setError(null)}>{error}</p>}
@@ -234,10 +236,9 @@ export function Room() {
       )}
 
       {choosing && (
-        <ActionPrompt chosen={myAction ?? (view.yourChoiceSubmitted ? 'chosen' : null)}
+        <ActionPrompt chosen={myAction}
           onChoose={id => act('SELECT_ACTION_CARD', { actionCard: id })}
-          waitingOn={view.players.filter((p: any) => p.id !== playerId && !p.ready
-            && !(view.roundActions ?? {})[p.id]).map((p: any) => p.name)} />
+          waitingOn={view.waitingOn ?? []} />
       )}
 
       {showOpponents ? (
@@ -341,7 +342,7 @@ export function Room() {
             <button onClick={() => { setPaying(null); setPayment([]); }}>Cancel</button>
           </div>
         )}
-        {!opening && !paying && (phase === 'develop' || phase === 'settle') && !iAmReady && (
+        {!opening && !paying && legal.includes('PASS') && (
           <button onClick={() => act('PASS')}>Pass</button>
         )}
         {!opening && !paying && legal.includes('READY') && !iAmReady && phase !== 'reshuffle' && (
@@ -350,7 +351,8 @@ export function Room() {
             Continue
           </button>
         )}
-        {iAmReady && phase !== null && <span className="muted">Waiting for the others…</span>}
+        {iAmReady && phase !== null && legal.length === 0 &&
+          <span className="muted">Done this phase — waiting for the others…</span>}
       </footer>
     </div>
   );

@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { cardHelp } from '../cardHelp.js';
 import type { CardFace } from '../cardDb.js';
-import data from '../../games/race-for-the-galaxy/cards/race_for_the_galaxy_base_cards.json'
-  with { type: 'json' };
+import data from '../../games/race-for-the-galaxy/cards/race_for_the_galaxy_base_cards.json';
 
 const cards = (data as unknown as { cards: CardFace[] }).cards;
 const find = (p: (c: CardFace) => boolean) => cards.find(p)!;

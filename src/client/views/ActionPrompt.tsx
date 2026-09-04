@@ -32,8 +32,8 @@ export function ActionPrompt({ chosen, onChoose, waitingOn }: {
           <h2 className="tight">You chose {c?.label}</h2>
           <p className="muted">
             {waitingOn.length
-              ? `Waiting for ${waitingOn.join(', ')}…`
-              : 'Revealing…'}
+              ? `Waiting for ${waitingOn.join(', ')} — no time limit.`
+              : 'Everyone has chosen. Revealing…'}
           </p>
         </div>
         <span className="spinner" aria-hidden />

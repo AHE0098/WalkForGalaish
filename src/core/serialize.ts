@@ -33,6 +33,8 @@ export interface PlayerView {
   yourChoiceSubmitted: boolean;
   revealedChoices: Record<PlayerId, unknown> | null;
   roundActions: Record<PlayerId, unknown>;
+  /** Names of players the table is still waiting on, computed server-side. */
+  waitingOn: string[];
   /** Free-form public numbers the game wants shown (VP pool, keep count, ...). */
   info: Record<string, unknown>;
   log: string[];
@@ -80,9 +82,21 @@ export function serializeForPlayer(
     yourChoiceSubmitted: state.hiddenChoices[viewer] !== undefined,
     revealedChoices: state.revealedChoices,
     roundActions: (state.gameData.roundActions as Record<PlayerId, unknown>) ?? {},
+    waitingOn: waitingOn(state, def),
     info: publicInfo(state, viewer),
     log: state.log.slice(-40),
   };
+}
+
+/** Who still owes the table a move. One source of truth, used by every client. */
+function waitingOn(state: GameState, def: GameDefinition): string[] {
+  if (state.status !== 'playing') return [];
+  return state.players.filter(p => {
+    if (state.gameData.openingDiscard)
+      return !((state.gameData.openingDone as Record<string, boolean>) ?? {})[p.id];
+    if (state.phaseIndex < 0) return state.hiddenChoices[p.id] === undefined;
+    return !p.ready;
+  }).map(p => p.name);
 }
 
 /** Game-owned public numbers. Anything secret stays out of gameData or out of here. */
