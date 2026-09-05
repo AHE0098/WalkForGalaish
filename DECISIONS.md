@@ -80,3 +80,20 @@ ones offered as Settle-phase options so the player decides whether to spend the 
 Their effects last for one phase only and are stored keyed by `phaseId` — the same
 pattern as the action ledger — so a boost cannot leak into a later phase. A test
 asserts exactly that.
+
+## Presentation is generic, not per-game
+
+- **`CardZone`** is the single component behind every row of cards: hand, tableau,
+  opponent tableau, explore draws. Behaviour added there appears everywhere at once.
+  Sorting lives in it as core functionality but is hidden by default — press and hold a
+  zone title to reveal it — so the common path stays uncluttered.
+- **Rule text is a list of segments, not a string.** `powerSegments` (game layer) turns
+  a structured power into `text | good | military | vp | card` pieces, and `Glyph`
+  (core layer) knows how to draw each. Core never learns what a "good" means; the game
+  never learns how one is drawn. A different game supplies different segment kinds.
+- **The card no longer says "world" or "development".** The diamond and circle already
+  carry that, so the tag row is reserved for traits the pip cannot show — windfall,
+  rebel, alien, start, six-cost — which now stand out because there is less beside them.
+- **A card holding a good is tinted by that good** across its whole face, driven by a
+  `data-good` attribute and a CSS custom property, so adding a fifth resource is a
+  colour token rather than a code change.

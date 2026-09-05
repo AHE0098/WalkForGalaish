@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import type { Segment } from './glyphs.js';
 
 export interface CardFace {
   cardId: string; name: string; cardType: 'world' | 'development';
@@ -42,6 +43,76 @@ export function useDisplay() {
 const PHASE_NUM: Record<string, string> = {
   explore: 'I', develop: 'II', settle: 'III', consume: 'IV', produce: 'V', endGame: '★',
 };
+
+/**
+ * Turn a structured power into drawable segments. Symbols replace words wherever
+ * the printed card uses one: goods as coloured tokens, military as the same red
+ * circle used for a world's defense.
+ */
+export function powerSegments(p: CardFace['powers'][number]): Segment[] {
+  const n = p.value ?? p.cardsDrawn ?? p.vpGained ?? 0;
+  const kind = (p.conditions?.resourceType as string) ?? '';
+  const vs = (p.conditions?.targetTrait as string) ?? '';
+  const txt = (v: string): Segment => ({ t: 'text', v });
+  const good = (k: string): Segment => ({ t: 'good', kind: k });
+
+  switch (p.effectType) {
+    case 'militaryStrength':
+    case 'militaryStrengthVsTrait':
+      return [{ t: 'military', v: n }, ...(vs ? [txt(` vs ${vs}`)] : []),
+              ...(kind ? [txt(' '), good(kind)] : [])];
+    case 'temporaryMilitaryByDiscardingThisCard':
+      return [txt('discard this: '), { t: 'military', v: n }];
+    case 'exploreDrawBonus':      return [txt('draw '), { t: 'card', v: n }, txt(' extra')];
+    case 'exploreKeepBonus':      return [txt('keep '), { t: 'card', v: n }, txt(' extra')];
+    case 'exploreDrawAndKeepBonus':
+      return [txt('draw '), { t: 'card', v: n }, txt(', keep '), { t: 'card', v: 1 }];
+    case 'drawAtDevelopStart':    return [txt('draw '), { t: 'card', v: n }];
+    case 'developmentCostReduction': return [txt('developments −'), { t: 'card', v: n }];
+    case 'drawAfterDevelopment':  return [txt('draw '), { t: 'card', v: n }, txt(' after developing')];
+    case 'settleCostReduction':
+      return [txt('worlds −'), { t: 'card', v: n }, ...(kind ? [txt(' '), good(kind)] : [])];
+    case 'settleCostToZeroByDiscardingThisCard':
+      return [txt('discard this: a world costs nothing')];
+    case 'payForMilitary':        return [txt('may pay for a military world')];
+    case 'drawAfterSettling':     return [txt('draw '), { t: 'card', v: n }, txt(' after settling')];
+    case 'consumeGoods': {
+      const out: Segment[] = [txt('spend ')];
+      for (let i = 0; i < (p.goodsConsumed ?? 1); i++) out.push(good(kind || 'any'));
+      out.push(txt(' → '));
+      if (p.vpGained) out.push({ t: 'vp', v: p.vpGained });
+      if (p.cardsDrawn) { if (p.vpGained) out.push(txt(' + ')); out.push({ t: 'card', v: p.cardsDrawn }); }
+      if (!p.vpGained && !p.cardsDrawn) out.push(txt('—'));
+      return out;
+    }
+    case 'consumeAllGoods':       return [txt('spend all goods → '), { t: 'vp', v: 1 }, txt(' per extra')];
+    case 'consumeGoodForTradePrice': return [txt('trade a good for '), { t: 'card', v: 0 }, txt('its price')];
+    case 'discardHandForVp':
+      return [txt('discard up to '), { t: 'card', v: p.times ?? 1 }, txt(' → '), { t: 'vp', v: 1 }, txt(' each')];
+    case 'tradeBonus':
+      return [txt('selling'), ...(kind ? [txt(' '), good(kind)] : []), txt(': +'), { t: 'card', v: n }];
+    case 'drawIfLucky':           return [txt('name a number, keep a match')];
+    case 'drawCards':             return [txt('draw '), { t: 'card', v: n }];
+    case 'produceGoodOnThisWorld':
+      return [txt('produces '), good(kind || 'any')];
+    case 'produceWindfallGood':
+      return [txt('produce on a windfall'), ...(kind ? [txt(' '), good(kind)] : [])];
+    case 'drawOnProducedGoodHere':
+      return [txt('draw '), { t: 'card', v: n }, txt(' when this produces')];
+    case 'drawPerGoodOfKindProduced':
+      return [txt('draw '), { t: 'card', v: n }, txt(' per '), good(kind)];
+    case 'drawPerDifferentKindProduced':
+      return [txt('draw '), { t: 'card', v: n }, txt(' per different good')];
+    case 'drawIfMostRareProduced':
+      return [txt('draw '), { t: 'card', v: n }, txt(' for most '), good('rare')];
+    case 'drawPerWorldOfKind':
+      return [txt('draw '), { t: 'card', v: n }, txt(' per '), good(kind), txt(' world')];
+    case 'endGameVpPerCard':      return [{ t: 'vp', v: n }, txt(' per matching card')];
+    case 'endGameVpPerNamedCard': return [{ t: 'vp', v: n }, txt(' for a named card')];
+    case 'specialScoring':        return [txt('special end-game scoring')];
+    default:                      return [txt(p.effectType)];
+  }
+}
 
 /** Turn a structured power into a short readable line. No card text is reproduced. */
 export function powerLine(p: CardFace['powers'][number]): string {
@@ -120,8 +191,8 @@ export function powersByPhase(c: CardFace) {
   const rows = PHASE_ROWS.map(phase => ({
     phase,
     numeral: PHASE_NUMERAL[phase]!,
-    lines: c.powers.filter(p => p.phase === phase).map(powerLine),
+    lines: c.powers.filter(p => p.phase === phase).map(powerSegments),
   }));
-  const endGame = c.powers.filter(p => p.phase === 'endGame').map(powerLine);
+  const endGame = c.powers.filter(p => p.phase === 'endGame').map(powerSegments);
   return { rows, endGame };
 }

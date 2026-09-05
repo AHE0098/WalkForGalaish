@@ -127,6 +127,11 @@ chosen phases run, in order → Explore deals cards to choose from → Develop a
 with per-card legality and a payment step → Consume resolves powers for VP chips and
 trade → Produce places goods → hand limit → next round → end condition → scored results.
 
+Every row of cards on the board is a `CardZone`, which is where shared behaviour like
+sorting lives — hold a zone's title to reveal the sort controls, then pick keys in the
+order you want them applied. Rule text is rendered from structured segments, so goods
+appear as coloured tokens and military as the same red circle a world's defense uses.
+
 Cards are drawn the way the printed game draws them: a black diamond for developments,
 a circle for worlds, a red circle for military worlds, a solid coloured circle for
 production worlds and a coloured halo for windfall worlds. Powers sit in fixed I–V rows

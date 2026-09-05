@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { GenericCard } from './GenericCard.js';
 import { powersByPhase, type CardFace } from './cardDb.js';
+import { Segments } from './glyphs.js';
 import { cardHelp, PHASE_HELP } from './cardHelp.js';
 
 /**
@@ -45,13 +46,15 @@ export function CardInspector({
               <React.Fragment key={r.phase}>
                 <dt className={r.lines.length ? '' : 'dim'}>{r.numeral}</dt>
                 <dd className={r.lines.length ? '' : 'dim'}>
-                  {r.lines.length ? r.lines.map((l, i) => <div key={i}>{l}</div>) : 'no power'}
+                  {r.lines.length
+                    ? r.lines.map((l, i) => <div key={i}><Segments segs={l} /></div>)
+                    : 'no power'}
                 </dd>
               </React.Fragment>
             ))}
             {endGame.length > 0 && (
               <><dt className="star">★</dt>
-                <dd>{endGame.map((l, i) => <div key={i}>{l}</div>)}</dd></>
+                <dd>{endGame.map((l, i) => <div key={i}><Segments segs={l} /></div>)}</dd></>
             )}
           </dl>
 

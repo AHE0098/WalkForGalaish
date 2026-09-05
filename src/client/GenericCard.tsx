@@ -2,6 +2,7 @@ import React from 'react';
 import { costFace, powersByPhase, type CardFace } from './cardDb.js';
 import { useAssets } from './assets.js';
 import { Good } from './Good.js';
+import { Segments } from './glyphs.js';
 
 export type CardMood = 'plain' | 'playable' | 'blocked' | 'selected';
 export type CardSize = 'mini' | 'normal' | 'large';
@@ -29,10 +30,23 @@ export function GenericCard({
   const { rows, endGame } = powersByPhase(face);
   const hasPowers = rows.some(r => r.lines.length) || endGame.length;
   const mini = size === 'mini';
+  const kind = goodKind ?? face.world?.resourceType ?? null;
+
+  // The circle and diamond already say "world" and "development"; only the
+  // traits that are not encoded in the pip earn a tag.
+  const tags: React.ReactNode[] = [];
+  if (face.world?.productionMode === 'windfall')
+    tags.push(<i key="w" className="tag">windfall</i>);
+  if (face.world?.isRebel) tags.push(<i key="r" className="tag tag--rebel">rebel</i>);
+  if (face.world?.isAlien) tags.push(<i key="a" className="tag tag--alien">alien</i>);
+  if (face.isStartWorld) tags.push(<i key="s" className="tag">start</i>);
+  if (face.isSixCostDevelopment) tags.push(<i key="6" className="tag tag--six">6-cost</i>);
 
   return (
     <button type="button" onClick={onClick} disabled={!onClick} aria-label={face.name}
-            className={`card card--${size} card--${mood}${art ? ' card--art' : ''}`}>
+            data-good={goods > 0 ? (kind ?? 'novelty') : undefined}
+            className={`card card--${size} card--${mood}${art ? ' card--art' : ''}` +
+                       `${goods > 0 ? ' card--holding' : ''}`}>
       {art && <img className="card__image" src={art} alt="" loading="lazy"
                    onError={e => { e.currentTarget.style.display = 'none'; }} />}
 
@@ -46,18 +60,7 @@ export function GenericCard({
 
       <span className="card__title">{face.name}</span>
 
-      {!mini && (
-        <span className="card__tags">
-          <i className={`tag tag--${face.cardType === 'development' ? 'dev' : 'world'}`}>
-            {face.cardType === 'development' ? 'development' : 'world'}
-          </i>
-          {face.world?.resourceType &&
-            <i className={`tag tag--${face.world.resourceType}`}>{face.world.resourceType}</i>}
-          {face.world?.productionMode === 'windfall' && <i className="tag">windfall</i>}
-          {face.world?.isRebel && <i className="tag tag--rebel">rebel</i>}
-          {face.isSixCostDevelopment && <i className="tag tag--six">6-cost</i>}
-        </span>
-      )}
+      {!mini && tags.length > 0 && <span className="card__tags">{tags}</span>}
 
       {/* The phase rail keeps I–V in the same place on every card, like the print. */}
       {!mini && (
@@ -65,13 +68,21 @@ export function GenericCard({
           {rows.map(r => (
             <span key={r.phase} className={`rail__row${r.lines.length ? '' : ' rail__row--empty'}`}>
               <i className="rail__num">{r.numeral}</i>
-              <i className="rail__text">{r.lines.join(' · ') || '—'}</i>
+              <i className="rail__text">
+                {r.lines.length
+                  ? r.lines.map((l, i) => <span key={i} className="rail__line">
+                      <Segments segs={l} /></span>)
+                  : '—'}
+              </i>
             </span>
           ))}
           {endGame.length > 0 && (
             <span className="rail__row rail__row--end">
               <i className="rail__num">★</i>
-              <i className="rail__text">{endGame.join(' · ')}</i>
+              <i className="rail__text">
+                {endGame.map((l, i) => <span key={i} className="rail__line">
+                  <Segments segs={l} /></span>)}
+              </i>
             </span>
           )}
         </span>
@@ -79,8 +90,8 @@ export function GenericCard({
 
       {mini && hasPowers && <span className="card__more" aria-hidden>…</span>}
       {goods > 0 && (
-        <span className="goodslot" title={`${goods} ${goodKind ?? ''} good${goods > 1 ? 's' : ''}`}>
-          <Good kind={goodKind ?? face.world?.resourceType ?? null} size={size === 'mini' ? 13 : 17} />
+        <span className="goodslot" title={`${goods} ${kind ?? ''} good${goods > 1 ? 's' : ''}`}>
+          <Good kind={kind} size={size === 'mini' ? 13 : 17} />
           {goods > 1 && <i>{goods}</i>}
         </span>
       )}

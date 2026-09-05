@@ -10,8 +10,8 @@ import { DeckView } from '../views/DeckView.js';
 import { StatusView } from '../views/StatusView.js';
 import { MenuView } from '../views/MenuView.js';
 import { ActionPrompt, ACTION_CARDS } from '../views/ActionPrompt.js';
-import { SortBar } from '../views/SortBar.js';
-import { sortByKeys, type SortKey } from '../sort.js';
+import { CardZone } from '../CardZone.js';
+import type { SortKey } from '../sort.js';
 import { GoodTally } from '../Good.js';
 import { OptionList } from '../views/OptionList.js';
 
@@ -32,7 +32,6 @@ export function Room() {
   const [picked, setPicked] = useState<string[]>([]);
   const [paying, setPaying] = useState<{ instanceId: string; cost: number } | null>(null);
   const [payment, setPayment] = useState<string[]>([]);
-  const [handSort, setHandSort] = useState<SortKey[]>([]);
   const [showOpponents, setShowOpponents] = useState(false);
 
   const room = payload?.room;
@@ -132,7 +131,8 @@ export function Room() {
     ? ((view.roundActions ?? {})[playerId] ?? 'chosen') : null;
   const choosing = !opening && phase === null;
 
-  const sortedHand = sortByKeys(view.hand, handSort, (c: any) => db?.[c.defId] ?? {});
+  const sortKeys: SortKey[] = display?.sortKeys ?? [];
+  const faceOf = (c: any) => db?.[c.defId] ?? {};
 
   const toggle = (id: string, max: number) => setPicked(prev =>
     prev.includes(id) ? prev.filter(x => x !== id)
@@ -297,11 +297,13 @@ export function Room() {
                   <span className="whotag">{String(view.roundActions[p.id])}</span>}
               </div>
               <div className="minirow">
-                {p.tableau.map((t: any) => (
-                  <GenericCard key={t.instanceId} face={face(t.defId)} size="mini"
-                    goods={t.goods.length} goodKind={t.goods[0]?.kind}
-                    onClick={() => { const f = face(t.defId); if (f) openCard(f); }} />
-                ))}
+                {p.tableau.length
+                  ? p.tableau.map((t: any) => (
+                      <GenericCard key={t.instanceId} face={face(t.defId)} size="mini"
+                        goods={t.goods.length} goodKind={t.goods[0]?.kind}
+                        onClick={() => { const f = face(t.defId); if (f) openCard(f); }} />
+                    ))
+                  : <span className="muted tiny">no cards yet</span>}
               </div>
             </article>
           ))}
@@ -312,32 +314,31 @@ export function Room() {
         </button>
       )}
 
-      <section>
-        <h2>
-          Your tableau <span className="muted">({me?.tableau.length ?? 0} of 12)</span>
-          <span className="headtally">goods <GoodTally stats={me?.stats} /></span>
-        </h2>
-        <div className="cardrow">
-          {me?.tableau.map((t: any) => (
-            <GenericCard key={t.instanceId} face={face(t.defId)} goods={t.goods.length}
-              goodKind={t.goods[0]?.kind}
-              mood={phase === 'consume' && t.goods.length ? 'playable' : 'plain'}
-              onClick={() => { const f = face(t.defId); if (f) openCard(f); }} />
-          ))}
-          {!me?.tableau.length && <p className="muted">Nothing played yet.</p>}
-        </div>
-      </section>
+      <CardZone
+        title="Your tableau"
+        meta={<>{me?.tableau.length ?? 0}/12 <GoodTally stats={me?.stats} /></>}
+        items={me?.tableau ?? []}
+        sortKeys={sortKeys} resolve={faceOf}
+        empty="Nothing played yet."
+        render={(t: any) => (
+          <GenericCard key={t.instanceId} face={face(t.defId)} goods={t.goods.length}
+            goodKind={t.goods[0]?.kind}
+            mood={phase === 'consume' && t.goods.length ? 'playable' : 'plain'}
+            onClick={() => { const f = face(t.defId); if (f) openCard(f); }} />
+        )} />
 
       {phase === 'explore' && view.selection.length > 0 && (
-        <section className="highlightbox">
-          <h2>Drawn cards — keep {keepCount}</h2>
-          <div className="cardrow">
-            {view.selection.map((c: any) => (
+        <div className="highlightbox">
+          <CardZone
+            title="Drawn cards" accent dense
+            meta={`keep ${picked.length}/${keepCount}`}
+            items={view.selection}
+            sortKeys={sortKeys} resolve={faceOf}
+            render={(c: any) => (
               <GenericCard key={c.instanceId} face={face(c.defId)}
                 mood={picked.includes(c.instanceId) ? 'selected' : 'playable'}
                 onClick={() => toggle(c.instanceId, keepCount)} />
-            ))}
-          </div>
+            )} />
           <div className="btnrow">
             <button className="primary"
                     disabled={picked.length !== Math.min(keepCount, view.selection.length)}
@@ -348,26 +349,23 @@ export function Room() {
               Read cards
             </button>
           </div>
-        </section>
+        </div>
       )}
 
-      <section>
-        <h2>Your hand <span className="muted">({view.hand.length})</span></h2>
-        {display?.sortKeys?.length ? (
-          <SortBar keys={display.sortKeys} active={handSort} onChange={setHandSort} />
-        ) : null}
-        <div className="cardrow">
-          {sortedHand.map((c: any) => {
-            const p = view.playable[c.instanceId];
-            return (
-              <GenericCard key={c.instanceId} face={face(c.defId)} mood={moodOf(c.instanceId)}
-                badge={p?.ok && p.cost !== undefined ? `pay ${p.cost}` : undefined}
-                onClick={() => tapHandCard(c)} />
-            );
-          })}
-          {!view.hand.length && <p className="muted">Your hand is empty.</p>}
-        </div>
-      </section>
+      <CardZone
+        title="Your hand"
+        meta={`${view.hand.length} card${view.hand.length === 1 ? '' : 's'}`}
+        items={view.hand}
+        sortKeys={sortKeys} resolve={faceOf}
+        empty="Your hand is empty."
+        render={(c: any) => {
+          const p = view.playable[c.instanceId];
+          return (
+            <GenericCard key={c.instanceId} face={face(c.defId)} mood={moodOf(c.instanceId)}
+              badge={p?.ok && p.cost !== undefined ? `pay ${p.cost}` : undefined}
+              onClick={() => tapHandCard(c)} />
+          );
+        }} />
 
       <footer className="actionbar">
         {opening && (

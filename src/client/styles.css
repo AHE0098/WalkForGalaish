@@ -505,3 +505,105 @@ input::placeholder { color:var(--muted); }
   letter-spacing:.06em; color:var(--bg); background:var(--amber); border-radius:999px;
   padding:2px 7px; flex:0 0 auto; }
 .temp { color:var(--amber); font-size:10px; font-weight:800; margin-left:3px; }
+
+/* ============================================================
+   Zones — every row of cards on the board is one of these
+   ============================================================ */
+.zone { margin:14px 0 4px; }
+.zone__bar { display:flex; align-items:baseline; justify-content:space-between;
+  gap:10px; margin-bottom:6px; }
+.zone__title { margin:0; font-size:11px; font-weight:700; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:7px; }
+.zone__title--pressable { cursor:pointer; user-select:none; -webkit-user-select:none;
+  touch-action:manipulation; }
+.zone__title--pressable:hover { color:var(--neon); }
+.zone__title--pressable::after { content:'⋮⋮'; font-size:9px; letter-spacing:-2px;
+  opacity:.4; transform:translateY(-1px); }
+.zone__sorted { font-size:8.5px; letter-spacing:.04em; background:var(--neon-dim);
+  color:#eafff5; border-radius:999px; padding:1px 6px; }
+.zone__meta { font-size:11px; color:var(--muted); display:inline-flex; align-items:center; gap:6px; }
+.zone__empty { color:var(--muted); font-size:12.5px; margin:2px 0 8px;
+  border:1px dashed var(--line2); border-radius:var(--r-sm); padding:12px; text-align:center; }
+.zone--accent .zone__title { color:var(--neon); }
+.zone--dense { margin:6px 0 0; }
+
+/* ============================================================
+   Symbols inside rule text
+   ============================================================ */
+.rail__line { display:block; }
+.rail__text .good-token, .powergrid .good-token { vertical-align:-2px; margin:0 1px; }
+.glyph { display:inline-grid; place-items:center; font-weight:800; font-style:normal;
+  vertical-align:-2px; }
+.glyph--mil { min-width:15px; height:15px; border-radius:50%; font-size:9px;
+  color:var(--mil); border:1.6px solid var(--mil); padding:0 2px;
+  box-shadow:0 0 6px color-mix(in srgb, var(--mil) 45%, transparent); margin:0 1px; }
+.glyph--vp { min-width:15px; height:15px; font-size:10px; color:var(--neon);
+  border-bottom:1.6px solid var(--neon); margin:0 1px; }
+.glyph--card { min-width:12px; height:15px; font-size:9.5px; color:var(--ink);
+  border:1.4px solid var(--line2); border-radius:2px; padding:0 2px; margin:0 1px; }
+.card--large .glyph--mil, .powergrid .glyph--mil { min-width:19px; height:19px; font-size:11px; }
+.card--large .glyph--vp, .powergrid .glyph--vp { min-width:19px; height:19px; font-size:12px; }
+.card--large .glyph--card, .powergrid .glyph--card { height:18px; font-size:11px; }
+
+/* ============================================================
+   A card holding a good is tinted by that good
+   ============================================================ */
+.card--holding { box-shadow:0 0 0 1px var(--holding, var(--line2)),
+  0 0 22px color-mix(in srgb, var(--holding, var(--neon)) 35%, transparent), var(--shadow); }
+.card--holding::before { content:''; position:absolute; inset:0; pointer-events:none;
+  border-radius:inherit; z-index:2;
+  background:linear-gradient(180deg,
+    color-mix(in srgb, var(--holding, var(--neon)) 22%, transparent) 0%,
+    transparent 38%,
+    color-mix(in srgb, var(--holding, var(--neon)) 14%, transparent) 100%); }
+.card[data-good="novelty"] { --holding:var(--novelty); }
+.card[data-good="rare"]    { --holding:var(--rare); }
+.card[data-good="genes"]   { --holding:var(--genes); }
+.card[data-good="alien"]   { --holding:var(--alien); }
+.card--holding .goodslot { border-color:var(--holding); z-index:3; }
+
+/* Tidy up now that the type tags are gone. */
+.card__tags:empty { display:none; }
+
+/* ============================================================
+   Board polish
+   ============================================================ */
+.board { padding-top:2px; }
+.topbar { padding:10px 0 8px; gap:8px; }
+.statusbtn { border-radius:16px; padding:8px 14px; border-color:var(--line2);
+  background:linear-gradient(180deg, var(--panel2), var(--panel)); }
+.statusbtn__main b { font-size:22px; letter-spacing:-.02em; }
+.statusbtn__sub { margin-top:2px; letter-spacing:.02em; }
+
+.phasebar { gap:5px; padding:2px 0 6px; }
+.phase { padding:7px 11px; font-weight:600; }
+
+.instruction { font-size:15px; letter-spacing:-.01em; margin:10px 0 6px; }
+.instruction::before { content:''; display:inline-block; width:3px; height:14px;
+  background:var(--neon); border-radius:2px; margin-right:8px; vertical-align:-2px;
+  box-shadow:0 0 8px var(--neon); }
+
+/* Opponents read as a strip of seats rather than free-floating boxes. */
+.opponents { gap:10px; padding:2px 0 6px; }
+.opp { border-radius:14px; padding:10px; min-width:240px;
+  background:linear-gradient(180deg, var(--panel2), var(--panel)); }
+.opp header { justify-content:space-between; margin-bottom:2px; }
+.opp header b { font-size:13px; letter-spacing:-.01em; }
+.opp__stats { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.peek { border-radius:14px; padding:12px; font-size:12.5px; letter-spacing:.01em; }
+
+/* Cards sit a little further apart and scroll more comfortably. */
+.cardrow { gap:10px; padding:2px 2px 12px; }
+.cardrow::-webkit-scrollbar { height:6px; }
+.cardrow::-webkit-scrollbar-thumb { background:var(--line2); border-radius:999px; }
+.cardrow::-webkit-scrollbar-track { background:transparent; }
+
+.card { border-radius:12px; }
+.card__title { letter-spacing:-.01em; }
+.card--large { border-radius:16px; }
+
+.actionbar { gap:10px; padding:10px 12px calc(10px + env(safe-area-inset-bottom)); }
+.options { border-radius:16px; }
+.optionbtn { border-radius:12px; }
+.highlightbox { border-radius:16px; border-width:1px;
+  box-shadow:0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent), var(--shadow); }
