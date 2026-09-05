@@ -8,7 +8,9 @@ export function useLongPress(onLongPress: () => void, ms = 450) {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fired = useRef(false);
 
-  const start = () => {
+  const start = (e: React.PointerEvent) => {
+    // Ignore secondary buttons and stylus barrel presses.
+    if (e.button && e.button !== 0) return;
     fired.current = false;
     timer.current = setTimeout(() => { fired.current = true; onLongPress(); }, ms);
   };
@@ -17,6 +19,7 @@ export function useLongPress(onLongPress: () => void, ms = 450) {
   return {
     handlers: {
       onPointerDown: start,
+      onPointerMove: cancel,      // a scroll is not a press
       onPointerUp: cancel,
       onPointerLeave: cancel,
       onPointerCancel: cancel,

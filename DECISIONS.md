@@ -97,3 +97,15 @@ asserts exactly that.
 - **A card holding a good is tinted by that good** across its whole face, driven by a
   `data-good` attribute and a CSS custom property, so adding a fifth resource is a
   colour token rather than a code change.
+
+## Buttons before gestures
+
+Zone sorting shipped as a long press with no other way in. It worked on a laptop and
+was unreachable on a phone — the same class of mistake as auto-consuming: a path that
+exists in the developer's head but not in the player's hands.
+
+The convention is now: implement the button first, add the gesture second, and never
+let the gesture be the only route. `CONVENTIONS.md` states it and
+`src/client/__tests__/touch.test.ts` enforces it by scanning the client source, so it
+fails the build rather than surfacing in a playtest. I verified the check by removing
+the sort button and confirming the suite went red.

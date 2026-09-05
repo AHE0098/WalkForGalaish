@@ -27,20 +27,29 @@ export function CardZone<T>({
   const [keys, setKeys] = useState<SortKey[]>(defaultSorted ?? []);
   const [open, setOpen] = useState(false);
   const canSort = !!sortKeys?.length && !!resolve;
+  // A long press is an accelerator, never the only way in: the button below
+  // does the same thing and works on every device.
   const press = useLongPress(() => canSort && setOpen(v => !v));
 
   const shown = canSort ? sortByKeys(items, keys, resolve!) : items;
 
   return (
     <section className={`zone${accent ? ' zone--accent' : ''}${dense ? ' zone--dense' : ''}`}>
-      <header className="zone__bar">
-        <h2 {...(canSort ? press.handlers : {})}
-            className={canSort ? 'zone__title zone__title--pressable' : 'zone__title'}
-            title={canSort ? 'Hold to sort' : undefined}>
+      <header className="zone__bar" {...(canSort ? press.handlers : {})}>
+        <h2 className="zone__title">
           {title}
           {canSort && keys.length > 0 && <span className="zone__sorted">sorted</span>}
         </h2>
-        {meta && <span className="zone__meta">{meta}</span>}
+        <span className="zone__meta">
+          {meta}
+          {canSort && (
+            <button type="button" className={`zonebtn${open ? ' zonebtn--on' : ''}`}
+                    aria-pressed={open} aria-label={open ? 'Hide sorting' : 'Sort this zone'}
+                    onClick={() => setOpen(v => !v)}>
+              <span aria-hidden>⇅</span> Sort
+            </button>
+          )}
+        </span>
       </header>
 
       {open && canSort && (

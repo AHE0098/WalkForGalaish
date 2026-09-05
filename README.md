@@ -37,6 +37,13 @@ refreshing on `/room/ABCD` works.
 Swap `createMemoryRoomStore` for a Redis-backed `RoomStore` when that matters —
 the interface is the only thing the engine depends on.
 
+## Interaction conventions
+
+Everything is reachable by tapping a button; gestures are accelerators only. Hover
+never carries information, tooltips never carry rules, and the layout respects the
+notch, the home indicator and collapsing mobile toolbars. See `CONVENTIONS.md` — the
+rules are enforced by `src/client/__tests__/touch.test.ts`, not just written down.
+
 ## Architecture
 
 Two layers with one dependency direction: **`core` never imports from `games`.**
