@@ -17,26 +17,45 @@ const hosts = new Map<string, GameHost>();
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 /** Which asset pack is active, and exactly which files it contains. */
-app.get('/api/assets', (req, res) => {
-  const packId = String(req.query.pack ?? process.env.ASSET_PACK ?? 'generated');
-  const root = path.join(process.cwd(), 'public/assets/packs', packId);
-  const safe = /^[a-z0-9][a-z0-9-]*$/.test(packId);
-  if (!safe || !fs.existsSync(root))
-    return res.json({ packId: 'generated', manifest: null, files: [], baseUrl: '' });
+const PACKS_ROOT = path.join(process.cwd(), 'public/assets/packs');
+const safePack = (id: string) => /^[a-z0-9][a-z0-9-]*$/.test(id);
 
+function readPack(packId: string) {
+  const root = path.join(PACKS_ROOT, packId);
+  if (!safePack(packId) || !fs.existsSync(root)) return null;
   const walk = (dir: string, prefix = ''): string[] =>
     fs.readdirSync(dir).flatMap(f => {
       const full = path.join(dir, f);
       return fs.statSync(full).isDirectory()
         ? walk(full, `${prefix}${f}/`) : [`${prefix}${f}`];
     });
-
-  let manifest: unknown = null;
+  let manifest: Record<string, unknown> | null = null;
   const mf = path.join(root, 'pack.json');
   if (fs.existsSync(mf)) { try { manifest = JSON.parse(fs.readFileSync(mf, 'utf8')); } catch {} }
+  return { packId, manifest, files: walk(root).filter(f => !f.endsWith('.gitkeep')) };
+}
+
+/**
+ * The active pack, plus the packs to fall back to. Real artwork can therefore be
+ * added a few cards at a time: whatever is missing falls through to the
+ * procedural pack, and finally to the card drawn from data.
+ */
+app.get('/api/assets', (req, res) => {
+  const requested = String(req.query.pack ?? process.env.ASSET_PACK ?? 'art');
+  const chain = [requested, 'neon', 'generated']
+    .filter((v, i, a) => a.indexOf(v) === i)
+    .map(readPack)
+    .filter((p): p is NonNullable<ReturnType<typeof readPack>> => p !== null);
+
+  if (!chain.length) return res.json({ packId: 'generated', manifest: null, packs: [], baseUrl: '' });
   res.set('Cache-Control', 'public, max-age=60');
-  res.json({ packId, manifest, files: walk(root),
-             baseUrl: process.env.ASSET_BASE_URL ?? '' });
+  res.json({
+    packId: chain[0]!.packId,
+    manifest: chain[0]!.manifest,
+    packs: chain,                                   // in priority order
+    files: chain[0]!.files,                         // kept for older clients
+    baseUrl: process.env.ASSET_BASE_URL ?? '',
+  });
 });
 
 app.get('/api/games/:id/cards', (req, res) => {

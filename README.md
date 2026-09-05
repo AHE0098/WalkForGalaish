@@ -37,6 +37,13 @@ refreshing on `/room/ABCD` works.
 Swap `createMemoryRoomStore` for a Redis-backed `RoomStore` when that matters —
 the interface is the only thing the engine depends on.
 
+## Feedback
+
+The engine emits structured events — a card played, goods produced, a good sold — and
+the board narrates them in a short feed with a little flavour, while cards animate in
+as they arrive and gears turn while the table waits on someone. All of it is cosmetic
+and driven by event ids rather than state diffing, so it cannot desynchronise.
+
 ## Interaction conventions
 
 Everything is reachable by tapping a button; gestures are accelerators only. Hover
@@ -88,6 +95,12 @@ unexplained residual against the rulebook's full-box table.
 
 Cards render from data. Artwork is optional and swappable — see `docs/ASSETS.md`.
 `npm run assets:check` reports coverage and misnamed files.
+
+Real artwork goes in `public/assets/packs/art/cards/`, named after each `cardId`.
+That folder is committed and is never included in a release archive, so app updates
+cannot overwrite it. Coverage can be partial: any card without artwork falls back to
+the procedural image, and then to the card drawn from data. See `docs/ARTWORK.md`,
+and run `npm run art:check` before uploading.
 
 The repo ships with a **procedural pack** (`public/assets/packs/neon`): 95 card
 images and 23 symbols drawn as SVG from the card data itself by

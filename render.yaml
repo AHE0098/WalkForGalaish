@@ -9,4 +9,4 @@ services:
       - key: NODE_VERSION
         value: "20"
       - key: ASSET_PACK
-        value: neon
+        value: art

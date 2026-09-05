@@ -14,6 +14,7 @@ import { CardZone } from '../CardZone.js';
 import type { SortKey } from '../sort.js';
 import { GoodTally } from '../Good.js';
 import { OptionList } from '../views/OptionList.js';
+import { Feed, Gears } from '../Feed.js';
 
 const PHASES = [
   { id: 'explore', label: 'I Explore' }, { id: 'develop', label: 'II Develop' },
@@ -215,6 +216,8 @@ export function Room() {
           ]} /> })}>Menu</button>
       </header>
 
+      <Feed events={view.events ?? []} you={playerId} />
+
       <nav className="phasebar" aria-label="Phases this round">
         {[...PHASES, ...(view.phasesThisRound.includes('reshuffle')
           ? [{ id: 'reshuffle', label: '⟳ Shuffle' }] : [])].map(p => {
@@ -236,7 +239,7 @@ export function Room() {
       </nav>
 
       {(view.waitingOn ?? []).length > 0 && (
-        <p className="waiting">Waiting for {view.waitingOn.join(', ')}</p>
+        <Gears label={`Waiting for ${view.waitingOn.join(', ')}`} />
       )}
       {instruction && <p className="instruction">{instruction}</p>}
       {error && <p className="err" onClick={() => setError(null)}>{error}</p>}
@@ -318,6 +321,7 @@ export function Room() {
         title="Your tableau"
         meta={<>{me?.tableau.length ?? 0}/12 <GoodTally stats={me?.stats} /></>}
         items={me?.tableau ?? []}
+        itemKey={(t: any) => t.instanceId}
         sortKeys={sortKeys} resolve={faceOf}
         empty="Nothing played yet."
         render={(t: any) => (
@@ -333,6 +337,7 @@ export function Room() {
             title="Drawn cards" accent dense
             meta={`keep ${picked.length}/${keepCount}`}
             items={view.selection}
+            itemKey={(c: any) => c.instanceId}
             sortKeys={sortKeys} resolve={faceOf}
             render={(c: any) => (
               <GenericCard key={c.instanceId} face={face(c.defId)}
@@ -356,6 +361,7 @@ export function Room() {
         title="Your hand"
         meta={`${view.hand.length} card${view.hand.length === 1 ? '' : 's'}`}
         items={view.hand}
+        itemKey={(c: any) => c.instanceId}
         sortKeys={sortKeys} resolve={faceOf}
         empty="Your hand is empty."
         render={(c: any) => {

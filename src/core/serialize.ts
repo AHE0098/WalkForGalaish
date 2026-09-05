@@ -40,6 +40,8 @@ export interface PlayerView {
   /** Free-form public numbers the game wants shown (VP pool, keep count, ...). */
   info: Record<string, unknown>;
   log: string[];
+  /** Recent happenings, newest last. The client shows what it has not seen. */
+  events: import('./events.js').GameEvent[];
 }
 
 export function serializeForPlayer(
@@ -90,6 +92,7 @@ export function serializeForPlayer(
     waitingOn: waitingOn(state, def),
     info: publicInfo(state, viewer),
     log: state.log.slice(-40),
+    events: (state.events ?? []).slice(-20),
   };
 }
 

@@ -109,3 +109,34 @@ let the gesture be the only route. `CONVENTIONS.md` states it and
 `src/client/__tests__/touch.test.ts` enforces it by scanning the client source, so it
 fails the build rather than surfacing in a playtest. I verified the check by removing
 the sort button and confirming the suite went red.
+
+## Artwork lives in its own pack
+
+Real artwork and generated artwork must not share a folder. The generator writes SVG
+into `packs/neon`, and the resolver prefers `.svg`, so a hand-supplied `gem-world.webp`
+dropped in beside it would have been silently outranked by the procedural version.
+
+Real art therefore has its own pack, `packs/art`, which is committed (so it deploys),
+never written to by any build step, and deliberately excluded from the release archives
+handed over for upload — uploading a new build cannot delete artwork it does not
+contain. Lookup falls through art → neon → drawn-from-data, so partial coverage is a
+normal state rather than a broken one. Tests assert each of these.
+
+## Motion is driven by events, not by diffing
+
+The client never compares two game states to work out what happened. The engine
+emits structured `GameEvent`s with monotonic ids, and the feed shows anything with an
+id it has not seen. A dropped update, a reconnect or a stale frame costs nothing: the
+next payload carries the ids, and at worst a moment is missed rather than mis-narrated.
+
+Every animation is opacity or transform only — a test walks each `@keyframes` block
+and fails if one animates width, height or position — so a slow phone drops frames
+instead of doing layout work. Idle "breathing" on playable cards is restricted to
+devices with a real pointer, and everything collapses under `prefers-reduced-motion`.
+
+## Scroll containment is per axis
+
+`overscroll-behavior: contain` on the horizontal card rows blocked scroll chaining on
+*both* axes, so a vertical drag starting on a card — most of a phone screen — never
+reached the page. It is now `overscroll-behavior-x` only, with `touch-action: pan-x
+pan-y` on the rows and on cards.

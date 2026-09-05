@@ -1,0 +1,12 @@
+{
+  "packId": "art",
+  "name": "Illustrated",
+  "renderMode": "hybrid",
+  "cardAspectRatio": "0.75",
+  "license": "Replace with the licence or generation terms of these images.",
+  "attribution": null,
+  "overrides": {
+    "cards": {},
+    "symbols": {}
+  }
+}

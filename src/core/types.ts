@@ -1,5 +1,7 @@
 /** Generic card-game platform types. Nothing here knows about any specific game. */
 
+import type { GameEvent } from './events.js';
+
 export type PlayerId = string;
 export type CardDefId = string;
 export type CardInstanceId = string;
@@ -57,6 +59,8 @@ export interface GameState {
   revealedChoices: Record<PlayerId, unknown> | null;
   /** Game-owned scratch space. Core never interprets it. */
   gameData: Record<string, unknown>;
+  /** Recent structured happenings, for the client to animate and narrate. */
+  events?: GameEvent[];
   log: string[];
 }
 

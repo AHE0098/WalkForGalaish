@@ -201,12 +201,22 @@ async function main() {
   ok(typeof assets.packId === 'string' && Array.isArray(assets.files),
      `asset pack endpoint serving "${assets.packId}" (${assets.files.length} files)`);
   const bogus = await (await fetch(`${URL}/api/assets?pack=../../etc`)).json();
-  ok(bogus.packId === 'generated', 'asset pack names are validated against traversal');
+  ok(['neon', 'generated'].includes(bogus.packId) && !JSON.stringify(bogus).includes('..'),
+     `a bogus pack name is rejected and falls back safely to "${bogus.packId}"`);
+  ok(Array.isArray(assets.packs) && assets.packs.length >= 2,
+     `assets fall through ${assets.packs.map(p => p.packId).join(' → ')}`);
 
   ok(Array.isArray(A.latest.view.options),
      'the server publishes the choices offered to each player');
   ok('pending' in A.latest.view.info,
      'the server tells a player when it is waiting on a card selection');
+  const evs = A.latest.view.events ?? [];
+  ok(Array.isArray(evs) && evs.length > 0, `structured events are published (${evs.length})`);
+  ok(evs.every(e => typeof e.id === 'number') &&
+     evs.every((e, i) => i === 0 || e.id > evs[i - 1].id),
+     'event ids increase monotonically, so a client can show only what is new');
+  ok(evs.every(e => typeof e.type === 'string' && typeof e.text === 'string'),
+     'every event carries a type and a description');
 
   // Leaving mid-game keeps the seat, and rejoining restores the same hand.
   const carolHand = JSON.stringify(C2.latest.view.hand.map(c => c.instanceId));

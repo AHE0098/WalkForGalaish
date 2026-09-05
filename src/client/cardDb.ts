@@ -181,6 +181,20 @@ export function costFace(c: CardFace): CostFace {
   };
 }
 
+/**
+ * A shared image for a class of card, used only when no individual artwork
+ * exists. Kept deliberately coarse so a handful of images can cover the set.
+ */
+export function templateKey(c: CardFace): string {
+  if (c.cardType === 'development')
+    return c.isSixCostDevelopment ? 'development-six' : 'development';
+  const w = c.world!;
+  const parts = [w.settlementMode === 'military' ? 'military' : 'world'];
+  if (w.productionMode !== 'none') parts.push(w.productionMode);
+  if (w.resourceType) parts.push(w.resourceType);
+  return parts.join('-');
+}
+
 export const PHASE_ROWS = ['explore', 'develop', 'settle', 'consume', 'produce'] as const;
 export const PHASE_NUMERAL: Record<string, string> = {
   explore: 'I', develop: 'II', settle: 'III', consume: 'IV', produce: 'V', endGame: '★',

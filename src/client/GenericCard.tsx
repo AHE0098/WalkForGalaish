@@ -1,5 +1,5 @@
 import React from 'react';
-import { costFace, powersByPhase, type CardFace } from './cardDb.js';
+import { costFace, powersByPhase, templateKey, type CardFace } from './cardDb.js';
 import { useAssets } from './assets.js';
 import { Good } from './Good.js';
 import { Segments } from './glyphs.js';
@@ -24,7 +24,8 @@ export function GenericCard({
 }) {
   const assets = useAssets();
   if (!face) return <div className={`card card--${size} card--ghost`} />;
-  const art = imageUrl ?? (assets.renderMode === 'generated' ? null : assets.card(face.cardId));
+  const art = imageUrl ?? (assets.renderMode === 'generated'
+    ? null : assets.card(face.cardId, templateKey(face)));
 
   const pip = costFace(face);
   const { rows, endGame } = powersByPhase(face);

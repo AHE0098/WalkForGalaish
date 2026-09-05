@@ -1,14 +1,23 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
-interface PackData {
+interface PackFiles {
   packId: string;
   manifest: { renderMode?: string; overrides?: { cards?: Record<string, string>;
               symbols?: Record<string, string> } } | null;
   files: string[];
+}
+interface PackData {
+  packId: string;
+  manifest: PackFiles['manifest'];
+  /** Highest priority first; a miss falls through to the next. */
+  packs: PackFiles[];
+  files: string[];
   baseUrl: string;
 }
 
-const EXT = ['webp', 'png', 'jpg', 'svg'];
+// Individual artwork is preferred over anything generated, so bitmap formats
+// are tried before svg: the procedural pack writes svg.
+const EXT = ['webp', 'png', 'jpg', 'avif', 'svg'];
 
 /**
  * Resolves a cardId or symbol token to a URL, or to null. Null is the normal
@@ -17,7 +26,15 @@ const EXT = ['webp', 'png', 'jpg', 'svg'];
 export interface AssetApi {
   packId: string;
   renderMode: string;
-  card(cardId: string): string | null;
+  /**
+   * Art for one card. Resolution order, first hit wins:
+   *   1. cards/<cardId>.<ext>      individual artwork — the contract
+   *   2. templates/<template>.<ext> a shared image for a class of card
+   *   3. the same two in each fallback pack
+   *   4. null → the card is drawn from data
+   * Callers pass a template key; supplying one is always optional.
+   */
+  card(cardId: string, template?: string | null): string | null;
   symbol(token: string): string | null;
   coverage: number;
 }
@@ -40,21 +57,28 @@ export function AssetProvider({ children }: { children: React.ReactNode }) {
   const api = useMemo<AssetApi>(() => {
     if (!pack) return { packId: 'generated', renderMode: 'generated',
                         card: () => null, symbol: () => null, coverage: 0 };
-    const files = new Set(pack.files);
     const base = (pack.baseUrl || '').replace(/\/$/, '');
-    const url = (rel: string) => `${base}/assets/packs/${pack.packId}/${rel}`;
-    const find = (kind: 'cards' | 'symbols', key: string) => {
-      const over = pack.manifest?.overrides?.[kind]?.[key];
-      if (over) return files.has(over) ? url(over) : null;
-      for (const e of EXT) if (files.has(`${kind}/${key}.${e}`)) return url(`${kind}/${key}.${e}`);
+    const chain = (pack.packs?.length ? pack.packs
+      : [{ packId: pack.packId, manifest: pack.manifest, files: pack.files ?? [] }])
+      .map(p => ({ ...p, set: new Set(p.files) }));
+
+    const find = (kind: string, key: string): string | null => {
+      if (!key) return null;
+      for (const p of chain) {
+        const url = (rel: string) => `${base}/assets/packs/${p.packId}/${rel}`;
+        const over = (p.manifest?.overrides as Record<string, Record<string, string>> | undefined)
+          ?.[kind]?.[key];
+        if (over && p.set.has(over)) return url(over);
+        for (const e of EXT) if (p.set.has(`${kind}/${key}.${e}`)) return url(`${kind}/${key}.${e}`);
+      }
       return null;
     };
     return {
       packId: pack.packId,
-      renderMode: pack.manifest?.renderMode ?? 'generated',
-      card: id => find('cards', id),
+      renderMode: pack.manifest?.renderMode ?? 'hybrid',
+      card: (id, template) => find('cards', id) ?? (template ? find('templates', template) : null),
       symbol: t => find('symbols', t),
-      coverage: pack.files.filter(f => f.startsWith('cards/')).length,
+      coverage: chain[0]?.files.filter(f => f.startsWith('cards/')).length ?? 0,
     };
   }, [pack]);
 

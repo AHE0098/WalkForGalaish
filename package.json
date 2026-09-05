@@ -14,6 +14,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "smoke": "node scripts/smoke.mjs",
     "assets:check": "node scripts/assets-check.mjs",
+    "art:check": "node scripts/check-art.mjs",
+    "art:fix": "node scripts/check-art.mjs --fix",
     "assets:generate": "node scripts/generate-art.mjs && node scripts/generate-symbols.mjs",
     "validate:cards": "node scripts/validate-rftg-cards.cjs src/games/race-for-the-galaxy/cards/race_for_the_galaxy_base_cards.json"
   },

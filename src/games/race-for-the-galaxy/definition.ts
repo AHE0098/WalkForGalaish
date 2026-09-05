@@ -6,6 +6,7 @@ import {
   buildInstances, dealToHand, draw, reshuffleDiscard, shuffleSupply, supplyIsLow,
 } from '../../core/deck.js';
 import { submitHiddenChoice } from '../../core/phases.js';
+import { emit } from '../../core/events.js';
 import { RACE_DEFINITIONS, BASIC_START_WORLDS, card } from './cards.js';
 import {
   ACTION_CARDS, HAND_LIMIT, PHASE_ORDER, RESHUFFLE_AT, TABLEAU_END_SIZE, TRADE_PRICES,
@@ -399,8 +400,9 @@ export const raceForTheGalaxy: GameDefinition = {
           next = moveCard(next, c.instanceId, keeping ? ZONE.hand : ZONE.discard,
             { owner: keeping ? playerId : null, faceDown: !keeping });
         }
-        return { ok: true, state: markActed({ ...next, version: next.version + 1,
-          log: [...next.log, `${name(next, playerId)} kept ${keep.length} card(s).`] }, playerId) };
+        return { ok: true, state: markActed(emit({ ...next, version: next.version + 1 },
+          { type: 'explore', who: playerId, value: keep.length,
+            text: `kept ${keep.length} card${keep.length === 1 ? '' : 's'}` }), playerId) };
       }
 
       case 'PLAY_CARD': {
@@ -441,8 +443,10 @@ export const raceForTheGalaxy: GameDefinition = {
         if (phase === 'settle' && chose(next, playerId, 'settle'))
           next = drawToHand(next, playerId, 1, rng);
 
-        return { ok: true, state: markActed({ ...next, version: next.version + 1,
-          log: [...next.log, `${name(next, playerId)} played ${c.name}.`] }, playerId) };
+        return { ok: true, state: markActed(emit({ ...next, version: next.version + 1 },
+          { type: phase === 'develop' ? 'develop' : 'settle', who: playerId,
+            text: `played ${c.name}`, cardId: c.cardId,
+            kind: c.world?.resourceType ?? undefined }), playerId) };
       }
 
       case 'SUBMIT_SELECTION': {
@@ -460,8 +464,9 @@ export const raceForTheGalaxy: GameDefinition = {
           next = grantVp(next, playerId, chosen.length * (pending.vpEach ?? 1));
         next = setPending(next, playerId, null);
         const why = pending.purpose === 'handLimit' ? 'to the hand limit' : 'for victory points';
-        return { ok: true, state: { ...next, version: next.version + 1,
-          log: [...next.log, `${name(next, playerId)} discarded ${chosen.length} card(s) ${why}.`] } };
+        return { ok: true, state: emit({ ...next, version: next.version + 1 },
+          { type: 'discard', who: playerId, value: chosen.length,
+            text: `discarded ${chosen.length} card${chosen.length === 1 ? '' : 's'} ${why}` }) };
       }
 
       case 'CHOOSE_OPTION': {
@@ -475,8 +480,8 @@ export const raceForTheGalaxy: GameDefinition = {
         return { ok: true, state: autoConsume(state, playerId, rng, this) };
 
       case 'PASS':
-        return { ok: true, state: markActed({ ...state, version: state.version + 1,
-          log: [...state.log, `${name(state, playerId)} passed.`] }, playerId) };
+        return { ok: true, state: markActed(emit({ ...state, version: state.version + 1 },
+          { type: 'pass', who: playerId, text: 'passed' }), playerId) };
 
       default:
         return { ok: false, error: `Unhandled action ${action.type}.` };
@@ -686,9 +691,9 @@ function applyConsumeOption(
     }
   };
   const doubled = chose(next, pid, 'consume-2x');
-  const note = (t: string) => {
-    next = { ...next, version: next.version + 1,
-             log: [...next.log, `${name(next, pid)}: ${t}.`] };
+  const note = (t: string, type = 'consume', kind?: string, value?: number) => {
+    next = emit({ ...next, version: next.version + 1 },
+      { type, who: pid, text: t, kind, value });
   };
 
   // --- settle-phase powers that cost you the card itself --------------------
@@ -731,7 +736,7 @@ function applyConsumeOption(
     spend([g.good.instanceId]);
     next = drawToHand(next, pid, cards, rng);
     next = markPowerUsed(next, pid, '@trade');
-    note(`sold a ${kind} good for ${cards} cards`);
+    note(`sold a ${kind} good for ${cards} cards`, 'trade', kind ?? undefined, cards);
     return next;
   }
 
@@ -762,7 +767,7 @@ function applyConsumeOption(
     spend([g.good.instanceId]);
     next = drawToHand(next, pid, cards, rng);
     next = markPowerUsed(next, pid, key!);
-    note(`traded a ${g.kind} good for ${cards} cards`);
+    note(`traded a ${g.kind} good for ${cards} cards`, 'trade', g.kind ?? undefined, cards);
     return next;
   }
 
@@ -772,7 +777,7 @@ function applyConsumeOption(
     const vp = Math.max(0, spends.length - 1) * (doubled ? 2 : 1);
     next = grantVp(next, pid, vp);
     next = markPowerUsed(next, pid, key!);
-    note(`consumed all ${spends.length} goods for ${vp} VP`);
+    note(`consumed all ${spends.length} goods for ${vp} VP`, 'consume', undefined, vp);
     return next;
   }
 
@@ -783,7 +788,8 @@ function applyConsumeOption(
   if (pow.cardsDrawn) next = drawToHand(next, pid, pow.cardsDrawn, rng);
   next = markPowerUsed(next, pid, key!);
   note(`consumed ${spends.length} good(s) for ${vp} VP`
-    + (pow.cardsDrawn ? ` and ${pow.cardsDrawn} card(s)` : ''));
+    + (pow.cardsDrawn ? ` and ${pow.cardsDrawn} card(s)` : ''),
+    'consume', option.kinds?.[0], vp);
   return next;
 }
 
@@ -886,9 +892,10 @@ function produceFor(state: GameState, pid: PlayerId, rng: Rng): GameState {
 
   const tally = { ...((next.gameData.producedThisPhase as Record<string, string[]>) ?? {}) };
   tally[pid] = produced;
-  return { ...next, version: next.version + 1,
-    gameData: { ...next.gameData, producedThisPhase: tally },
-    log: [...next.log, `${name(next, pid)} produced ${produced.length} good(s).`] };
+  return emit({ ...next, version: next.version + 1,
+    gameData: { ...next.gameData, producedThisPhase: tally } },
+    { type: 'produce', who: pid, value: produced.length, kind: produced[0],
+      text: `produced ${produced.length} good${produced.length === 1 ? '' : 's'}` });
 }
 
 /** "Most rare elements produced" can only be judged once everyone has produced. */
