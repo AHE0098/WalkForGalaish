@@ -113,22 +113,27 @@ Filenames are the only integration point: no registry, no config, no code.
 Extensions are tried `webp → png → jpg → avif → svg`, so your bitmap always wins
 over the procedural SVG of the same name.
 
-### Templates, for later
+### Templates
 
-You are supplying individual art, so you can ignore this. When you eventually want
-one image to stand in for a whole class of card, drop it in `templates/` under one
-of these keys and every card of that class without its own artwork uses it:
+A template is one image standing in for a class of card. **Template keys degrade from
+specific to broad**, so a broad image covers everything under it:
 
 ```
-development            development-six
-world-production-novelty      world-windfall-novelty
-world-production-rare         world-windfall-rare
-world-production-genes        world-windfall-genes
-world-production-alien        world-windfall-alien
-military-production-<good>    military-windfall-<good>
-world                  military
+military-windfall-alien   →  world-windfall-alien  →  good-alien
+                          →  military-windfall     →  world-windfall
+                          →  military              →  world
 ```
 
-Individual art always beats a template. Mixing the two is a supported state, not a
-compromise: a handful of templates gives the whole set a floor while the individual
-pieces arrive.
+So `world.webp` alone covers every world in the game, and `development.webp` covers
+every development. **Two images and the whole set has art.** Add narrower keys whenever
+you like; each takes over the cards it applies to, and nothing has to move.
+
+Useful keys, broadest last:
+
+```
+good-novelty  good-rare  good-genes  good-alien
+world-production  world-windfall  military-production  military-windfall
+development-six   development     military            world
+```
+
+Individual card art always beats every template, so nothing you make is wasted.

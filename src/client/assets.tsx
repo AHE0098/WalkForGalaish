@@ -29,12 +29,12 @@ export interface AssetApi {
   /**
    * Art for one card. Resolution order, first hit wins:
    *   1. cards/<cardId>.<ext>      individual artwork — the contract
-   *   2. templates/<template>.<ext> a shared image for a class of card
+   *   2. templates/<template>.<ext> shared images, most specific key first
    *   3. the same two in each fallback pack
    *   4. null → the card is drawn from data
    * Callers pass a template key; supplying one is always optional.
    */
-  card(cardId: string, template?: string | null): string | null;
+  card(cardId: string, templates?: string[] | null): string | null;
   symbol(token: string): string | null;
   coverage: number;
 }
@@ -76,7 +76,8 @@ export function AssetProvider({ children }: { children: React.ReactNode }) {
     return {
       packId: pack.packId,
       renderMode: pack.manifest?.renderMode ?? 'hybrid',
-      card: (id, template) => find('cards', id) ?? (template ? find('templates', template) : null),
+      card: (id, templates) => find('cards', id)
+        ?? (templates ?? []).reduce<string | null>((hit, k) => hit ?? find('templates', k), null),
       symbol: t => find('symbols', t),
       coverage: chain[0]?.files.filter(f => f.startsWith('cards/')).length ?? 0,
     };

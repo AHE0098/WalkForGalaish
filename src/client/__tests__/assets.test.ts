@@ -52,12 +52,12 @@ describe('the art contract', () => {
     expect(list[0]).toBe('webp');
   });
 
-  it('falls back from individual art to a template, then to nothing', () => {
-    expect(assets).toMatch(/find\('cards', id\) \?\? \(template \? find\('templates', template\)/);
+  it('falls back from individual art through every template key, then to nothing', () => {
+    expect(assets).toMatch(/find\('cards', id\)\s*\?\?\s*\(templates \?\? \[\]\)\.reduce/);
   });
 
-  it('derives a stable template key for every kind of card', () => {
-    expect(cardDb).toMatch(/export function templateKey/);
+  it('degrades template keys from specific to broad, so a few images cover the set', () => {
+    expect(cardDb).toMatch(/export function templateKeys/);
     for (const key of ['development', 'development-six', 'military', 'world'])
       expect(cardDb).toContain(key);
   });

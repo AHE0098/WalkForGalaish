@@ -140,3 +140,11 @@ devices with a real pointer, and everything collapses under `prefers-reduced-mot
 *both* axes, so a vertical drag starting on a card — most of a phone screen — never
 reached the page. It is now `overscroll-behavior-x` only, with `touch-action: pan-x
 pan-y` on the rows and on cards.
+
+## Template keys degrade
+
+A single template key per card meant 20 distinct images to cover the set, and a missing
+one left a card with no art at all. Keys are now an ordered list from specific to broad —
+`military-windfall-alien` through to plain `world` — and the resolver takes the first
+that exists. Two images now cover all 95 cards, and adding a narrower key later needs no
+change anywhere: it simply starts winning for the cards it matches.

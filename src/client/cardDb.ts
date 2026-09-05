@@ -182,17 +182,29 @@ export function costFace(c: CardFace): CostFace {
 }
 
 /**
- * A shared image for a class of card, used only when no individual artwork
- * exists. Kept deliberately coarse so a handful of images can cover the set.
+ * Shared images for a class of card, most specific first. Used only when no
+ * individual artwork exists. Because the keys degrade — a genes windfall world
+ * falls back to any windfall world, then to any world — a handful of broad
+ * images already covers the whole set, and narrower ones can be added later
+ * without moving anything.
  */
-export function templateKey(c: CardFace): string {
+export function templateKeys(c: CardFace): string[] {
   if (c.cardType === 'development')
-    return c.isSixCostDevelopment ? 'development-six' : 'development';
+    return c.isSixCostDevelopment
+      ? ['development-six', 'development']
+      : ['development'];
+
   const w = c.world!;
-  const parts = [w.settlementMode === 'military' ? 'military' : 'world'];
-  if (w.productionMode !== 'none') parts.push(w.productionMode);
-  if (w.resourceType) parts.push(w.resourceType);
-  return parts.join('-');
+  const base = w.settlementMode === 'military' ? 'military' : 'world';
+  const mode = w.productionMode !== 'none' ? w.productionMode : null;
+  const good = w.resourceType;
+
+  const keys: string[] = [];
+  if (mode && good) keys.push(`${base}-${mode}-${good}`, `world-${mode}-${good}`);
+  if (good) keys.push(`good-${good}`);
+  if (mode) keys.push(`${base}-${mode}`, `world-${mode}`);
+  keys.push(base, 'world');
+  return [...new Set(keys)];
 }
 
 export const PHASE_ROWS = ['explore', 'develop', 'settle', 'consume', 'produce'] as const;
